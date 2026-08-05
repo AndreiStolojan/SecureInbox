@@ -32,7 +32,7 @@
     "jsonwebtoken": "^9.0.3",
     "mailauth": "4.13.3",
     "mongodb": "^7.5.0",
-    "mongoose": "^9.8.1",
+    "mongoose": "^9.9.1",
     "morgan": "^1.11.0",
     "node-cron": "^4.6.0",
     "nodemailer": "^9.0.3",
@@ -43,7 +43,7 @@
   "devDependencies": {
     "@eslint/js": "^10.0.1",
     "eslint": "^10.8.0",
-    "globals": "^17.8.0",
+    "globals": "^17.9.0",
     "nodemon": "^3.1.14"
   },
   "overrides": {
