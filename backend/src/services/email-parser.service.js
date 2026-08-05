@@ -112,6 +112,54 @@ const extractAttachmentExtensions = (payload) => {
     return [...new Set(extensions)];
 };
 
+const MAX_ATTACHMENT_METADATA_ITEMS = 50;
+const MAX_ATTACHMENT_ID_CHARS = 2_048;
+const MAX_ATTACHMENT_FILENAME_CHARS = 512;
+const MAX_ATTACHMENT_MIME_CHARS = 255;
+
+const boundedString = (value, maxChars) =>
+    typeof value === 'string' ? value.trim().slice(0, maxChars) : '';
+
+// Persist only the Gmail locator and bounded descriptive metadata. Inline
+// body.data is deliberately ignored so attachment bytes never enter MongoDB.
+export const extractAttachments = (payload) => {
+    const attachments = [];
+    const queue = payload ? [payload] : [];
+
+    while (queue.length > 0 && attachments.length < MAX_ATTACHMENT_METADATA_ITEMS) {
+        const currentPart = queue.shift();
+        if (!currentPart) continue;
+
+        if (Array.isArray(currentPart.parts) && currentPart.parts.length > 0) {
+            queue.push(...currentPart.parts);
+        }
+
+        const filename = boundedString(
+            currentPart.filename,
+            MAX_ATTACHMENT_FILENAME_CHARS
+        );
+        if (!filename) continue;
+
+        const declaredSize = Number(currentPart.body?.size);
+        attachments.push({
+            attachmentId: boundedString(
+                currentPart.body?.attachmentId,
+                MAX_ATTACHMENT_ID_CHARS
+            ) || null,
+            filename,
+            declaredMimeType: boundedString(
+                currentPart.mimeType,
+                MAX_ATTACHMENT_MIME_CHARS
+            ) || 'application/octet-stream',
+            size: Number.isSafeInteger(declaredSize) && declaredSize >= 0
+                ? declaredSize
+                : null,
+        });
+    }
+
+    return attachments;
+};
+
 // La fel ca mai sus, parcurge arborele de "părți" al emailului și adună corpul
 // în format text simplu (text/plain) și/sau HTML (text/html), decodându-le din
 // base64. Un email poate avea ambele variante (text și HTML) — le colectăm pe
@@ -190,6 +238,7 @@ export const parseGmailMessageToEmailPayload = ({ gmailMessage, mailAccount, syn
     const { email: replyToEmail, domain: replyToDomain } = parseEmailAddress(replyToHeader);
     const { textBody, htmlBody } = collectBodiesFromPayload(payload);
     const attachmentExtensions = extractAttachmentExtensions(payload);
+    const attachments = extractAttachments(payload);
     // analiza linkurilor (vezi link-analysis.service.js) — extrage linkurile și
     // tiparele suspecte din corpul text/HTML
     const linkAnalysis = analyzeEmailLinks({ textBody, htmlBody });
@@ -216,6 +265,7 @@ export const parseGmailMessageToEmailPayload = ({ gmailMessage, mailAccount, syn
         hasShortenedUrl: linkAnalysis.hasShortenedUrl,
         suspiciousLinkPatterns: linkAnalysis.suspiciousLinkPatterns,
         attachmentExtensions,
+        attachments,
         receivedAt: getReceivedAtDate(gmailMessage, headers),
         syncSource,
         rawHeaders: headers.map(header => ({ name: header.name || '', value: header.value || '' })),

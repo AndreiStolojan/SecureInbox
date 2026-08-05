@@ -111,6 +111,19 @@ export const URLHAUS_AUTH_KEY = process.env.URLHAUS_AUTH_KEY || '';
 export const THREAT_INTEL_MAX_URLS_PER_EMAIL =
     process.env.THREAT_INTEL_MAX_URLS_PER_EMAIL || '5';
 export const THREAT_INTEL_TIMEOUT_MS = process.env.THREAT_INTEL_TIMEOUT_MS || '10000';
+// Attachment byte inspection is opt-in so existing/local Gmail syncs never start
+// downloading files until the operator explicitly enables the feature.
+export const ATTACHMENT_ANALYSIS_ENABLED =
+    process.env.ATTACHMENT_ANALYSIS_ENABLED || 'false';
+export const ATTACHMENT_MAX_BYTES = process.env.ATTACHMENT_MAX_BYTES || '10485760';
+export const ATTACHMENT_MAX_TOTAL_BYTES =
+    process.env.ATTACHMENT_MAX_TOTAL_BYTES || '26214400';
+export const ATTACHMENT_MAX_COUNT = process.env.ATTACHMENT_MAX_COUNT || '10';
+export const ATTACHMENT_ANALYSIS_CONCURRENCY =
+    process.env.ATTACHMENT_ANALYSIS_CONCURRENCY || '3';
+export const ATTACHMENT_ANALYSIS_TIMEOUT_MS =
+    process.env.ATTACHMENT_ANALYSIS_TIMEOUT_MS || '15000';
+export const MALWAREBAZAAR_AUTH_KEY = process.env.MALWAREBAZAAR_AUTH_KEY || '';
 
 export const isTruthyEnvValue = (value) =>
     typeof value === 'string' &&
@@ -124,3 +137,6 @@ export const isGmailPushConfigured = () =>
 
 export const isThreatIntelEnabled = () =>
     isTruthyEnvValue(THREAT_INTEL_ENABLED);
+
+export const isAttachmentAnalysisEnabled = () =>
+    isTruthyEnvValue(ATTACHMENT_ANALYSIS_ENABLED);

@@ -23,3 +23,29 @@
   suppress a `suspicious_link_pattern:very_long_url` signal. This surprising
   path is locked by the golden snapshot and `detection-scorer.test.js`; changing
   it requires an explicit scoring decision and engine-version bump.
+
+## Deferred from T2 — email authentication
+
+- The proposed `dkim_missing_on_authenticating_domain` (12 pts) signal from
+  the task spec's weight table was not implemented. That table was marked
+  "proposed, calibrate before finalizing"; DMARC-gated brand verification
+  already fixes the score-inversion bug this task targeted. Add the signal
+  once there is real traffic to calibrate its weight against.
+
+## Deferred from T5 — threat intelligence
+
+- Implemented against Google Web Risk (`uris:search`) rather than Safe
+  Browsing v4 (`threatMatches:find`) — same underlying data, reuses the
+  existing GCP project, but issues one request per URL instead of a batched
+  lookup. Revisit if `THREAT_INTEL_MAX_URLS_PER_EMAIL` is ever raised toward
+  its spec default of 20, since per-URL requests become a quota concern at
+  that volume.
+
+## Deferred from T6 — attachment verification
+
+- ClamAV was deliberately not integrated. It would require a new container
+  in `docker-compose.yml`, and `.github/workflows/quality.yml` asserts every
+  image ships a digest-pinned `linux/arm64` manifest; a resident AV daemon
+  also carries a memory footprint poorly suited to the Raspberry Pi
+  deployment target. Hash-reputation lookups against MalwareBazaar deliver
+  most of the detection value without that cost.

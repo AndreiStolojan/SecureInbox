@@ -3,9 +3,10 @@
 [![Quality](https://github.com/AndreiStolojan/SecureInbox/actions/workflows/quality.yml/badge.svg)](https://github.com/AndreiStolojan/SecureInbox/actions/workflows/quality.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
-SecureInbox is an explainable phishing triage application for Gmail. It combines
-deterministic security rules with optional local AI signals and shows the
-evidence behind each verdict.
+SecureInbox is an explainable phishing triage application for Gmail. It scores
+every message from real evidence — verified sender identity, link and
+attachment reputation, deterministic rules, and a bounded local AI signal —
+and shows the reasoning behind each verdict instead of a black-box score.
 
 <p align="center">
   <img src="assets/screenshots/dashboard.png" alt="SecureInbox dashboard" width="900" />
@@ -13,9 +14,23 @@ evidence behind each verdict.
 
 ## What it does
 
-- Synchronizes Gmail messages when OAuth is configured.
-- Detects suspicious links, attachments, headers, and sender patterns.
-- Separates deterministic rule scores from bounded local AI signals.
+- Synchronizes Gmail incrementally via the history API, with optional
+  real-time ingestion through Gmail push notifications (Cloud Pub/Sub).
+- Authenticates the sender: SPF (via Gmail's own `Authentication-Results`),
+  DKIM (re-verified independently from the raw MIME), DMARC (evaluated live
+  against DNS), and ARC for forwarded and mailing-list mail. Brand
+  verification is gated on this result, so a spoofed sender can no longer
+  outscore an unverified one.
+- Checks links against Google Web Risk and URLhaus, resolves redirects with
+  SSRF-hardened, resolved-IP validation on every hop, and factors in domain
+  age via RDAP.
+- Inspects attachments by content, not filename: magic-byte type detection,
+  in-memory ZIP/OOXML/PDF structural analysis for encrypted archives, macros,
+  and auto-executing PDF actions, and SHA-256 lookups against MalwareBazaar.
+  Bytes are never written to disk or persisted.
+- Combines all of the above with deterministic rules and a bounded local
+  Ollama AI signal — AI alone can never declare a message phishing — through
+  an auditable, independently-failable signal-provider engine.
 - Explains why a message was marked safe, suspicious, or likely phishing.
 - Supports trusted and blocked sender rules plus manual review decisions.
 - Runs locally with Docker, MongoDB, Ollama, Prometheus, and Grafana.
@@ -25,15 +40,19 @@ evidence behind each verdict.
 ```text
 Browser -> nginx / React -> Express -> MongoDB
                               |
-                              +-> optional Gmail OAuth
+                              +-> optional Gmail OAuth, history sync, push (Pub/Sub)
                               +-> local Ollama
+                              +-> DNS (DMARC), Web Risk, URLhaus, RDAP, MalwareBazaar
 
 Prometheus -> Express /metrics -> Grafana
 ```
 
 The backend owns authentication, synchronization, scoring, reports, and data.
-The frontend talks to it through the nginx reverse proxy. See
-[architecture.md](docs/architecture.md) and
+The frontend talks to it through the nginx reverse proxy. Detection itself is
+a registry of independent signal providers — each new signal (authentication,
+threat intel, attachments) is its own module with its own weights, isolated
+so that one provider's failure or external dependency never blocks a scan.
+See [architecture.md](docs/architecture.md) and
 [detection-engine.md](docs/detection-engine.md) for the deeper design.
 
 ## Quick start
@@ -106,6 +125,24 @@ nano .env
 
 SMTP and Arcjet variables are documented in `.env.example` and are optional.
 
+## Optional detection integrations
+
+Every integration below is off or degraded by default and fails open: a
+missing key or an unreachable service never blocks a scan, it just means that
+signal is unavailable for that message. All variables are documented with
+their defaults in `.env.example`.
+
+| Feature | Env vars | Without it |
+| --- | --- | --- |
+| Gmail push notifications | `GMAIL_PUSH_ENABLED`, `GOOGLE_CLOUD_PROJECT_ID`, `GMAIL_PUBSUB_TOPIC`, `GMAIL_PUSH_AUDIENCE` | Falls back to incremental history polling |
+| Threat intelligence (Web Risk, URLhaus, domain age) | `THREAT_INTEL_ENABLED`, `WEB_RISK_API_KEY`, `URLHAUS_AUTH_KEY` | Link scoring stays lexical (patterns, shorteners) |
+| Attachment verification | `ATTACHMENT_ANALYSIS_ENABLED` | Attachments are scored by extension only |
+
+Gmail push notifications additionally need a public HTTPS endpoint (the
+Cloudflare Tunnel used in the production deployment) and are not meant to be
+exercised on a bare local install; incremental history sync is what runs
+out of the box.
+
 ## Local operations
 
 Show status and logs:
@@ -174,7 +211,11 @@ npm --prefix frontend run build
 ## Limitations
 
 - Gmail OAuth requires a Google Cloud client and configured test users.
-- Gmail synchronization uses polling rather than push notifications.
+- Real-time push ingestion needs a public HTTPS endpoint and a Cloud Pub/Sub
+  topic; a bare local install synchronizes via incremental history polling.
+- Threat intelligence and attachment hash reputation depend on third-party
+  services (Google Web Risk, URLhaus, MalwareBazaar) and degrade to the
+  underlying deterministic rules if those are unreachable or unconfigured.
 - Local AI is a secondary signal and cannot declare phishing on its own.
 - SecureInbox does not claim precision or recall without a labeled evaluation dataset.
 

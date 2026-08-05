@@ -6,6 +6,7 @@
 // ─────────────────────────────────────────────────────────────────────────────
 
 import * as aiSemanticProvider from './providers/ai-semantic.provider.js';
+import * as attachmentAnalysisProvider from './providers/attachment.provider.js';
 import * as attachmentExtensionProvider from './providers/attachment-extension.provider.js';
 import * as linkAnalysisProvider from './providers/link-analysis.provider.js';
 import * as threatIntelligenceProvider from './providers/threat-intelligence.provider.js';
@@ -24,6 +25,7 @@ export const DEFAULT_PROVIDERS = Object.freeze([
     replyToProvider,
     linkAnalysisProvider,
     threatIntelligenceProvider,
+    attachmentAnalysisProvider,
     attachmentExtensionProvider,
     aiSemanticProvider,
 ]);

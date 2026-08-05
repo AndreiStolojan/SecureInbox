@@ -25,6 +25,7 @@ import { parseDateRangeQuery } from '../common/utils/date-range.js';
 import Email from '../models/email.model.js';
 import Scan from '../models/scan.model.js';
 import { buildEmailStateForUser } from './email-state.service.js';
+import { isAttachmentAnalysisEnabled } from '../config/env.js';
 
 // Valorile permise pentru filtrul "verdict" (verdictul scanului/userului).
 const ALLOWED_VERDICTS = new Set(['safe', 'suspicious', 'likely_phishing', 'phishing']);
@@ -117,11 +118,63 @@ const toEmailListItem = ({ email }) => {
     };
 };
 
+const MAX_PUBLIC_ATTACHMENT_ANALYSIS_ITEMS = 10;
+const MAX_PUBLIC_ATTACHMENT_FINDINGS = 15;
+
+const publicAttachmentMetadata = (attachments) =>
+    (Array.isArray(attachments) ? attachments : []).map((attachment) => ({
+        filename: typeof attachment?.filename === 'string' ? attachment.filename : '',
+        declaredMimeType: typeof attachment?.declaredMimeType === 'string'
+            ? attachment.declaredMimeType
+            : 'application/octet-stream',
+        size: Number.isSafeInteger(attachment?.size) && attachment.size >= 0
+            ? attachment.size
+            : null,
+    }));
+
+const publicAttachmentAnalysis = (analysis) => {
+    if (!analysis || typeof analysis !== 'object') return null;
+
+    const status = ['evaluated', 'partial', 'skipped', 'unavailable'].includes(analysis.status)
+        ? analysis.status
+        : 'unavailable';
+    const items = Array.isArray(analysis.items) ? analysis.items : [];
+
+    return {
+        status,
+        reason: typeof analysis.reason === 'string' ? analysis.reason : null,
+        evaluatedAt: analysis.evaluatedAt || null,
+        items: items.slice(0, MAX_PUBLIC_ATTACHMENT_ANALYSIS_ITEMS).map((item) => ({
+            attachmentIndex: Number.isInteger(item?.attachmentIndex) && item.attachmentIndex >= 0
+                ? item.attachmentIndex
+                : null,
+            status: ['evaluated', 'skipped', 'unavailable', 'invalid'].includes(item?.status)
+                ? item.status
+                : 'unavailable',
+            reason: typeof item?.reason === 'string' ? item.reason : null,
+            detectedMimeType: typeof item?.detectedMimeType === 'string'
+                ? item.detectedMimeType
+                : null,
+            detectedExtension: typeof item?.detectedExtension === 'string'
+                ? item.detectedExtension
+                : null,
+            findings: (Array.isArray(item?.findings) ? item.findings : [])
+                .filter((finding) => typeof finding === 'string')
+                .slice(0, MAX_PUBLIC_ATTACHMENT_FINDINGS),
+        })),
+    };
+};
+
 // Construiește răspunsul pentru detaliile unui email (GET /emails/:id):
 // emailul de bază + scanul curent + "starea" lui (effectiveVerdict, riskBucket,
 // reviewStatus — calculate de email-state.service.js) + dacă este prima dată
 // când userul primește un email de la acest expeditor (isFirstTimeSender).
-const toEmailDetails = async ({ userId, email, latestScan }) => {
+const toEmailDetails = async ({
+    userId,
+    email,
+    latestScan,
+    attachmentAnalysisEnabled,
+}) => {
     const [emailState, priorSenderCount] = await Promise.all([
         buildEmailStateForUser({ userId, email, latestScan }),
         // Numărăm câte alte emailuri (diferite de acesta) am mai primit de la
@@ -152,6 +205,12 @@ const toEmailDetails = async ({ userId, email, latestScan }) => {
         hasShortenedUrl: email.hasShortenedUrl,
         suspiciousLinkPatterns: email.suspiciousLinkPatterns,
         attachmentExtensions: email.attachmentExtensions,
+        attachments: attachmentAnalysisEnabled
+            ? publicAttachmentMetadata(email.attachments)
+            : [],
+        attachmentAnalysis: attachmentAnalysisEnabled
+            ? publicAttachmentAnalysis(email.attachmentAnalysis)
+            : null,
         authResults: email.authResults || null,
         receivedAt: email.receivedAt,
         syncSource: email.syncSource,
@@ -653,7 +712,11 @@ export const getEmailsForUser = async ({ userId, query }) => {
 
 // GET /emails/:id — detaliile complete ale unui email (cu scanul curent și
 // starea calculată: effectiveVerdict, riskBucket, reviewStatus, isFirstTimeSender).
-export const getEmailByIdForUser = async ({ userId, emailId }) => {
+export const getEmailByIdForUser = async ({
+    userId,
+    emailId,
+    attachmentAnalysisEnabled = isAttachmentAnalysisEnabled(),
+}) => {
     const email = await findOwnedEmailById({ userId, emailId });
     const latestScan = await findLatestScanForOwnedEmail({
         userId,
@@ -664,6 +727,7 @@ export const getEmailByIdForUser = async ({ userId, emailId }) => {
         userId,
         email,
         latestScan,
+        attachmentAnalysisEnabled,
     });
 };
 

@@ -81,7 +81,7 @@ test('detection context and its plain-object inputs are frozen snapshots', () =>
     assert.deepEqual(nestedContext.scanContext.tags, ['trusted']);
 });
 
-test('Scan schema persists optional provider metadata and engine is v10', () => {
+test('Scan schema persists optional provider metadata and engine is v11', () => {
     const providerMeta = [
         {
             provider: 'link-analysis',
@@ -103,7 +103,7 @@ test('Scan schema persists optional provider metadata and engine is v10', () => 
     assert.equal(Scan.schema.path('providerMeta').instance, 'Mixed');
     assert.deepEqual(scan.providerMeta, providerMeta);
     assert.deepEqual(new Scan().providerMeta, []);
-    assert.equal(CURRENT_SCAN_ENGINE_VERSION, 'rules-ai-v10');
+    assert.equal(CURRENT_SCAN_ENGINE_VERSION, 'rules-ai-v11');
 });
 
 test('detection provider metrics accept only bounded provider and result labels', async () => {
@@ -113,6 +113,7 @@ test('detection provider metrics accept only bounded provider and result labels'
         'reply-to',
         'link-analysis',
         'threat-intelligence',
+        'attachment-analysis',
         'attachment-extension',
         'ai-semantic',
     ]);

@@ -81,6 +81,13 @@ function Figure({ label, value, note, color }) {
   );
 }
 
+const formatAttachmentSize = (bytes) => {
+  if (!Number.isFinite(bytes) || bytes < 0) return null;
+  if (bytes < 1024) return `${bytes} B`;
+  if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KB`;
+  return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
+};
+
 /* ─── Empty right pane — a deliberate state, not an accident ─────────────── */
 
 export function MessagePaneEmpty({ hint = 'Select a message to see why it was flagged.' }) {
@@ -204,7 +211,17 @@ export function MessagePane({ id, onReviewed }) {
 
   const rules = Array.isArray(scan?.triggeredRules) ? scan.triggeredRules : [];
   const links = raw?.links || [];
-  const attachments = raw?.attachmentExtensions || [];
+  const attachmentMetadata = Array.isArray(email.attachments) ? email.attachments : [];
+  const attachments = attachmentMetadata.length > 0
+    ? attachmentMetadata
+    : (raw?.attachmentExtensions || []).map((extension) => ({
+        filename: `.${String(extension).replace(/^\./, '')}`,
+        declaredMimeType: null,
+        size: null,
+      }));
+  const attachmentAnalysisItems = Array.isArray(email.attachmentAnalysis?.items)
+    ? email.attachmentAnalysis.items
+    : [];
 
   const userVerdict = email.userVerdict ?? null;
 
@@ -439,17 +456,34 @@ export function MessagePane({ id, onReviewed }) {
           </SectionHead>
           <div className="mt-3.5">
             {attachments.length > 0 ? (
-              <div className="flex flex-wrap gap-x-4 gap-y-2">
-                {/* The backend sends ONLY the extensions — we don't invent filenames. */}
-                {attachments.map((ext, i) => (
-                  <span
-                    key={i}
-                    className="inline-flex items-center gap-1.5 font-mono text-xs text-foreground/80"
-                  >
-                    <Paperclip className="h-3 w-3 text-muted-foreground-subtle" aria-hidden="true" />
-                    .{String(ext).replace(/^\./, '')}
-                  </span>
-                ))}
+              <div className="space-y-3">
+                {attachments.map((attachment, i) => {
+                  const analysis = attachmentAnalysisItems.find(
+                    (item) => item?.attachmentIndex === i
+                  );
+                  const findings = Array.isArray(analysis?.findings) ? analysis.findings : [];
+                  const type = analysis?.detectedMimeType || attachment.declaredMimeType;
+                  const size = formatAttachmentSize(attachment.size);
+
+                  return (
+                    <div key={`${attachment.filename || 'attachment'}-${i}`} className="min-w-0">
+                      <p className="flex items-center gap-1.5 text-xs text-foreground/80">
+                        <Paperclip className="h-3 w-3 shrink-0 text-muted-foreground-subtle" aria-hidden="true" />
+                        <span className="truncate font-mono">{attachment.filename || 'Attachment'}</span>
+                      </p>
+                      {(type || size) && (
+                        <p className="mt-1 text-xs text-muted-foreground-subtle">
+                          {[type, size].filter(Boolean).join(' · ')}
+                        </p>
+                      )}
+                      {findings.length > 0 && (
+                        <p className="mt-1 text-xs text-risk-review">
+                          {findings.map(getRuleLabel).join(' · ')}
+                        </p>
+                      )}
+                    </div>
+                  );
+                })}
               </div>
             ) : (
               <p className="text-sm text-muted-foreground">This message has no attachments.</p>

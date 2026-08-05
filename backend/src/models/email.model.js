@@ -112,6 +112,132 @@ const emailAuthResultsSchema = new mongoose.Schema(
     { _id: false }
 );
 
+const attachmentMetadataSchema = new mongoose.Schema(
+    {
+        attachmentId: {
+            type: String,
+            default: null,
+            trim: true,
+            maxlength: 2_048,
+        },
+        filename: {
+            type: String,
+            required: true,
+            trim: true,
+            maxlength: 512,
+        },
+        declaredMimeType: {
+            type: String,
+            default: 'application/octet-stream',
+            trim: true,
+            maxlength: 255,
+        },
+        size: {
+            type: Number,
+            default: null,
+            min: 0,
+        },
+    },
+    { _id: false }
+);
+
+const ATTACHMENT_ANALYSIS_FINDINGS = [
+    'attachment_known_malware_hash',
+    'attachment_type_mismatch_dangerous',
+    'attachment_encrypted_archive_with_password_in_body',
+    'attachment_double_extension',
+    'attachment_rtl_override_filename',
+    'attachment_macro_enabled_office',
+    'attachment_pdf_openaction_javascript',
+    'attachment_encrypted_archive',
+    'attachment_nested_archive',
+    'attachment_type_mismatch_suspicious',
+    'attachment_zip_bomb_ratio',
+    'attachment_dangerous_archive_entry',
+    'attachment_archive_path_traversal',
+    'attachment_pdf_external_uri',
+    'attachment_legacy_office_unverified',
+];
+
+const MAX_ATTACHMENT_ANALYSIS_ITEMS = 10;
+const MAX_ATTACHMENT_ANALYSIS_FINDINGS = ATTACHMENT_ANALYSIS_FINDINGS.length;
+
+const attachmentAnalysisItemSchema = new mongoose.Schema(
+    {
+        attachmentIndex: {
+            type: Number,
+            required: true,
+            min: 0,
+            max: MAX_ATTACHMENT_ANALYSIS_ITEMS - 1,
+        },
+        status: {
+            type: String,
+            enum: ['evaluated', 'skipped', 'unavailable', 'invalid'],
+            required: true,
+        },
+        reason: {
+            type: String,
+            default: null,
+            trim: true,
+            maxlength: 80,
+        },
+        detectedMimeType: {
+            type: String,
+            default: null,
+            trim: true,
+            maxlength: 255,
+        },
+        detectedExtension: {
+            type: String,
+            default: null,
+            trim: true,
+            lowercase: true,
+            maxlength: 32,
+        },
+        findings: {
+            type: [{ type: String, enum: ATTACHMENT_ANALYSIS_FINDINGS }],
+            default: [],
+            validate: {
+                validator: (findings) =>
+                    Array.isArray(findings) &&
+                    findings.length <= MAX_ATTACHMENT_ANALYSIS_FINDINGS,
+                message: 'Attachment analysis findings exceed the allowed limit.',
+            },
+        },
+    },
+    { _id: false }
+);
+
+const attachmentAnalysisSchema = new mongoose.Schema(
+    {
+        status: {
+            type: String,
+            enum: ['evaluated', 'partial', 'skipped', 'unavailable'],
+            required: true,
+        },
+        reason: {
+            type: String,
+            default: null,
+            trim: true,
+            maxlength: 180,
+        },
+        evaluatedAt: {
+            type: Date,
+            default: null,
+        },
+        items: {
+            type: [attachmentAnalysisItemSchema],
+            default: [],
+            validate: {
+                validator: (items) =>
+                    Array.isArray(items) && items.length <= MAX_ATTACHMENT_ANALYSIS_ITEMS,
+                message: 'Attachment analysis items exceed the allowed limit.',
+            },
+        },
+    },
+    { _id: false }
+);
+
 const emailSchema = new mongoose.Schema(
     {
         // ── Legături către alte colecții ──────────────────────────────────
@@ -242,6 +368,17 @@ const emailSchema = new mongoose.Schema(
         attachmentExtensions: {
             type: [String],
             default: [],
+        },
+        attachments: {
+            type: [attachmentMetadataSchema],
+            default: [],
+        },
+        // Analysis records contain only bounded structural metadata and finding
+        // keys. Gmail attachment ids remain in `attachments` for fetches, but
+        // are intentionally absent here alongside hashes and file bytes.
+        attachmentAnalysis: {
+            type: attachmentAnalysisSchema,
+            default: null,
         },
 
         // Rezultatele autentificării sunt derivate la sincronizare; MIME-ul brut

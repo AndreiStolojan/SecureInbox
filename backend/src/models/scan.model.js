@@ -179,6 +179,19 @@ const scanSchema = new mongoose.Schema(
             default: null,
             trim: true,
         },
+        attachmentConfigFingerprint: {
+            type: String,
+            default: null,
+            trim: true,
+        },
+        // Amprenta rezultatului de verificare a atașamentelor folosit la
+        // scorare. Este doar SHA-256 al semnalelor normalizate, fără datele
+        // atașamentului sau hashuri de fișier.
+        attachmentAnalysisFingerprint: {
+            type: String,
+            default: null,
+            trim: true,
+        },
         // Rezultatul fiecărui provider (success/error/skipped), păstrat pentru
         // observabilitate fără a schimba forma răspunsului public al API-ului.
         providerMeta: {
