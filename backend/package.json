@@ -9,6 +9,7 @@
     "bootstrap:admin": "node scripts/bootstrap-admin.js",
     "seed:local": "node scripts/seed-local.js",
     "benchmark:ollama": "node scripts/benchmark-ollama.js",
+    "eval:semantic": "node scripts/eval-semantic.js",
     "snapshot:detection": "node scripts/snapshot-detection.js",
     "lint": "eslint .",
     "test": "NODE_ENV=test PORT=5500 DB_URI=mongodb://127.0.0.1:27017/secureinbox-test JWT_SECRET=test-secret JWT_EXPIRES_IN=1h MAIL_TOKEN_ENCRYPTION_KEY=test-mail-token-key FRONTEND_APP_URL=http://localhost:5173 ARCJET_KEY= GOOGLE_CLIENT_ID= GOOGLE_CLIENT_SECRET= GOOGLE_REDIRECT_URI= EMAIL_FROM= EMAIL_PASSWORD= SUPPORT_EMAIL= THREAT_INTEL_ENABLED=false THREAT_INTEL_MAX_URLS_PER_EMAIL=5 THREAT_INTEL_TIMEOUT_MS=10000 WEB_RISK_API_KEY= URLHAUS_AUTH_KEY= node --test tests/unit/*.test.js"

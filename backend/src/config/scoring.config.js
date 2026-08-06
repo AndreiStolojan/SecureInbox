@@ -56,6 +56,17 @@ export const RISK_THRESHOLDS = {
 // fără ca regulile deterministe să fie de acord. Asta e invarianta #3 de mai sus.
 export const AI_SCORE_MAX = 50;
 
+// Plafonul AI când NICIO regulă deterministă nu s-a declanșat (scorReguli === 0).
+// Invarianta #4, simetrică celor trei de mai sus: AI-ul singur, neconfirmat de
+// nicio dovadă tehnică, nu poate scoate un email din banda "safe". Ținut STRICT
+// sub RISK_THRESHOLDS.suspicious (30), nu egal, ca semnalele AI să rămână
+// vizibile în interfață fără să schimbe singure verdictul.
+//
+// Motivul e măsurat, nu teoretic: pe qwen2.5:1.5b (modelul din deployment-ul
+// Raspberry Pi), stratul semantic împingea singur 46% din mailurile benigne de
+// evaluare peste pragul de 30. Un model local mic confirmă dovezi, nu le creează.
+export const AI_UNCORROBORATED_SCORE_MAX = 25;
+
 // Valoarea maximă de referință pentru bara de progres "scor reguli" din UI.
 // scorReguli nu e plafonat individual în motor, dar folosește aceeași scală
 // 0–100 ca scorul final — deci bara se desenează relativ la SCORE_MAX. Expus

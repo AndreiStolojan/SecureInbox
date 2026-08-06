@@ -79,15 +79,23 @@ export const collectThreatIntelligenceSignals = (result) => {
         }));
     }
 
-    const domainAgeDays = Number(result.domainAgeDays);
-    if (Number.isFinite(domainAgeDays) && domainAgeDays >= 0 && domainAgeDays < 7) {
+    // `null` is the analyzer's explicit "registration age unknown" sentinel: no
+    // links to look up, no RDAP endpoint for the TLD, or a failed/expired lookup.
+    // It must never be coerced, because Number(null) is 0 — which reads as
+    // "registered today" and fires the 30-point signal on ordinary mail. Only an
+    // actual finite number is evidence; anything else produces no signal.
+    const domainAgeDays =
+        typeof result.domainAgeDays === 'number' && Number.isFinite(result.domainAgeDays)
+            ? result.domainAgeDays
+            : null;
+    if (domainAgeDays !== null && domainAgeDays >= 0 && domainAgeDays < 7) {
         signals.push(signal({
             key: 'domain_registered_days_ago_lt_7',
             reason: 'A linked domain was registered very recently.',
             details: 'At least one linked domain has a registration age below seven days.',
             order: 42,
         }));
-    } else if (Number.isFinite(domainAgeDays) && domainAgeDays >= 0 && domainAgeDays < 30) {
+    } else if (domainAgeDays !== null && domainAgeDays >= 0 && domainAgeDays < 30) {
         signals.push(signal({
             key: 'domain_registered_days_ago_lt_30',
             reason: 'A linked domain was registered recently.',

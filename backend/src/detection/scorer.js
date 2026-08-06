@@ -7,6 +7,7 @@
 
 import {
     AI_SCORE_MAX,
+    AI_UNCORROBORATED_SCORE_MAX,
     AI_SIGNAL_WEIGHTS,
     RISK_THRESHOLDS,
     RULE_WEIGHTS,
@@ -111,7 +112,15 @@ export const scoreSignals = (signals = [], scanContext = {}) => {
         });
     }
 
-    const aiScore = Math.min(rawAiScore, AI_SCORE_MAX);
+    // Corroboration cap. The engine's stated invariants keep any single signal
+    // below the phishing threshold and keep AI below it in aggregate, but nothing
+    // stopped the AI layer from reaching `suspicious` on its own — and measured
+    // against qwen2.5:1.5b it did exactly that on 46% of benign fixtures. A local
+    // model's unsupported opinion should be able to corroborate deterministic
+    // evidence and to raise a borderline case, never to author a verdict by
+    // itself. With no rule evidence at all, AI is held below the suspicious band.
+    const aiCap = ruleScore > 0 ? AI_SCORE_MAX : AI_UNCORROBORATED_SCORE_MAX;
+    const aiScore = Math.min(rawAiScore, aiCap);
     const score = Math.min(SCORE_MAX, ruleScore + aiScore);
 
     return {

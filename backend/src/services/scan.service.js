@@ -80,7 +80,7 @@ import { createWebRiskService } from './threat-intel/web-risk.service.js';
 // Versiunea motorului. Urcată v10 -> v11 pentru verificarea atașamentelor.
 // Scanările vechi își păstrează scorul anterior până la o
 // rescanare (nu rescorăm retroactiv toată baza de date).
-export const CURRENT_SCAN_ENGINE_VERSION = 'rules-ai-v11';
+export const CURRENT_SCAN_ENGINE_VERSION = 'rules-ai-v12';
 
 export const buildAttachmentConfigFingerprint = ({
     enabled,

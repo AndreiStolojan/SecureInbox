@@ -225,6 +225,25 @@ const RULE_LABELS = {
   'ai_semantic:social_engineering_high': 'Social engineering',
   'ai_semantic:social_engineering_medium': 'Social engineering',
   'ai_semantic:brand_impersonation_suspected': 'Brand impersonation',
+  // Sender authentication (email_auth provider). Without these the fallback
+  // renders the raw rule id — "Email Auth Dmarc Fail Policy Reject".
+  'email_auth:dmarc_fail_policy_reject': 'Sender authentication failed',
+  'email_auth:dmarc_fail_policy_quarantine': 'Sender authentication failed',
+  'email_auth:dmarc_fail_policy_none': 'Sender authentication failed',
+  'email_auth:spf_hardfail': 'Unauthorised sending server',
+  'email_auth:dkim_invalid_signature': 'Invalid sender signature',
+  'email_auth:no_authentication_at_all': 'Unverified sender',
+  'email_auth:claimed_brand_authentication_failed': 'Unverified brand claim',
+  // Threat intelligence provider. Same problem: the fallback produced strings
+  // like "Threat Intelligence Domain Registered Days Ago Lt 7".
+  'threat_intelligence:url_known_malicious': 'Known malicious link',
+  'threat_intelligence:url_known_phishing_campaign': 'Known phishing link',
+  'threat_intelligence:domain_registered_days_ago_lt_7': 'Very new linked domain',
+  'threat_intelligence:domain_registered_days_ago_lt_30': 'Recently created linked domain',
+  'threat_intelligence:link_text_href_mismatch': 'Link text hides destination',
+  'threat_intelligence:redirect_chain_to_different_tld': 'Link redirects elsewhere',
+  'threat_intelligence:excessive_redirect_chain': 'Long redirect chain',
+  'threat_intelligence:redirect_to_private_address': 'Link redirects to private address',
 };
 
 // Întoarce eticheta prietenoasă pentru un cod de regulă. Dacă nu e în
@@ -264,6 +283,21 @@ const RULE_DESCRIPTIONS = {
   'ai_semantic:login_or_action_request': 'AI detected language pushing you to click a link or sign in right away',
   'ai_semantic:sensitive_data_request': 'AI detected a request for your password, payment details, or personal codes',
   'ai_semantic:brand_impersonation_suspected': 'AI suspects this email is impersonating a company or brand you know',
+  'email_auth:dmarc_fail_policy_reject': 'The sender domain rejects unauthenticated mail, and this message failed that check',
+  'email_auth:dmarc_fail_policy_quarantine': 'The sender domain asks that unauthenticated mail be quarantined, and this message failed that check',
+  'email_auth:dmarc_fail_policy_none': 'This message did not pass the sender domain’s authentication checks',
+  'email_auth:spf_hardfail': 'The server that sent this message is not authorised to send for the sender domain',
+  'email_auth:dkim_invalid_signature': 'The message carries a cryptographic signature that does not verify',
+  'email_auth:no_authentication_at_all': 'The sender provided no way to verify that this message really came from them',
+  'email_auth:claimed_brand_authentication_failed': 'The sender claims a known brand, but could not prove it owns that domain',
+  'threat_intelligence:url_known_malicious': 'A link matches a threat intelligence source for malware',
+  'threat_intelligence:url_known_phishing_campaign': 'A link matches a known phishing campaign',
+  'threat_intelligence:domain_registered_days_ago_lt_7': 'A linked domain was registered in the last week — common for throwaway phishing sites',
+  'threat_intelligence:domain_registered_days_ago_lt_30': 'A linked domain was registered within the last month',
+  'threat_intelligence:link_text_href_mismatch': 'A link displays one address but actually leads somewhere else',
+  'threat_intelligence:redirect_chain_to_different_tld': 'A link redirects to a different site than the sender’s',
+  'threat_intelligence:excessive_redirect_chain': 'A link passes through an unusually long chain of redirects',
+  'threat_intelligence:redirect_to_private_address': 'A link redirects to a private network address',
 };
 
 export const getRuleDescription = (rule) => {

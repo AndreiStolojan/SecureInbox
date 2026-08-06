@@ -58,6 +58,29 @@ test('domain age bands are mutually exclusive and unavailable data creates no ev
     assert.deepEqual(collectThreatIntelligenceSignals({ status: 'unavailable', domainAgeDays: 1 }), []);
 });
 
+test('an unknown registration age is never scored as a newly registered domain', () => {
+    // The analyzer reports `null` for "age unknown": an email with no links to look
+    // up, a TLD with no RDAP endpoint (.ro, .de, .io), or a failed lookup. Coercing
+    // it with Number() yields 0, which reads as "registered today" and fires the
+    // 30-point signal — the phishing engine's own `suspicious` threshold — on
+    // ordinary mail. Every falsy sentinel must produce no evidence at all.
+    for (const unknownAge of [null, undefined, '', false, [], NaN]) {
+        assert.deepEqual(
+            collectThreatIntelligenceSignals({ status: 'evaluated', domainAgeDays: unknownAge }),
+            [],
+            `domainAgeDays: ${String(unknownAge)} must not create evidence`
+        );
+    }
+
+    // A genuinely fresh registration is still evidence: the guard rejects unknown
+    // values, not the legitimate zero-day case.
+    assert.deepEqual(
+        collectThreatIntelligenceSignals({ status: 'evaluated', domainAgeDays: 0 })
+            .map(({ key }) => key),
+        ['domain_registered_days_ago_lt_7']
+    );
+});
+
 test('provider is fail-open and persists only bounded source counts', async () => {
     const email = { links: ['https://private.example/path?recipient=secret'] };
     const skipped = await analyze({ email });

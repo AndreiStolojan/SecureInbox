@@ -10,6 +10,7 @@ import test from 'node:test';
 
 import { scoreSignals } from '../../src/detection/scorer.js';
 import { mergeWeightModules } from '../../src/detection/weights/index.js';
+import { AI_UNCORROBORATED_SCORE_MAX, RISK_THRESHOLDS } from '../../src/config/scoring.config.js';
 
 const signal = ({
     key,
@@ -119,7 +120,9 @@ test('scorer applies minimum context modifiers and omits zero-point evidence', (
     );
 
     assert.equal(result.ruleScore, 0);
-    assert.equal(result.aiScore, 26);
+    // Modifiers leave 26 AI points, but no rule signal fired, so the
+    // uncorroborated cap clips the total to 25. See the dedicated test below.
+    assert.equal(result.aiScore, 25);
     assert.deepEqual(
         result.triggeredRules.map(({ rule, points }) => ({ rule, points })),
         [
@@ -207,6 +210,38 @@ test('AI contribution and final score are capped independently', () => {
     assert.equal(result.ruleScore, 113);
     assert.equal(result.aiScore, 50);
     assert.equal(result.score, 100);
+});
+
+test('AI alone cannot leave the safe band without rule corroboration', () => {
+    // Invariant 4. The local model is a small quantised one; measured against
+    // qwen2.5:1.5b it asserted social engineering on every benign fixture in
+    // tests/fixtures/semantic-eval.fixtures.js. Its unsupported opinion may
+    // corroborate deterministic evidence and raise a borderline case, but it
+    // must not author a verdict on its own.
+    const aiOnly = [
+        signal({ key: 'urgency_high', kind: 'ai', rule: 'ai_semantic:urgency_high' }),
+        signal({ key: 'sensitive_data_request', kind: 'ai', rule: 'ai_semantic:sensitive_data_request' }),
+        signal({ key: 'social_engineering_high', kind: 'ai', rule: 'ai_semantic:social_engineering_high' }),
+        signal({ key: 'brand_impersonation_suspected', kind: 'ai', rule: 'ai_semantic:brand_impersonation_suspected' }),
+    ];
+
+    const uncorroborated = scoreSignals(aiOnly);
+
+    assert.equal(uncorroborated.ruleScore, 0);
+    assert.equal(uncorroborated.aiScore, AI_UNCORROBORATED_SCORE_MAX);
+    assert.ok(
+        uncorroborated.score < RISK_THRESHOLDS.suspicious,
+        `AI-only score ${uncorroborated.score} must stay below ${RISK_THRESHOLDS.suspicious}`
+    );
+    assert.equal(uncorroborated.verdict, 'safe');
+    // The evidence still reaches the UI — it is the score that is withheld.
+    assert.equal(uncorroborated.triggeredRules.length, 4);
+
+    // One deterministic signal is enough to lift the cap back to AI_SCORE_MAX.
+    const corroborated = scoreSignals([...aiOnly, signal({ key: 'reply_to_mismatch' })]);
+
+    assert.equal(corroborated.aiScore, 50);
+    assert.equal(corroborated.verdict, 'likely_phishing');
 });
 
 test('unknown signal weights fail loudly', () => {
