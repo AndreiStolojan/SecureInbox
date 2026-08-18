@@ -1,0 +1,54 @@
+name: Claude
+
+# Manual only: Claude never runs on `pull_request` events, so opening or pushing
+# to a PR triggers nothing. A run starts only when a human with write access
+# posts a comment containing `@claude`.
+on:
+  issue_comment:
+    types: [created]
+  pull_request_review_comment:
+    types: [created]
+  pull_request_review:
+    types: [submitted]
+
+permissions: {}
+
+concurrency:
+  group: claude-${{ github.event.issue.number || github.event.pull_request.number }}
+  cancel-in-progress: false
+
+jobs:
+  claude:
+    if: >-
+      (github.event_name == 'issue_comment' && github.event.issue.pull_request && contains(github.event.comment.body, '@claude')) ||
+      (github.event_name == 'pull_request_review_comment' && contains(github.event.comment.body, '@claude')) ||
+      (github.event_name == 'pull_request_review' && contains(github.event.review.body, '@claude'))
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    permissions:
+      contents: write # push commits to the PR branch when asked to change code
+      pull-requests: write # post the review as a PR comment
+      issues: write # the trigger comment lives on the issue timeline
+      id-token: write # required by the action's GitHub App authentication
+      actions: read # read CI results for the PR
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 1
+
+      # Claude runs the repository's own test commands before pushing changes.
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: 24.5.0
+
+      - uses: anthropics/claude-code-action@5ef2e550a465a721f4f45e4a7d3c340c873e1dcc # v1
+        with:
+          # Subscription auth. Generated with `claude setup-token`, stored as a
+          # repository secret. Swap for `anthropic_api_key` to bill the API.
+          claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+          use_sticky_comment: true
+          claude_args: |
+            --model claude-sonnet-5
+            --effort high
+            --max-turns 40
+            --allowedTools "Bash(npm ci:*),Bash(npm test:*),Bash(npm run:*),Bash(git diff:*),Bash(git log:*),Bash(git status:*)"

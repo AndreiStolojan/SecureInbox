@@ -8,6 +8,12 @@ every message from real evidence — verified sender identity, link and
 attachment reputation, deterministic rules, and a bounded local AI signal —
 and shows the reasoning behind each verdict instead of a black-box score.
 
+> **Maintenance status:** Active feature development paused on 2026-08-13.
+> The repository remains available as a portfolio and learning reference, but
+> there is no support or security-response SLA. Current deployment availability
+> is not guaranteed. See the [project handoff](docs/project-handoff.md) before
+> operating or extending it.
+
 <p align="center">
   <img src="assets/screenshots/dashboard.png" alt="SecureInbox dashboard" width="900" />
 </p>
@@ -21,13 +27,14 @@ and shows the reasoning behind each verdict instead of a black-box score.
   against DNS), and ARC for forwarded and mailing-list mail. Brand
   verification is gated on this result, so a spoofed sender can no longer
   outscore an unverified one.
-- Checks links against Google Web Risk and URLhaus, resolves redirects with
-  SSRF-hardened, resolved-IP validation on every hop, and factors in domain
-  age via RDAP.
-- Inspects attachments by content, not filename: magic-byte type detection,
-  in-memory ZIP/OOXML/PDF structural analysis for encrypted archives, macros,
-  and auto-executing PDF actions, and SHA-256 lookups against MalwareBazaar.
-  Bytes are never written to disk or persisted.
+- When threat intelligence is enabled, checks links against Google Web Risk
+  and URLhaus, resolves redirects with SSRF-hardened, resolved-IP validation on
+  every hop, and factors in domain age via RDAP.
+- When attachment verification is enabled, inspects attachments by content,
+  not filename: magic-byte type detection, in-memory ZIP/OOXML/PDF structural
+  analysis for encrypted archives, macros, and auto-executing PDF actions, and
+  optional SHA-256 lookups against MalwareBazaar. Bytes are never written to
+  disk or persisted.
 - Combines all of the above with deterministic rules and a bounded local
   Ollama AI signal — AI alone can never declare a message phishing — through
   an auditable, independently-failable signal-provider engine.
@@ -53,7 +60,12 @@ a registry of independent signal providers — each new signal (authentication,
 threat intel, attachments) is its own module with its own weights, isolated
 so that one provider's failure or external dependency never blocks a scan.
 See [architecture.md](docs/architecture.md) and
-[detection-engine.md](docs/detection-engine.md) for the deeper design.
+[detection-engine.md](docs/detection-engine.md) for the deeper design. The
+[project handoff](docs/project-handoff.md) records operational entry points,
+evidence limits, lessons learned, and a safe restart order.
+
+Repository branch gates, dependency maintenance, and the production emergency
+procedure are documented in [repository-controls.md](docs/repository-controls.md).
 
 ## Quick start
 
@@ -127,16 +139,23 @@ SMTP and Arcjet variables are documented in `.env.example` and are optional.
 
 ## Optional detection integrations
 
-Every integration below is off or degraded by default and fails open: a
-missing key or an unreachable service never blocks a scan, it just means that
-signal is unavailable for that message. All variables are documented with
-their defaults in `.env.example`.
+Every integration below is off or degraded by default and fails independently:
+a missing key or an unreachable service never blocks a scan, but the missing
+signal is not evidence that the message is safe. Common Compose variables are
+documented with their defaults in `.env.example`; backend-only bounds remain in
+`backend/src/config/env.js`.
 
 | Feature | Env vars | Without it |
 | --- | --- | --- |
 | Gmail push notifications | `GMAIL_PUSH_ENABLED`, `GOOGLE_CLOUD_PROJECT_ID`, `GMAIL_PUBSUB_TOPIC`, `GMAIL_PUSH_AUDIENCE` | Falls back to incremental history polling |
-| Threat intelligence (Web Risk, URLhaus, domain age) | `THREAT_INTEL_ENABLED`, `WEB_RISK_API_KEY`, `URLHAUS_AUTH_KEY` | Link scoring stays lexical (patterns, shorteners) |
+| Threat intelligence (Web Risk, URLhaus, domain age) | `THREAT_INTEL_ENABLED`; keys configure Web Risk and URLhaus | Link scoring stays lexical while disabled; enabled RDAP needs no API key |
 | Attachment verification | `ATTACHMENT_ANALYSIS_ENABLED` | Attachments are scored by extension only |
+
+Enabling threat intelligence sends bounded URLs to Google Web Risk and URLhaus,
+registrable domains to RDAP registries, and DNS queries to the configured
+resolver path. Enabling MalwareBazaar reputation sends only attachment SHA-256
+hashes, not attachment bytes. Review those providers' privacy and retention
+terms before using real mailbox data.
 
 Gmail push notifications additionally need a public HTTPS endpoint (the
 Cloudflare Tunnel used in the production deployment) and are not meant to be
@@ -173,12 +192,20 @@ Create a validated MongoDB backup:
 ls -lh backups
 ```
 
+The archive contains email content and encrypted OAuth tokens. Store it with
+restricted access and encrypt any copy that leaves the machine.
+
 Restore the latest backup:
 
 ```bash
 LATEST_BACKUP="$(find backups -name '*.archive.gz' -type f | sort | tail -1)"
+test -n "$LATEST_BACKUP" || { echo "No backup archive found" >&2; exit 1; }
 ./scripts/restore "$LATEST_BACKUP" --confirm-replace
 ```
+
+Restore is destructive: it verifies the timestamped archive and manifest, then
+replaces the configured local database. Backup names use a zero-padded UTC
+timestamp, so their lexical order is chronological.
 
 Keep an encrypted backup of `.env` with every MongoDB backup. In particular,
 `MAIL_TOKEN_ENCRYPTION_KEY` is required to decrypt restored Gmail tokens.
@@ -199,6 +226,8 @@ That command is destructive and cannot be undone without a backup.
 
 ## Development checks
 
+Development checks require Node.js `24.5.0` and npm, matching CI.
+
 ```bash
 npm --prefix backend install
 npm --prefix frontend install
@@ -207,6 +236,17 @@ npm --prefix backend test
 npm --prefix frontend test
 npm --prefix frontend run build
 ```
+
+### Automated review
+
+Two coding agents review pull requests on request. Neither runs automatically,
+and neither appears in the GitHub reviewer list; both start from a pull request
+comment. Their shared rules live in `AGENTS.md`, which `CLAUDE.md` imports.
+
+| Agent  | Review only                | Change the pull request branch                         |
+| ------ | -------------------------- | ------------------------------------------------------ |
+| Codex  | `@codex review`            | `@codex fix the reported issue and push the changes`   |
+| Claude | `@claude review this PR`   | `@claude fix the reported issue and push to this branch` |
 
 ## Limitations
 
