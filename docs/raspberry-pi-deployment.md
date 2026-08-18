@@ -1,5 +1,8 @@
 # Raspberry Pi production deployment
 
+For a deliberate production pause, tested backup evidence, and recovery
+commands, see [Hibernation and recovery runbook](hibernation-recovery-runbook.md).
+
 Production is a separate Compose path and branch. The default
 `docker-compose.yml` is for local development only; it starts local MongoDB,
 Prometheus, and Grafana and must not be used on the Pi.
