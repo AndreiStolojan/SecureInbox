@@ -12,10 +12,11 @@
  * documents only — they never touch the real Gmail account, and "Mark phishing"
  * on them will simply report the Gmail move as failed (expected).
  */
-import { config } from 'dotenv';
+import '../src/config/env.js';
+import { assertDevelopmentSeed } from './seed-guard.js';
 import mongoose from 'mongoose';
 
-config({ path: new URL('../.env.development.local', import.meta.url).pathname });
+assertDevelopmentSeed();
 
 const [, , accountEmail, flag] = process.argv;
 

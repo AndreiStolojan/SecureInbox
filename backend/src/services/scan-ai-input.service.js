@@ -86,8 +86,9 @@ export const buildAiAnalysisInput = (email, brandContext = {}) => {
     // Preferăm corpul de text simplu; dacă nu există, scoatem tagurile din HTML;
     // dacă nici acela nu există, folosim "snippet"-ul (preview-ul scurt de la Gmail).
     const textBody = normalizeWhitespace(email.textBody || '');
-    const htmlFallback = normalizeWhitespace(stripHtmlTags(email.htmlBody || ''));
-    const rawAnalysisBody = textBody || htmlFallback || email.snippet || '';
+    const rawAnalysisBody = textBody
+        || normalizeWhitespace(stripHtmlTags(email.htmlBody || ''))
+        || email.snippet || '';
     const analysisBody = truncateText(rawAnalysisBody, MAX_AI_BODY_CHARS);
     // Curățăm și normalizăm lista de linkuri găsite în email.
     const links = (email.links || [])

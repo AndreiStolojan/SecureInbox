@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { Suspense, useEffect, useState } from 'react';
 import { Outlet, useLocation } from 'react-router-dom';
 import { AnimatePresence, motion } from 'framer-motion';
 import { PanelLeftOpen } from 'lucide-react';
@@ -10,6 +10,7 @@ import { MobileTopbar, MobileDrawer } from './MobileNav';
 import { PageTransition } from './PageTransition';
 import { useSidebarChrome } from '@/hooks/useSidebarChrome';
 import { cn } from '@/lib/utils';
+import { LoadingState } from '@/components/common/states';
 
 /*
   Routes that render edge-to-edge (no <main> padding, no vertical rhythm
@@ -90,7 +91,7 @@ export function AppShell() {
                  PageTransition (its y-offset would fight a fixed-height pane).
                  The route owns the whole box and scrolls internally. */
               <main className="flex min-w-0 flex-1 flex-col overflow-hidden">
-                <Outlet />
+                <Suspense fallback={<LoadingState />}><Outlet /></Suspense>
               </main>
             ) : (
               /* px-5 = the exact 20px mobile gutters; desktop spans full width. */
@@ -98,7 +99,7 @@ export function AppShell() {
                 <div className="w-full space-y-6">
                   <AnimatePresence mode="wait" initial={false}>
                     <PageTransition key={location.pathname}>
-                      <Outlet />
+                      <Suspense fallback={<LoadingState />}><Outlet /></Suspense>
                     </PageTransition>
                   </AnimatePresence>
                 </div>

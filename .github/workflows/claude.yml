@@ -39,7 +39,7 @@ jobs:
       # Claude runs the repository's own test commands before pushing changes.
       - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
         with:
-          node-version: 24.5.0
+          node-version: 24.20.0
 
       - uses: anthropics/claude-code-action@5ef2e550a465a721f4f45e4a7d3c340c873e1dcc # v1
         with:

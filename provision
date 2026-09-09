@@ -17,21 +17,44 @@ compose() {
 load_required_env_value() {
   local key="$1" value
   value="$(dotenv_get "${key}" "${ENV_FILE}" || true)"
-  [[ -n "${value}" ]] || fail "Missing required local configuration value: ${key}"
+  [[ -n "${value}" && "${value}" != replace-with-a-generated-value ]] || fail "Missing required local configuration value: ${key}"
   printf -v "${key}" '%s' "${value}"
 }
 
+# Validate isolation before any containers or demo data are changed.
 load_runtime_values() {
-  local key
-  for key in \
-    APP_PORT \
-    OLLAMA_MODEL \
-    DEMO_USER_EMAIL \
-    DEMO_USER_PASSWORD \
-    GRAFANA_ADMIN_USER \
-    GRAFANA_ADMIN_PASSWORD; do
-    load_required_env_value "${key}"
+  local key profiles db_uri compose_files
+  for key in NODE_ENV COMPOSE_PROJECT_NAME APP_PORT; do
+    load_required_env_value "$key"
   done
+  profiles="$(dotenv_get COMPOSE_PROFILES "$ENV_FILE" || true)"
+  db_uri="$(dotenv_get DB_URI "$ENV_FILE" || true)"
+  compose_files="$(dotenv_get COMPOSE_FILE "$ENV_FILE" || true)"
+  case "$NODE_ENV" in
+    production)
+      [[ "$COMPOSE_PROJECT_NAME" != *-dev && "$COMPOSE_PROJECT_NAME" != *-test ]] || fail "Production needs a separate project name."
+      [[ "$compose_files" == docker-compose.yml:docker-compose.prod.yml ]] || fail "Production requires the production Compose overlay."
+      [[ ",$profiles," != *,local-db,* ]] || fail "Production cannot start the development MongoDB."
+      [[ "$db_uri" == mongodb+srv://* ]] || fail "Production requires an Atlas DB_URI."
+      [[ "$(dotenv_get SEED_DEMO "$ENV_FILE" || true)" != true ]] || fail "Disable SEED_DEMO in production."
+      for key in JWT_SECRET MAIL_TOKEN_ENCRYPTION_KEY FRONTEND_APP_URL GOOGLE_CLIENT_ID GOOGLE_CLIENT_SECRET GOOGLE_REDIRECT_URI EMAIL_FROM EMAIL_PASSWORD TUNNEL_TOKEN; do
+        load_required_env_value "$key"
+      done
+      ;;
+    development)
+      [[ "$COMPOSE_PROJECT_NAME" == *-dev || "$COMPOSE_PROJECT_NAME" == *-test ]] || fail "Development project name must end in -dev or -test."
+      [[ "$compose_files" == docker-compose.yml ]] || fail "Development must use docker-compose.yml."
+      [[ -n "$db_uri" || ",$profiles," == *,local-db,* ]] || fail "Set DB_URI or enable the local-db profile."
+      [[ -z "$db_uri" || ",$profiles," != *,local-db,* ]] || fail "Clear local-db when using an external DB_URI."
+      if [[ -n "$db_uri" ]]; then
+        [[ "$db_uri" =~ /[^/?]*(_dev|_test|-dev|-test)(\?|$) ]] || fail "Development DB_URI must select a database ending in dev or test."
+      fi
+      ;;
+    *) fail "NODE_ENV must be development or production." ;;
+  esac
+  if [[ ",$profiles," == *,monitoring,* ]]; then
+    load_required_env_value GRAFANA_ADMIN_PASSWORD
+  fi
 }
 
 require_docker() {
@@ -41,6 +64,10 @@ require_docker() {
 }
 
 create_env() {
+  if [[ -f "$ENV_FILE" && "$(dotenv_get NODE_ENV "$ENV_FILE" || true)" == production ]]; then
+    chmod 0600 "$ENV_FILE"
+    return
+  fi
   command -v openssl >/dev/null 2>&1 || fail "OpenSSL is required to generate local secrets."
   umask 077
 
@@ -80,34 +107,26 @@ main() {
   compose config --quiet
   compose up -d --build --wait --wait-timeout 180
 
-  log "Preparing the local Ollama model"
-  if ! compose exec -T ollama ollama list |
-    awk 'NR > 1 { print $1 }' |
-    grep -Fxq "${OLLAMA_MODEL}"; then
-    compose exec -T ollama ollama pull "${OLLAMA_MODEL}"
+  if [[ ",$(dotenv_get COMPOSE_PROFILES "$ENV_FILE" || true)," == *,ai,* ]]; then
+    load_required_env_value OLLAMA_MODEL
+    log "Preparing the Ollama model"
+    if ! compose exec -T ollama ollama list | awk 'NR > 1 { print $1 }' | grep -Fxq "$OLLAMA_MODEL"; then
+      compose exec -T ollama ollama pull "$OLLAMA_MODEL"
+    fi
   fi
 
-  log "Creating the local demo account and inbox"
-  compose exec -T backend npm run seed:local
+  if [[ "$NODE_ENV" == development && "$(dotenv_get SEED_DEMO "$ENV_FILE" || true)" == true ]]; then
+    log "Creating the development demo account and inbox"
+    compose exec -T backend npm run seed:local
+  fi
 
   compose ps
+  printf '\nSecureInbox %s is ready.\n' "$NODE_ENV"
+  printf 'Application: %s\n' "$(dotenv_get FRONTEND_APP_URL "$ENV_FILE")"
+  if [[ "$NODE_ENV" == development ]]; then
+    printf 'Demo credentials, when seeded: DEMO_USER_EMAIL and DEMO_USER_PASSWORD in %s\n' "$ENV_FILE"
+  fi
 
-  cat <<EOF
-
-SecureInbox is ready.
-
-Application:  http://localhost:${APP_PORT}
-Prometheus:   http://localhost:9090
-Grafana:      http://localhost:3000
-
-Demo account:
-Email:        ${DEMO_USER_EMAIL}
-Password:     ${DEMO_USER_PASSWORD}
-
-Grafana:
-User:         ${GRAFANA_ADMIN_USER}
-Password:     ${GRAFANA_ADMIN_PASSWORD}
-EOF
 }
 
 if [[ "${BASH_SOURCE[0]}" == "$0" ]]; then

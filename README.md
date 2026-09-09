@@ -81,38 +81,19 @@ cd SecureInbox
 ./provision
 ```
 
-`./provision` creates `.env`, generates the local secrets, builds and starts all
-containers, downloads the Ollama model, and creates a demo account with six
-scanned emails. Leave the script running until it prints `SecureInbox is
-ready`.
-
-| Service | Address |
-| --- | --- |
-| SecureInbox | `http://localhost:8080` |
-| Prometheus | `http://localhost:9090` |
-| Grafana | `http://localhost:3000` |
-
-Demo email: `demo@secureinbox.test`
-
-The generated demo and Grafana passwords are printed at the end and stored in
-`.env`.
-
-Verify the installation:
+`./provision` creates a root `.env`, generates development secrets, starts the
+application and local MongoDB, and seeds six demo messages. Passwords stay in
+`.env`. Open `http://localhost:8080` and sign in as `demo@secureinbox.test`.
 
 ```bash
 docker compose ps
 curl --fail http://127.0.0.1:8080/api/v1/ready
-curl --fail http://127.0.0.1:9090/-/ready
-curl --fail http://127.0.0.1:3000/api/health
 ```
 
-All six services should be healthy. You can safely run `./provision` again:
-existing configuration, database contents, monitoring data, and the Ollama
-model are preserved.
-
-For the Raspberry Pi / public Cloudflare deployment, use the separate
-[`prod` branch and production Compose guide](docs/raspberry-pi-deployment.md).
-Never run the local Compose file or `./provision` on that deployment.
+The same source and command support development with local MongoDB or Atlas,
+and production with Atlas. Only the root environment configuration changes.
+See [development and deployment](docs/environments.md) for native hot reload,
+optional Ollama/monitoring, and running both environments on one Pi.
 
 ## Optional Gmail connection
 
@@ -226,7 +207,7 @@ That command is destructive and cannot be undone without a backup.
 
 ## Development checks
 
-Development checks require Node.js `24.5.0` and npm, matching CI.
+Development checks require Node.js `24.20.0` and npm, matching CI.
 
 ```bash
 npm --prefix backend install

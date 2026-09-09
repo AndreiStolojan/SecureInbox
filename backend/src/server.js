@@ -13,8 +13,9 @@ const startServer = async () => {
         await connectToDatabase();
         const schedulers = startSchedulers();
 
-        const server = app.listen(PORT, '0.0.0.0', () => {
-            console.log(`running api on http://0.0.0.0:${PORT}`);
+        const host = process.env.APP_HOST || '127.0.0.1';
+        const server = app.listen(PORT, host, () => {
+            console.log(`running api on http://${host}:${PORT}`);
         });
 
         const shutdown = (signal) => {
