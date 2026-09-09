@@ -16,35 +16,3 @@ export const dur = { fast: 0.18, base: 0.26, slow: 0.4 };
 
 /** Tween for pure color/opacity crossfades where a spring would feel wrong. */
 export const fadeTween = { duration: dur.base, ease };
-
-/** Standard entrance: fade + 8px rise, on a soft spring. */
-export const enter = {
-  initial: { opacity: 0, y: 8 },
-  animate: { opacity: 1, y: 0 },
-  transition: springSoft,
-};
-
-/** Tap/hover feedback presets. */
-export const pressButton = { whileTap: { scale: 0.97 }, transition: springSnappy };
-export const pressSurface = { whileTap: { scale: 0.99 }, transition: springSnappy };
-
-/**
- * Parent/child stagger for lists and grids. Cap the per-item delay so long
- * lists don't crawl in.
- * @param {number} stagger seconds between children
- */
-export const staggerParent = (stagger = 0.05) => ({
-  initial: 'hidden',
-  animate: 'show',
-  variants: {
-    hidden: {},
-    show: { transition: { staggerChildren: stagger } },
-  },
-});
-
-export const staggerChild = {
-  variants: {
-    hidden: { opacity: 0, y: 8 },
-    show: { opacity: 1, y: 0, transition: springSoft },
-  },
-};

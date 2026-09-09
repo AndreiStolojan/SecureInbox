@@ -28,8 +28,6 @@ const cloneAndFreezePlainValue = (value) => {
     return value;
 };
 
-const freezePlainObject = (value = {}) => cloneAndFreezePlainValue(value);
-
 export const createDetectionContext = ({
     email,
     senderListContext = {},
@@ -46,12 +44,12 @@ export const createDetectionContext = ({
         // sunt mutabile prin design. Providerii primesc aceeași referință și o
         // tratează strict ca read-only.
         email,
-        senderListContext: freezePlainObject(senderListContext),
-        brandContext: freezePlainObject(brandContext),
-        authResults: freezePlainObject(authResults),
-        scanContext: freezePlainObject(scanContext),
-        userSettings: freezePlainObject(userSettings),
-        aiInput: freezePlainObject(aiInput),
+        senderListContext: cloneAndFreezePlainValue(senderListContext),
+        brandContext: cloneAndFreezePlainValue(brandContext),
+        authResults: cloneAndFreezePlainValue(authResults),
+        scanContext: cloneAndFreezePlainValue(scanContext),
+        userSettings: cloneAndFreezePlainValue(userSettings),
+        aiInput: cloneAndFreezePlainValue(aiInput),
         semanticAnalyzer,
         threatIntelAnalyzer,
     });

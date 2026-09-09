@@ -175,14 +175,12 @@ const toEmailDetails = async ({
     latestScan,
     attachmentAnalysisEnabled,
 }) => {
-    const [emailState, priorSenderCount] = await Promise.all([
+    const [emailState, priorSender] = await Promise.all([
         buildEmailStateForUser({ userId, email, latestScan }),
-        // Numărăm câte alte emailuri (diferite de acesta) am mai primit de la
-        // același expeditor. Dacă from e gol, considerăm "nu e prima dată"
-        // (countDocuments cu from gol ar da rezultate înșelătoare).
+        // Stop at the first other message from this sender; only existence matters.
         email.from
-            ? Email.countDocuments({ userId, from: email.from, _id: { $ne: email._id } })
-            : Promise.resolve(1),
+            ? Email.exists({ userId, from: email.from, _id: { $ne: email._id } })
+            : Promise.resolve(true),
     ]);
 
     return {
@@ -220,7 +218,7 @@ const toEmailDetails = async ({
         lastProviderActionError: email.lastProviderActionError || null,
         createdAt: email.createdAt,
         updatedAt: email.updatedAt,
-        isFirstTimeSender: priorSenderCount === 0,
+        isFirstTimeSender: !priorSender,
         latestScan: toCompactLatestScan(latestScan),
         ...emailState,
     };
@@ -639,20 +637,21 @@ export const getEmailsForUser = async ({ userId, query }) => {
     const stateMatchStages =
         Object.keys(stateMatch).length > 0 ? [{ $match: stateMatch }] : [];
 
-    // Pașii comuni de filtrare, reutilizați atât pentru lista paginată
-    // (listPipeline), cât și pentru numărul total de rezultate (countPipeline).
+    // Risk filters need scan-derived state before pagination. Otherwise enrich
+    // only the requested page, and count emails without joining scans.
+    const hasStateFilter = stateMatchStages.length > 0;
+    const enrichmentStages = [...latestScanStages, ...emailStateStages];
     const filterStages = [
         { $match: baseMatch },
-        ...latestScanStages,
-        ...emailStateStages,
+        ...(hasStateFilter ? enrichmentStages : []),
         ...stateMatchStages,
     ];
 
-    const listPipeline = [
-        ...filterStages,
+    const pageStages = [
         { $sort: { receivedAt: -1, _id: -1 } },
         { $skip: skip },
         { $limit: limit },
+        ...(!hasStateFilter ? enrichmentStages : []),
         {
             // $project = alegem explicit ce câmpuri să rămână în rezultat
             // (reducem volumul de date trimis mai departe).
@@ -689,17 +688,22 @@ export const getEmailsForUser = async ({ userId, query }) => {
         },
     ];
 
-    const countPipeline = [
-        ...filterStages,
-        { $count: 'total' },
-    ];
-
-    // Cele două pipeline-uri (lista de pe pagina curentă + numărul total)
-    // rulează în paralel, ca să nu așteptăm unul după altul.
-    const [items, countResult] = await Promise.all([
-        Email.aggregate(listPipeline),
-        Email.aggregate(countPipeline),
-    ]);
+    let items;
+    let countResult;
+    if (hasStateFilter) {
+        // Reuse the enriched set for both pagination and counts.
+        const [result] = await Email.aggregate([
+            ...filterStages,
+            { $facet: { items: pageStages, count: [{ $count: 'total' }] } },
+        ]);
+        items = result.items;
+        countResult = result.count;
+    } else {
+        [items, countResult] = await Promise.all([
+            Email.aggregate([...filterStages, ...pageStages]),
+            Email.aggregate([...filterStages, { $count: 'total' }]),
+        ]);
+    }
 
     const total = countResult[0]?.total || 0;
     const totalPages = total === 0 ? 0 : Math.ceil(total / limit);

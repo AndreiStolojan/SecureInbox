@@ -1,0 +1,12 @@
+import assert from 'node:assert/strict';
+import test from 'node:test';
+import { assertDevelopmentSeed } from '../../scripts/seed-guard.js';
+
+test('demo seed refuses production and requires a development database and opt-in', () => {
+    const env = { NODE_ENV: 'development', SEED_DEMO: 'true', DB_URI: 'mongodb://localhost/secureinbox_dev' };
+    assert.doesNotThrow(() => assertDevelopmentSeed(env));
+    assert.doesNotThrow(() => assertDevelopmentSeed({ ...env, DB_URI: 'mongodb+srv://example.test/secureinbox_test' }));
+    for (const change of [{ NODE_ENV: 'production' }, { SEED_DEMO: 'false' }, { DB_URI: 'mongodb+srv://example.test/secureinbox' }]) {
+        assert.throws(() => assertDevelopmentSeed({ ...env, ...change }), /Demo seed requires/);
+    }
+});

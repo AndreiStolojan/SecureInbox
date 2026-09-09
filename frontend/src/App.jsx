@@ -1,12 +1,15 @@
+import { lazy } from 'react';
 import { Navigate, Route, Routes, useParams } from 'react-router-dom';
 
 import { ProtectedRoute } from '@/components/auth/ProtectedRoute';
 import { AppShell } from '@/components/layout/AppShell';
 import { LoginPage } from '@/pages/LoginPage';
-import { DashboardPage } from '@/pages/DashboardPage';
-import { InboxPage } from '@/pages/InboxPage';
-import { SenderListsPage } from '@/pages/SenderListsPage';
-import { SettingsPage } from '@/pages/SettingsPage';
+
+// Load authenticated pages on demand, including the dashboard chart library.
+const DashboardPage = lazy(() => import('@/pages/DashboardPage').then((m) => ({ default: m.DashboardPage })));
+const InboxPage = lazy(() => import('@/pages/InboxPage').then((m) => ({ default: m.InboxPage })));
+const SenderListsPage = lazy(() => import('@/pages/SenderListsPage').then((m) => ({ default: m.SenderListsPage })));
+const SettingsPage = lazy(() => import('@/pages/SettingsPage').then((m) => ({ default: m.SettingsPage })));
 
 /*
   Old /inbox/:emailId links carried the message in the PATH. The inbox now keeps

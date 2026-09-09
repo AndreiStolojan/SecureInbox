@@ -2,9 +2,10 @@ import { spawnSync } from 'node:child_process';
 import bcrypt from 'bcryptjs';
 import mongoose from 'mongoose';
 
-import { config } from 'dotenv';
+import '../src/config/env.js';
+import { assertDevelopmentSeed } from './seed-guard.js';
 
-config({ path: new URL('../.env.development.local', import.meta.url).pathname });
+assertDevelopmentSeed();
 
 const {
     DB_URI,
