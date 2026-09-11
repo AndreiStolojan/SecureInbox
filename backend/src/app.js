@@ -15,7 +15,7 @@ import contactRouter from './routes/contact.routes.js';
 import senderListRouter from './routes/sender-list.routes.js';
 import sendErrorResponse from './common/http/send-error-response.js';
 import errorMiddleware from './middlewares/error.middleware.js';
-import { FRONTEND_APP_URL } from './config/env.js';
+import { APP_READ_ONLY, FRONTEND_APP_URL } from './config/env.js';
 import { metricsHandler } from './monitoring/metrics.js';
 import { observeHttpRequests } from './monitoring/metrics.middleware.js';
 import { isGmailPushConfigured } from './config/env.js';
@@ -26,6 +26,8 @@ import {
   recordGmailPushResult,
 } from './services/gmail-push-runtime.service.js';
 
+import readOnlyMiddleware from './middlewares/read-only.middleware.js';
+
 const app = express();
 
 // Compose reaches Express through nginx on a private network. Public peers are
@@ -35,8 +37,9 @@ app.set('trust proxy', ['loopback', 'linklocal', 'uniquelocal']);
 app.use(helmet());
 app.use(cors({ origin: FRONTEND_APP_URL, credentials: true }));
 app.use(observeHttpRequests);
+app.use(readOnlyMiddleware);
 
-if (isGmailPushConfigured()) {
+if (!APP_READ_ONLY && isGmailPushConfigured()) {
   app.use('/api/v1/webhooks/gmail', createGmailPushRouter({
     findActiveMailAccountsByEmail: findActiveGmailAccountsByEmail,
     enqueueNotification: enqueueGmailPushNotification,
