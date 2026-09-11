@@ -35,6 +35,7 @@
 // ─────────────────────────────────────────────────────────────────────────────
 
 import mongoose from 'mongoose';
+import { mapWithConcurrency } from '../common/async/map-with-concurrency.js';
 
 import createError from '../common/errors/create-error.js';
 import SenderListEntry from '../models/sender-list.model.js';
@@ -184,20 +185,19 @@ export const getSenderListEntries = async ({ userId, withMatchCounts = false }) 
     // automată string -> ObjectId; o facem explicit aici, o singură dată.
     const userObjectId = new mongoose.Types.ObjectId(String(userId));
 
-    return Promise.all(
-        entries.map(async (entry) => {
-            const { total, byBucket } = await countMatchingEmails({
-                userId: userObjectId,
-                entry,
-            });
+    // At most four count queries per request; preserve rule order and reject failures.
+    return mapWithConcurrency(entries, 4, async (entry) => {
+        const { total, byBucket } = await countMatchingEmails({
+            userId: userObjectId,
+            entry,
+        });
 
-            return {
-                ...toPublicEntry(entry),
-                matchedEmails: total,
-                matchedByBucket: byBucket,
-            };
-        })
-    );
+        return {
+            ...toPublicEntry(entry),
+            matchedEmails: total,
+            matchedByBucket: byBucket,
+        };
+    });
 };
 
 // Extrage domeniul dintr-o adresă de email (partea după "@"), normalizat.
