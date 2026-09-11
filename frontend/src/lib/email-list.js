@@ -16,11 +16,3 @@ export function normalizeEmailList(data) {
   if (Array.isArray(data)) return data;
   return data.items || data.emails || data.results || [];
 }
-
-// Numărul total de emailuri pentru paginare: dacă răspunsul e un array simplu,
-// totalul e lungimea lui; altfel se ia din `pagination.total` sau `total`, cu
-// `fallback` ca ultimă soluție (ex: lungimea curentă a listei).
-export function getPaginationTotal(data, fallback) {
-  if (Array.isArray(data)) return data.length;
-  return data?.pagination?.total ?? data?.total ?? fallback;
-}

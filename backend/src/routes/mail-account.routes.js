@@ -8,7 +8,7 @@
 // Authorization și pune userul curent pe req.user — fără el, cererea e respinsă
 // cu 401 (Unauthorized).
 //
-// Detalii: docs/EXPLICATIE_BACKEND.md §2 (straturile) și §5.1/§5.2 (OAuth/sync).
+// Detalii: docs/architecture.md.
 // ─────────────────────────────────────────────────────────────────────────────
 
 import { Router } from 'express';

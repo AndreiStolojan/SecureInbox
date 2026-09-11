@@ -7,7 +7,7 @@
 // numărul de cereri și blochează boții, ca formularul să nu fie folosit
 // pentru spam.
 //
-// Detalii: docs/EXPLICATIE_BACKEND.md §2 (route -> middleware -> controller).
+// Detalii: docs/architecture.md.
 // ─────────────────────────────────────────────────────────────────────────────
 
 import { Router } from 'express';

@@ -3,28 +3,27 @@
 This runbook captures sanitized production evidence. It never contains secret
 values. The encrypted recovery artifacts are stored outside the repository.
 
-## Decision
+## Operating state, refreshed 2026-09-11
 
-| Field | Value |
-| --- | --- |
-| Mode | `offline-recoverable` |
-| Owner | Andrei Stolojan |
-| Decided | 2026-08-18 |
-| Review | 2026-11-18 |
-| Current state | Online. Preparation is complete, but shutdown still requires explicit authorization. |
+Development continues. Keep production online; hibernation is an optional future
+operation, not a prerequisite for recovery readiness. Owner: Andrei Stolojan.
+Review recovery readiness by 2026-11-18 and before any production rollout.
 
-`offline-recoverable` was selected because SecureInbox is being deliberately
-paused, semantic AI is already disabled, Ollama is stopped, and the configured
-Gmail account can no longer sync because its OAuth token was revoked. Leaving
-the full application online would retain attack surface and failing scheduled
-work without providing the intended service.
+On 2026-09-11 the production checkout remained clean at `dd7b89f`. Backend,
+frontend, Prometheus and Grafana reported healthy; cloudflared was running.
+This is container status, not a fresh restore drill or public-access check.
+The August backup evidence below has not been reverified in this session.
 
-Do not archive the repository, delete cloud resources, remove Docker volumes,
-or shut down production merely because this decision is recorded.
+The current source uses a root production environment file and
+`docker-compose.yml` plus `docker-compose.prod.yml`. The deployed August revision
+uses a standalone production file plus `docker-compose.monitoring.yml` and two
+environment files. Match the commands and secret backup to the revision being
+recovered. Never apply the new overlay alone or assume an old environment backup
+is sufficient for a new release. See [environments.md](environments.md).
 
 ## Production inventory
 
-Captured on 2026-08-18.
+Historical evidence captured on 2026-08-18; identifiers and risks below may have changed.
 
 | Item | Sanitized value |
 | --- | --- |
@@ -148,213 +147,137 @@ Atlas tier and the current Google billing-account status cannot be derived from
 the runtime. Verify both dashboards before the actual shutdown and record the
 result privately. Do not put account numbers or payment data in this repository.
 
-## Stop procedure
+## Current release startup, readiness and optional shutdown
 
-This procedure stops SecureInbox containers. It does not power off the Pi and
-does not modify Pi-hole.
+These commands apply after the shared-environment release in PR #95 is promoted.
+Before deployment, preserve the previous revision, images and matching encrypted
+environment files. Verify recovery access and a recent backup under #77.
 
-1. Confirm a recent verified backup and a clean production tree:
+Use the root production `.env` with mode `600`, `NODE_ENV=production`,
+`COMPOSE_PROJECT_NAME=secureinbox`,
+`COMPOSE_FILE=docker-compose.yml:docker-compose.prod.yml`,
+`COMPOSE_PROFILES=monitoring` and `SEED_DEMO=false`. Preserve the database URI,
+mail-token encryption key, JWT secret and integration credentials during migration.
 
-   ```bash
-   cd /opt/secureinbox
-   git switch prod
-   test -z "$(git status --porcelain)"
-   git rev-parse HEAD
-   docker compose \
-     -f docker-compose.prod.yml \
-     -f docker-compose.monitoring.yml config --quiet
-   ```
+```bash
+cd /opt/secureinbox
+test "$(git branch --show-current)" = prod
+test -z "$(git status --porcelain)"
+test "$(stat -c %a .env)" = 600
+git rev-parse HEAD
+docker compose --env-file .env config --quiet
+docker compose --env-file .env ps
+```
 
-2. Record the current container identities:
+Start the reviewed release only after its configuration and recovery checks pass:
 
-   ```bash
-   docker compose \
-     -f docker-compose.prod.yml \
-     -f docker-compose.monitoring.yml ps
-   docker inspect secureinbox-backend-1 secureinbox-frontend-1 \
-     --format '{{.Name}} {{.Image}}'
-   ```
+```bash
+./provision
+docker compose --env-file .env exec -T frontend \
+  wget -qO- http://backend:5500/api/v1/ready </dev/null
+curl --fail --max-time 20 http://127.0.0.1:9090/-/ready
+curl --fail --max-time 20 http://127.0.0.1:3000/api/health
+curl --fail --max-time 20 https://secure-inbox.app/api/v1/ready
+docker compose --env-file .env ps
+docker inspect secureinbox-backend-1 secureinbox-frontend-1 \
+  --format '{{.Name}} {{.Image}}'
+```
 
-3. Stop ingress first, followed by the application and monitoring:
+Privately inspect backend and tunnel logs for startup, database and scheduler
+errors. Do not paste raw logs into public evidence. Verify login and inbox reads;
+Gmail reconnection, synchronization and scans are separate controlled actions.
 
-   ```bash
-   docker compose \
-     -f docker-compose.prod.yml \
-     -f docker-compose.monitoring.yml \
-     stop cloudflared backend frontend prometheus grafana ollama
+Only if a shutdown is requested, stop ingress first, then the application:
 
-   docker compose \
-     -f docker-compose.prod.yml \
-     -f docker-compose.monitoring.yml ps --all
-   ```
+```bash
+cd /opt/secureinbox
+docker compose --env-file .env stop cloudflared
+docker compose --env-file .env stop backend frontend prometheus grafana
+docker compose --env-file .env --profile ai stop ollama
+docker compose --env-file .env ps --all
+```
 
-4. From another machine, confirm the public health endpoint no longer returns
-   HTTP 200:
+Do not remove volumes, prune Docker, delete the checkout, or power off the Pi.
+Pi-hole and the management network are separate services.
 
-   ```bash
-   curl --max-time 20 -i https://secure-inbox.app/api/v1/ready
-   ```
+## Rollback across the environment migration
 
-Never use `docker compose down -v`, `docker volume rm`, `docker system prune`,
-or delete `/opt/secureinbox`. Powering off the Pi is a separate operation that
-requires explicit authorization.
+The pre-promotion rollback target is `dd7b89fd2abf731c479439d07cc14d310ba49388`.
+It requires its original root `.env` AND `backend/.env.production.local`.
+Keep their encrypted backups and the existing images until rollout verification
+passes. Rollback does not restore MongoDB or revoke credentials.
 
-## Start and health-check procedure
-
-1. Connect through the trusted management path and validate the deployment:
-
-   ```bash
-   cd /opt/secureinbox
-   git switch prod
-   test -z "$(git status --porcelain)"
-   git rev-parse HEAD
-   docker compose \
-     -f docker-compose.prod.yml \
-     -f docker-compose.monitoring.yml config --quiet
-   ```
-
-2. Start only the services used by the current non-AI configuration:
-
-   ```bash
-   docker compose \
-     -f docker-compose.prod.yml \
-     -f docker-compose.monitoring.yml \
-     up -d backend frontend cloudflared prometheus grafana
-
-   docker compose \
-     -f docker-compose.prod.yml \
-     -f docker-compose.monitoring.yml ps
-   ```
-
-3. Check private, monitoring, and public health:
-
-   ```bash
-   docker compose -f docker-compose.prod.yml exec -T frontend \
-     wget -qO- http://backend:5500/api/v1/ready </dev/null
-   curl --fail http://127.0.0.1:9090/-/ready
-   curl --fail http://127.0.0.1:3000/api/health
-   curl --fail https://secure-inbox.app/api/v1/ready
-   ```
-
-4. Inspect failures without printing environment values:
-
-   ```bash
-   docker compose -f docker-compose.prod.yml logs --tail=200 backend frontend cloudflared
-   ```
-
-Reconnect the Gmail account through the UI before expecting sync or push to
-work. If semantic AI is deliberately re-enabled, start Ollama and verify its
-model separately.
-
-## Application rollback
-
-Do not rewrite the `prod` branch on the Pi. Deploy a known reviewed revision in
-detached mode, keeping the branch recoverable:
+After confirming the production worktree is clean, switch to the exact target
+without rewriting `prod`:
 
 ```bash
 cd /opt/secureinbox
 test -z "$(git status --porcelain)"
-git fetch origin
-
-ROLLBACK_SHA=REVIEWED_PROD_SHA
-git cat-file -e "${ROLLBACK_SHA}^{commit}"
-git switch --detach "$ROLLBACK_SHA"
-
-docker compose -f docker-compose.prod.yml config --quiet
-docker compose -f docker-compose.prod.yml build
-docker compose \
-  -f docker-compose.prod.yml \
-  -f docker-compose.monitoring.yml up -d
-docker compose \
-  -f docker-compose.prod.yml \
-  -f docker-compose.monitoring.yml ps
+git switch --detach dd7b89fd2abf731c479439d07cc14d310ba49388
 ```
 
-Run every health check above. To return to the deployment branch:
+Restore the two matching environment files from the owner's encrypted backup,
+with mode `600`, before executing the legacy commands. Keep the new root config
+separately for a future retry. Do not print or commit either configuration.
 
 ```bash
-git switch prod
-git pull --ff-only origin prod
+docker compose -p secureinbox -f docker-compose.prod.yml \
+  -f docker-compose.monitoring.yml config --quiet
+docker compose -p secureinbox -f docker-compose.prod.yml \
+  -f docker-compose.monitoring.yml up -d --build backend frontend cloudflared prometheus grafana
+docker compose -p secureinbox -f docker-compose.prod.yml exec -T frontend \
+  wget -qO- http://backend:5500/api/v1/ready </dev/null
+curl --fail --max-time 20 https://secure-inbox.app/api/v1/ready
 ```
 
-An application rollback does not roll back MongoDB. Restore the database only
-when a verified data or schema problem requires it.
+The same legacy file selection is required for `ps` and `stop` while that
+revision is deployed. To retry promotion, switch back to `prod`, update it using
+`git pull --ff-only origin prod`, restore the consolidated root configuration,
+and follow the current release procedure. Do not mix old secrets layout with
+new Compose files.
 
 ## Recovery on a replacement Pi
 
-On the replacement Pi:
+1. Install Docker and Compose, restore trusted management access, and clone the
+   exact reviewed `prod` revision into `/opt/secureinbox`.
+2. Andrei retrieves the encrypted environment artifacts and separate wrapping
+   keys. Decrypt through the trusted management connection into mode-`600` files.
+   Use the environment layout matching the selected revision. Never place
+   wrapping keys alongside the database archive.
+3. Verify artifact hashes and archive integrity before using them. A successful
+   decryption alone does not prove data completeness or encryption-key compatibility.
+4. If Atlas is intact, do not overwrite it. If data recovery is needed, restore
+   first into a new isolated database using a database-scoped credential. Leave
+   the application stopped during the drill; do not connect production schedulers,
+   Gmail credentials or mail delivery to the restore target.
+5. Compare collection counts, ownership links and latest-scan relationships.
+   Check token decryption locally with the matching `MAIL_TOKEN_ENCRYPTION_KEY`
+   without displaying plaintext or calling Google. Record only success/failure.
+6. Verify application reads through an isolated, side-effect-controlled workflow.
+   A normal backend startup is not read-only. #105 owns that supported mode.
+7. Record restore duration and backup age. A production data replacement needs
+   a separately selected target, a new backup of existing data and an explicit
+   recovery decision. This runbook intentionally supplies no automatic
+   production `--drop` command.
+8. Start the recovered release and verify the readiness and read-only requests
+   above. Public ingress must follow the intended Cloudflare policy.
 
-```bash
-sudo mkdir -p /opt/secureinbox
-sudo chown "$USER":"$USER" /opt/secureinbox
-git clone --branch prod \
-  https://github.com/AndreiStolojan/SecureInbox.git \
-  /opt/secureinbox
-```
+## Outstanding recovery evidence
 
-From the Mac that owns the Keychain entries:
+The August drill proved archive restoration and count parity, not a complete
+fresh-session application recovery. #77 remains open for:
 
-```bash
-PI_HOST=TRUSTED_SSH_HOST
-RECOVERY_DIR="$HOME/SecureInbox-Recovery/2026-08-18"
-
-export SECUREINBOX_ENV_WRAP_KEY="$(
-  security find-generic-password \
-    -a polo -s secureinbox-hibernation-env-2026-08-18 -w
-)"
-
-openssl enc -d -aes-256-cbc -pbkdf2 -iter 600000 \
-  -pass env:SECUREINBOX_ENV_WRAP_KEY \
-  -in "$RECOVERY_DIR/pi-root.env.enc" \
-  | ssh "$PI_HOST" 'install -m 600 /dev/stdin /opt/secureinbox/.env'
-
-openssl enc -d -aes-256-cbc -pbkdf2 -iter 600000 \
-  -pass env:SECUREINBOX_ENV_WRAP_KEY \
-  -in "$RECOVERY_DIR/pi-backend.env.production.local.enc" \
-  | ssh "$PI_HOST" \
-      'install -m 600 /dev/stdin /opt/secureinbox/backend/.env.production.local'
-
-unset SECUREINBOX_ENV_WRAP_KEY
-```
-
-Restore MongoDB only after confirming the archive date and stopping the backend:
-
-```bash
-RECOVERY_DIR="$HOME/SecureInbox-Recovery/2026-08-18"
-CONFIRM_REPLACE=restore-production-2026-08-18
-test "$CONFIRM_REPLACE" = restore-production-2026-08-18
-
-export SECUREINBOX_ENV_WRAP_KEY="$(
-  security find-generic-password \
-    -a polo -s secureinbox-hibernation-env-2026-08-18 -w
-)"
-export SECUREINBOX_DB_WRAP_KEY="$(
-  security find-generic-password \
-    -a polo -s secureinbox-hibernation-db-2026-08-18 -w
-)"
-
-DB_URI="$(
-  openssl enc -d -aes-256-cbc -pbkdf2 -iter 600000 \
-    -pass env:SECUREINBOX_ENV_WRAP_KEY \
-    -in "$RECOVERY_DIR/pi-backend.env.production.local.enc" \
-    | sed -n 's/^DB_URI="\{0,1\}\([^"[:space:]]*\)"\{0,1\}$/\1/p'
-)"
-test -n "$DB_URI"
-
-openssl enc -d -aes-256-cbc -pbkdf2 -iter 600000 \
-  -pass env:SECUREINBOX_DB_WRAP_KEY \
-  -in "$RECOVERY_DIR/test-2026-08-18T120856Z.archive.gz.enc" \
-  | mongorestore "$DB_URI" --archive --gzip --drop --nsInclude 'test.*'
-
-unset DB_URI SECUREINBOX_ENV_WRAP_KEY SECUREINBOX_DB_WRAP_KEY
-```
-
-Then follow the start and health-check procedure. Confirm login, Gmail OAuth
-reconnection, one inbox sync, and one representative scan.
+- Reverification of the off-device artifacts and key access by the owner.
+- A current backup and isolated restore with application reads, relationship
+  checks and token-key compatibility, with no live Gmail or mail side effects.
+- Measured restore duration and agreed acceptable data-loss/recovery windows.
+- A fresh-session run through the revision-specific instructions.
+- One agreed retention schedule, verification cadence and failure notification.
+  Historical policies conflict; do not delete recovery copies based on either.
 
 ## Maintenance cadence
 
-Monthly while paused:
+Monthly while the service remains active:
 
 - Review domain expiry, Cloudflare account access, Atlas tier/billing and
   network allow-list, and Google Cloud billing status.
@@ -363,13 +286,13 @@ Monthly while paused:
 - Confirm both encrypted artifact locations still exist and their SHA-256
   values match. Confirm both Keychain entries are readable.
 
-At the 2026-11-18 review, and every quarter if the pause continues:
+At the 2026-11-18 review, and quarterly afterward:
 
 - Boot and patch the Pi through the trusted management path.
 - Start SecureInbox, run every health check, and inspect logs.
 - Create a fresh encrypted database and environment backup.
 - Repeat an isolated restore drill and update the evidence in this document.
-- Stop the stack again only after the new evidence passes.
+- Keep the service online unless a separate shutdown is requested.
 
 ## Resume checklist
 

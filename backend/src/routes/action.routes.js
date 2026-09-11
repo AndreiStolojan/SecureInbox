@@ -8,7 +8,7 @@
 // validateEmailActionParams (verifică că :id din URL e un id valid de email,
 // folosind schema din validations/action.validation.js).
 //
-// Detalii: docs/EXPLICATIE_BACKEND.md §2 (straturile) și §5.4 (acțiuni manuale).
+// Detalii: docs/architecture.md.
 // ─────────────────────────────────────────────────────────────────────────────
 
 import { Router } from 'express';

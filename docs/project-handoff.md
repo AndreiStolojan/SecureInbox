@@ -1,8 +1,16 @@
 # Project retrospective and handoff
 
-Snapshot date: 2026-08-13
+Original snapshot: 2026-08-13. Operational update: 2026-09-11.
 
-Maintenance status: active feature development paused on 2026-08-13
+Development has resumed. PR #110 integrated the application audit and shared
+environments; measurements are in [pi-workspace-review.md](pi-workspace-review.md).
+Production remains at `dd7b89f` pending #95 and the rollout checks in #74.
+The [recovery runbook](hibernation-recovery-runbook.md) preserves the historical
+Atlas drill and lists the remaining #77 evidence. Hibernation is optional.
+
+The sections below retain historical implementation/test evidence. For current
+startup and configuration commands use [environments.md](environments.md) and
+[raspberry-pi-deployment.md](raspberry-pi-deployment.md).
 
 SecureInbox remains public as a portfolio and learning reference. There is no
 support or security-response SLA, and repository documentation does not prove
@@ -48,7 +56,7 @@ or against live third-party services.
 | Current Cloudflare, Atlas, Google OAuth, Gmail push, DNS, threat-intelligence, MalwareBazaar, Pi firewall, temperature, storage, and backup state | Requires live account and device inspection | Not verified by this handoff |
 | Production deployment and rollback | CI validates inputs; deployment remains manual | Not exercised by CI |
 | Real-world phishing accuracy or improvement over a baseline | Existing fixtures are regression and small semantic-evaluation inputs | Not established; tracked in #82 |
-| Restore of Atlas plus matching production secrets into an isolated target | No committed completed drill | Not established; tracked in #77 |
+| Restore of Atlas plus matching production secrets into an isolated target | August archive/count drill in the recovery runbook | Application recovery checks remain in #77 |
 | Unattended privacy, retention, rotation, patching, and alert-response policy | Open operational checklist | Not finalized; tracked in #79 |
 
 The safe public claim is that SecureInbox has tested security mechanisms and an
@@ -171,36 +179,11 @@ another device or storage provider.
 
 ### Raspberry Pi production
 
-Production uses only the `prod` branch and `docker-compose.prod.yml`. Stop if
-`git status --short` is not clean.
-
-```bash
-cd /opt/secureinbox
-test -z "$(git status --porcelain)" || { echo "Dirty worktree" >&2; exit 1; }
-git fetch origin
-git switch prod
-git pull --ff-only origin prod
-docker compose -f docker-compose.prod.yml config --quiet
-docker compose -f docker-compose.prod.yml build --pull
-docker compose -f docker-compose.prod.yml up -d
-docker compose -f docker-compose.prod.yml ps
-docker compose -f docker-compose.prod.yml exec frontend \
-  wget -qO- http://backend:5500/api/v1/ready
-curl -i https://YOUR_HOSTNAME/api/v1/ready
-git rev-parse HEAD
-```
-
-For diagnosis:
-
-```bash
-docker compose -f docker-compose.prod.yml ps
-docker compose -f docker-compose.prod.yml logs --tail=100
-docker compose -f docker-compose.prod.yml logs --follow backend
-```
-
-The full deployment and promotion procedure is in
-[raspberry-pi-deployment.md](raspberry-pi-deployment.md). Before using it,
-complete the inventory, backup, recovery, and live-state checks in #77 and #79.
+Use the [deployment guide](raspberry-pi-deployment.md) for the shared Compose
+base plus production overlay, and the [recovery runbook](hibernation-recovery-runbook.md)
+for the legacy rollback target and its matching two-file environment layout.
+The `prod` branch requires independent approval. A merged promotion is not a
+verified deployment; #74 remains open until the running release is checked.
 
 ## Lessons learned
 
@@ -345,3 +328,25 @@ This is a repository-content review, not proof about untracked files, GitHub
 secrets, previous Git history, external services, or production databases. Run
 the same review again before adding screenshots, fixtures, benchmark corpora, or
 operational evidence. Never commit raw Gmail exports or real phishing samples.
+
+## Source comment review, 2026-09-11
+
+The source inventory at `5a9881a` found 68 missing documentation references in
+`backend/src` and `frontend/src`: 53 to `EXPLICATIE_BACKEND.md`, 13 to
+`EXPLICATIE_FRONTEND.md`, one to `DECISIONS.md`, and one to
+`SCORING_WEIGHTS_REVIEW.md`. The historical issue count was 69.
+
+These references now point to [architecture](architecture.md),
+[detection](detection-engine.md), and [Gmail push setup](gmail-push-setup.md).
+Old section numbers were removed. Concrete corrections include:
+
+| Source | Correction |
+| --- | --- |
+| [`scheduler.service.js`](../backend/src/services/scheduler.service.js) | Documents watch renewal alongside polling and digest scheduling; removes the obsolete claim that Gmail push is not used. |
+| [`scoring.config.js`](../backend/src/config/scoring.config.js) and [frontend scales](../frontend/src/lib/scoring.js) | Separates allowlist reductions from blocklist points and explains that frontend scale constants must still be synchronized manually. |
+| [`meta.service.js`](../backend/src/services/meta.service.js) | Describes the existence query's `_id` result and public boolean conversion. |
+| [`sanitizeEmailHtml.js`](../frontend/src/utils/sanitizeEmailHtml.js) | Keeps explicit HTML and remote-resource restrictions while removing a duplicate description. |
+
+This is a comment-only source change. Parsed JavaScript/JSX remains identical;
+it does not improve runtime performance. The source reference check reports no
+missing `docs/*.md` targets after the pass.

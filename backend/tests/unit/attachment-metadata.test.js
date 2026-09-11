@@ -2,7 +2,7 @@ import assert from 'node:assert/strict';
 import test from 'node:test';
 
 import Email from '../../src/models/email.model.js';
-import { parseGmailMessageToEmailPayload } from '../../src/services/email-parser.service.js';
+import { extractAttachments, parseGmailMessageToEmailPayload } from '../../src/services/email-parser.service.js';
 
 test('captures bounded Gmail attachment metadata without persisting inline bytes', () => {
     const payload = parseGmailMessageToEmailPayload({
@@ -114,4 +114,13 @@ test('Email attachment analysis limits persisted item count', async () => {
         email.validate(),
         (error) => Boolean(error.errors['attachmentAnalysis.items'])
     );
+});
+
+test('attachment traversal bounds wide and cyclic MIME trees', () => {
+    const parts = Array.from({ length: 200_000 }, () => ({}));
+    parts[199_999] = { filename: 'outside-budget.pdf' };
+    assert.deepEqual(extractAttachments({ parts }), []);
+    const cycle = {};
+    cycle.parts = [cycle];
+    assert.deepEqual(extractAttachments(cycle), []);
 });

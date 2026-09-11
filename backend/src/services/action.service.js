@@ -8,7 +8,7 @@
 // phishing, acest fișier încearcă și să mute mesajul în Spam pe Gmail
 // (acțiune pe partea de provider, separată de acțiunea manuală).
 //
-// Detalii: docs/EXPLICATIE_BACKEND.md §5.4.
+// Detalii: docs/architecture.md.
 // ─────────────────────────────────────────────────────────────────────────────
 
 import mongoose from 'mongoose';

@@ -8,7 +8,7 @@
 //   { success: false, statusCode, message, code?, errors? }
 // Așa, frontend-ul tratează toate erorile la fel, fără cazuri speciale.
 //
-// Detalii: docs/EXPLICATIE_BACKEND.md §2 ("Tratarea uniformă a erorilor").
+// Detalii: docs/architecture.md.
 // ─────────────────────────────────────────────────────────────────────────────
 
 // Express recunoaște un middleware ca fiind "de erori" doar dacă are EXACT 4

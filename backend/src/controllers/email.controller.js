@@ -11,7 +11,7 @@
 // Orice eroare aruncată de service e trimisă către `next(error)`, care o
 // predă lui `error.middleware.js` (transformă eroarea într-un JSON uniform).
 //
-// Detalii despre straturi: docs/EXPLICATIE_BACKEND.md §2.
+// Detalii despre straturi: docs/architecture.md.
 // ─────────────────────────────────────────────────────────────────────────────
 
 import {

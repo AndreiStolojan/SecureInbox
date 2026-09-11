@@ -8,7 +8,6 @@ import { getEmailByIdForUser } from '../../src/services/email.service.js';
 test('email details expose attachment analysis without Gmail locators, hashes, or bytes', async () => {
     const originalFindEmail = Email.findOne;
     const originalFindScan = Scan.findOne;
-    const originalCountDocuments = Email.countDocuments;
     const email = {
         _id: '507f1f77bcf86cd799439011',
         userId: '507f1f77bcf86cd799439012',
@@ -45,7 +44,6 @@ test('email details expose attachment analysis without Gmail locators, hashes, o
                 select: () => ({ lean: async () => null }),
             }),
         });
-        Email.countDocuments = async () => 0;
 
         const result = await getEmailByIdForUser({
             userId: email.userId,
@@ -75,14 +73,12 @@ test('email details expose attachment analysis without Gmail locators, hashes, o
     } finally {
         Email.findOne = originalFindEmail;
         Scan.findOne = originalFindScan;
-        Email.countDocuments = originalCountDocuments;
     }
 });
 
 test('email details hide persisted attachment findings while rollback is enabled', async () => {
     const originalFindEmail = Email.findOne;
     const originalFindScan = Scan.findOne;
-    const originalCountDocuments = Email.countDocuments;
     const email = {
         _id: '507f1f77bcf86cd799439011',
         userId: '507f1f77bcf86cd799439012',
@@ -102,7 +98,6 @@ test('email details hide persisted attachment findings while rollback is enabled
         Scan.findOne = () => ({
             sort: () => ({ select: () => ({ lean: async () => null }) }),
         });
-        Email.countDocuments = async () => 0;
 
         const result = await getEmailByIdForUser({
             userId: email.userId,
@@ -116,6 +111,24 @@ test('email details hide persisted attachment findings while rollback is enabled
     } finally {
         Email.findOne = originalFindEmail;
         Scan.findOne = originalFindScan;
-        Email.countDocuments = originalCountDocuments;
     }
+});
+
+
+test('first-time sender uses an ownership-scoped existence query and handles a missing sender', async (t) => {
+    const email = { _id: '507f1f77bcf86cd799439011', userId: '507f1f77bcf86cd799439012', from: 'sender@example.test' };
+    t.mock.method(Email, 'findOne', () => ({ lean: async () => email }));
+    t.mock.method(Scan, 'findOne', () => ({ sort: () => ({ select: () => ({ lean: async () => null }) }) }));
+    let prior = null;
+    const exists = t.mock.method(Email, 'exists', async (filter) => {
+        assert.deepEqual(filter, { userId: email.userId, from: email.from, _id: { $ne: email._id } });
+        return prior;
+    });
+    const read = () => getEmailByIdForUser({ userId: email.userId, emailId: email._id });
+    assert.equal((await read()).isFirstTimeSender, true);
+    prior = { _id: '507f1f77bcf86cd799439013' };
+    assert.equal((await read()).isFirstTimeSender, false);
+    email.from = '';
+    assert.equal((await read()).isFirstTimeSender, false);
+    assert.equal(exists.mock.callCount(), 2);
 });

@@ -14,10 +14,10 @@
 //      invalidă, deci șterge token-ul local (te deloghează). Un `401` legat de
 //      Gmail (ex. token Google expirat) NU deloghează userul.
 //
-// Detalii: docs/EXPLICATIE_FRONTEND.md §4.1 și §4.3.
+// Detalii: docs/architecture.md.
 // ─────────────────────────────────────────────────────────────────────────────
 
-import { clearStoredToken, getStoredToken } from '../utils/tokenStorage.js';
+import { clearStoredToken, getStoredToken, getSessionVersion } from '../utils/tokenStorage.js';
 
 // Adresa de bază a API-ului backend. Vine dintr-o variabilă de mediu (Vite),
 // cu o valoare implicită '/api/v1' dacă nu e setată.
@@ -76,6 +76,7 @@ const buildHeaders = ({ body, headers }) => {
 // `options` poate avea `method`, `body` (obiect JS, e serializat automat) și
 // `headers` adiționale.
 export const apiRequest = async (path, options = {}) => {
+  const session = getSessionVersion();
   const { body, headers, ...rest } = options;
   const response = await fetch(`${API_BASE_URL}${path}`, {
     ...rest,
@@ -91,7 +92,7 @@ export const apiRequest = async (path, options = {}) => {
     // că JWT-ul userului nu mai e valid (ex. a expirat) -> îl delogăm local.
     // Un 401 cu alt cod (ex. legat de Gmail) NU înseamnă că sesiunea e invalidă,
     // deci nu ștergem token-ul.
-    if (response.status === 401 && payload.code?.startsWith('AUTH_')) {
+    if (response.status === 401 && payload.code?.startsWith('AUTH_') && session === getSessionVersion()) {
       clearStoredToken();
     }
 

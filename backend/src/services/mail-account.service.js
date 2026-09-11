@@ -9,7 +9,7 @@
 // din INBOX, le salvează în colecția Email, apoi declanșează scanarea lor),
 // (5) setări de sincronizare (câte emailuri se aduc) și deconectarea contului.
 //
-// Detalii: docs/EXPLICATIE_BACKEND.md §5.1 (OAuth) și §5.2 (sincronizare).
+// Detalii: docs/architecture.md.
 // ─────────────────────────────────────────────────────────────────────────────
 
 import crypto from 'crypto';

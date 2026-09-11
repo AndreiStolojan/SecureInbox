@@ -1,146 +1,85 @@
-// ─────────────────────────────────────────────────────────────────────────────
-// AuthContext.jsx — cine e userul logat, partajat în toată aplicația.
-//
-// Ce face, pe scurt: un Context este o modalitate de a pune date "sus" în
-// aplicație și a le citi din orice componentă de mai jos, fără să le pasăm
-// manual din componentă în componentă (asta s-ar numi "prop drilling").
-// AuthProvider ține token-ul, userul curent și starea de încărcare/eroare, și
-// le expune prin AuthContext. AuthProvider înfășoară toată aplicația din
-// main.jsx, deci orice pagină poate citi `useAuth()` și afla cine e userul.
-//
-// Mecanism: la pornire, dacă există un token salvat în localStorage, cerem
-// GET /users/me ca să aflăm userul; dacă tokenul e invalid, îl ștergem și
-// userul rămâne neautentificat. login/register cheamă API-ul, salvează
-// tokenul și pun userul în stare. isAuthenticated = token + user prezente —
-// pe el se bazează ProtectedRoute (paginile protejate).
-//
-// Detalii: docs/EXPLICATIE_FRONTEND.md §5.1.
-// ─────────────────────────────────────────────────────────────────────────────
-
-import { createContext, useCallback, useEffect, useMemo, useState } from 'react';
-
+import { createContext, useCallback, useEffect, useMemo, useRef, useState, useSyncExternalStore } from 'react';
 import * as authApi from '../api/authApi.js';
 import { getMe } from '../api/usersApi.js';
-import { clearStoredToken, getStoredToken, setStoredToken } from '../utils/tokenStorage.js';
+import { clearStoredToken, getStoredToken, setStoredToken, getSessionVersion, subscribeToSession } from '../utils/tokenStorage.js';
 
-// Contextul propriu-zis — "cutia" în care stăm datele de autentificare.
-// Componentele nu îl folosesc direct, ci prin hook-ul useAuth() (vezi useAuth.js).
 export const AuthContext = createContext(null);
 
-// AuthProvider — componenta "furnizor": ține starea de autentificare și o
-// pune la dispoziția tuturor componentelor copil (`children`) prin Context.
+/** Keep identity and pending authentication work tied to the current session. */
 export function AuthProvider({ children }) {
-  // useState = "memoria" unei componente React: ține o valoare între
-  // re-desenări și, când se schimbă (prin setToken/setUser/...), React
-  // redesenează componenta și pe cele care citesc valoarea respectivă.
-  // token: citit inițial din localStorage, ca userul să rămână logat după refresh.
-  const [token, setToken] = useState(() => getStoredToken());
-  const [user, setUser] = useState(null);
-  // loading = true doar dacă există deja un token (atunci verificăm dacă mai e valid).
-  const [loading, setLoading] = useState(Boolean(getStoredToken()));
+  const session = useSyncExternalStore(subscribeToSession, getSessionVersion);
+  const token = getStoredToken();
+  const [identity, setIdentity] = useState(null);
+  const user = identity?.session === session ? identity.user : null;
+  const [loading, setLoading] = useState(Boolean(token));
   const [error, setError] = useState(null);
+  const refreshRequest = useRef(0);
+  const authRequest = useRef(0);
 
-  // refreshUser — (re)verifică userul curent față de backend folosind tokenul salvat.
-  // useCallback memorează funcția între re-desenări, ca să nu se recreeze la
-  // fiecare render (altfel useEffect de mai jos ar rula la nesfârșit, vezi mai jos).
   const refreshUser = useCallback(async () => {
-    const currentToken = getStoredToken();
-
-    // Fără token salvat -> nu suntem logați, nu mai are sens să cerem /users/me.
-    if (!currentToken) {
-      setUser(null);
+    const version = getSessionVersion();
+    const request = ++refreshRequest.current;
+    const isCurrent = () => version === getSessionVersion() && request === refreshRequest.current;
+    if (!getStoredToken()) {
+      setIdentity(null);
       setLoading(false);
       return null;
     }
-
+    setLoading(true);
     try {
-      setLoading(true);
-      // GET /users/me — confirmă tokenul și ne dă datele userului curent.
       const currentUser = await getMe();
-      setUser(currentUser);
+      if (!isCurrent()) return null;
+      setIdentity({ session: version, user: currentUser });
       setError(null);
       return currentUser;
     } catch (err) {
-      // Tokenul nu mai e valid (expirat/invalid) -> îl ștergem și considerăm userul delogat.
-      clearStoredToken();
-      setToken(null);
-      setUser(null);
-      setError(err.message);
+      if (isCurrent()) {
+        clearStoredToken();
+        setIdentity(null);
+        setError(err.message);
+      }
       return null;
     } finally {
-      setLoading(false);
+      if (isCurrent()) setLoading(false);
     }
   }, []);
 
-  // useEffect = cod care rulează DUPĂ ce componenta s-a "desenat" (de obicei
-  // pentru efecte secundare: apeluri către server, abonări etc.).
-  // Aici: la prima montare a aplicației, verificăm dacă tokenul salvat e
-  // încă valid și încărcăm userul curent.
-  // Array-ul de dependențe [refreshUser] înseamnă: rulează din nou doar dacă
-  // funcția refreshUser se schimbă — cum e memorată cu useCallback([]), practic
-  // rulează o singură dată, la montare.
   useEffect(() => {
-    refreshUser();
-  }, [refreshUser]);
+    if (!user) refreshUser();
+    return () => { refreshRequest.current += 1; authRequest.current += 1; };
+    // Validate once per session; login already supplies a verified identity.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [session, refreshUser]);
 
-  // completeAuth — pasul comun după login/register cu succes: salvează
-  // tokenul (în localStorage + în stare) și userul primit de la backend.
-  const completeAuth = useCallback((authResult) => {
-    setStoredToken(authResult.token);
-    setToken(authResult.token);
-    setUser(authResult.user);
+  const authenticate = useCallback(async (action, payload) => {
+    const version = getSessionVersion();
+    const request = ++authRequest.current;
+    const result = await action(payload);
+    if (version !== getSessionVersion() || request !== authRequest.current) return null;
+    setStoredToken(result.token);
+    setIdentity({ session: getSessionVersion(), user: result.user });
     setError(null);
-
-    return authResult;
+    setLoading(false);
+    return result;
   }, []);
 
-  // login — autentificare cu email/parolă: cheamă API-ul și salvează rezultatul.
-  const login = useCallback(
-    async (payload) => completeAuth(await authApi.login(payload)),
-    [completeAuth]
-  );
-
-  // register — creează cont nou și îl autentifică imediat (la fel ca login).
-  const register = useCallback(
-    async (payload) => completeAuth(await authApi.register(payload)),
-    [completeAuth]
-  );
-
-  // patchUser — actualizează local doar câmpuri din user (ex. după ce userul
-  // își schimbă numele), fără să mai cerem tot obiectul de la server.
+  const login = useCallback((payload) => authenticate(authApi.login, payload), [authenticate]);
+  const register = useCallback((payload) => authenticate(authApi.register, payload), [authenticate]);
   const patchUser = useCallback((partial) => {
-    setUser((prev) => prev ? { ...prev, ...partial } : prev);
+    setIdentity((previous) => previous?.session === getSessionVersion()
+      ? { ...previous, user: { ...previous.user, ...partial } } : previous);
   }, []);
 
-  // logout — nu există "logout pe server"; pur și simplu ștergem tokenul
-  // local. Fără token, următoarea cerere către backend va fi respinsă.
   const logout = useCallback(() => {
     clearStoredToken();
-    setToken(null);
-    setUser(null);
+    setIdentity(null);
+    setLoading(false);
     setError(null);
   }, []);
 
-  // useMemo = recalculează obiectul `value` doar când se schimbă una din
-  // dependențele din array-ul de mai jos, ca să nu forțăm re-render inutil
-  // la toți consumatorii contextului la fiecare desenare a AuthProvider.
-  const value = useMemo(
-    () => ({
-      token,
-      user,
-      loading,
-      error,
-      // isAuthenticated: true doar dacă avem ȚI token, ȚI date despre user.
-      isAuthenticated: Boolean(token && user),
-      login,
-      register,
-      logout,
-      refreshUser,
-      patchUser,
-    }),
-    [error, loading, login, logout, patchUser, refreshUser, register, token, user]
-  );
-
-  // Provider-ul pune `value` la dispoziția tuturor componentelor din `children`.
+  const value = useMemo(() => ({
+    session, token, user, loading, error, isAuthenticated: Boolean(token && user),
+    login, register, logout, refreshUser, patchUser,
+  }), [session, token, user, loading, error, login, register, logout, refreshUser, patchUser]);
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }

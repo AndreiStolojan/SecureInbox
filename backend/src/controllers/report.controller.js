@@ -10,7 +10,7 @@
 //   GET  /reports/monthly-summary[?from=&to=&label=]  (sau legacy ?month=)
 //   POST /reports/monthly-summary/send
 //
-// Detalii: docs/EXPLICATIE_BACKEND.md §2 și §4.4.
+// Detalii: docs/architecture.md.
 // ─────────────────────────────────────────────────────────────────────────────
 
 import {

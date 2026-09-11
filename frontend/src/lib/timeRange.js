@@ -9,7 +9,7 @@
 // (wire) e semi-deschisă [from, to): capătul `to` e avansat cu o zi, ca ziua
 // "To" aleasă de user să fie inclusă integral.
 //
-// Detalii: docs/EXPLICATIE_FRONTEND.md §5.3 (TimeRangeContext).
+// Detalii: docs/architecture.md.
 // ─────────────────────────────────────────────────────────────────────────────
 
 // O zi, în milisecunde — folosit pentru calculele de interval.

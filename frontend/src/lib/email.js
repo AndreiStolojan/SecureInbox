@@ -54,21 +54,3 @@ export const getSenderAddress = (email) => {
   }
   return from?.address || email?.fromAddress || '';
 };
-
-// Textul scurt de previzualizare al emailului (poate veni sub diverse nume de câmp).
-export const getSnippet = (email) =>
-  email?.snippet || email?.preview || email?.textPreview || '';
-
-// Calculează o "monogramă" (literă + culoare) pentru avatarul expeditorului.
-// E DETERMINISTĂ: același nume produce mereu aceeași literă și aceeași culoare
-// (hue = nuanța din cercul de culori HSL, 0-359), printr-un hash simplu pe
-// caracterele numelui — astfel avatarul nu "sare" la fiecare reîncărcare.
-export const getSenderMonogram = (email) => {
-  const name = getSenderName(email);
-  const letter = (name.trim()[0] || '?').toUpperCase();
-  let hash = 0;
-  for (let i = 0; i < name.length; i += 1) {
-    hash = (hash * 31 + name.charCodeAt(i)) >>> 0;
-  }
-  return { letter, hue: hash % 360 };
-};

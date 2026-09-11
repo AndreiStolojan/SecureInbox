@@ -12,7 +12,7 @@
 // Folosit pe pagina de detaliu a emailului, ca să arate userului starea curentă
 // de trust/block pentru expeditorul emailului afișat.
 //
-// Detalii: docs/EXPLICATIE_BACKEND.md (sender-list.service.js).
+// Detalii: docs/architecture.md.
 // ─────────────────────────────────────────────────────────────────────────────
 
 // Normalizează o adresă de email: extrage adresa din formatul `"Nume" <adresa@x.com>`
@@ -55,8 +55,3 @@ export const findListEntries = (entries, senderAddress, senderDomain) => {
   // O regulă pe adresă exactă învinge o regulă pe domeniu — aceeași prioritate ca în backend.
   return { senderEntry, domainEntry, match: senderEntry || domainEntry };
 };
-
-// Variantă simplificată: întoarce direct intrarea care se aplică (sau null),
-// fără detaliile separate pe sender/domeniu.
-export const matchSenderList = (entries, senderAddress, senderDomain) =>
-  findListEntries(entries, senderAddress, senderDomain).match;

@@ -12,7 +12,7 @@
 // req.user. Exemplu de utilizare pe o rută doar pentru admini:
 //   adminRouter.get('/stats', authorize, authorizeRoles('admin'), getStats);
 //
-// Detalii: docs/EXPLICATIE_BACKEND.md §2 (rolul middleware-urilor în lanț).
+// Detalii: docs/architecture.md.
 // ─────────────────────────────────────────────────────────────────────────────
 
 import sendErrorResponse from '../common/http/send-error-response.js';

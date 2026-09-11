@@ -5,7 +5,7 @@
 // flags), folosită de frontend la încărcarea aplicației pentru a decide
 // ce să arate (ex. mesaj "conectează-ți Gmail").
 //
-// Detalii: docs/EXPLICATIE_BACKEND.md §2 (route -> middleware -> controller).
+// Detalii: docs/architecture.md.
 // ─────────────────────────────────────────────────────────────────────────────
 
 import { Router } from 'express';

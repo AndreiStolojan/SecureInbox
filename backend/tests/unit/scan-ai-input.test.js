@@ -74,3 +74,8 @@ test('truncation falls back to the last word boundary', () => {
     assert.doesNotMatch(body, /\s$/, 'trailing whitespace should be cut with the word');
     assert.ok(!body.endsWith('wor'), 'must not cut mid-word');
 });
+
+test('AI body prefers normalized plain text without reading the HTML fallback', () => {
+    const email = { textBody: '  Plain\n text  ', get htmlBody() { throw new Error('Unused fallback was read'); } };
+    assert.equal(buildAiAnalysisInput(email).body, 'Plain text');
+});

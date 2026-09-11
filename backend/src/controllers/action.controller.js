@@ -9,7 +9,7 @@
 // "fabrică" de handlere — runAction — care primește serviciul concret și
 // mesajul de succes, și produce funcția de controller.
 //
-// Detalii: docs/EXPLICATIE_BACKEND.md §5.4.
+// Detalii: docs/architecture.md.
 // ─────────────────────────────────────────────────────────────────────────────
 
 import {

@@ -12,7 +12,7 @@
 // de detecție (transformă un cod tehnic ca
 // "suspicious_link_pattern:ip_address_link" în text ușor de citit pentru user).
 //
-// Detalii: docs/EXPLICATIE_FRONTEND.md §6.1.
+// Detalii: docs/detection-engine.md.
 // ─────────────────────────────────────────────────────────────────────────────
 
 import {
@@ -80,7 +80,7 @@ const TONES = {
 // RISK_BUCKET_META — pentru fiecare valoare posibilă a câmpului `riskBucket`
 // (categoria vizuală a unui email), ce etichetă și ce descriere se arată, și
 // cu ce ton (din TONES de mai sus). "reviewed_safe" și "confirmed_phishing"
-// sunt cazurile în care USERUL a decis manual (vezi §6.4 din docs).
+// sunt cazurile în care USERUL a decis manual (vezi docs/architecture.md).
 const RISK_BUCKET_META = {
   safe: { label: 'Safe', tone: TONES.safe, description: 'No threats detected in this email.' },
   reviewed_safe: {

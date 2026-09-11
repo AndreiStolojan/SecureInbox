@@ -12,6 +12,8 @@ run_case() {
   log_file="${temp_dir}/docker.log"
   PROVISION_ENV_FILE="${env_file}" MOCK_LOG="${log_file}" MOCK_MODEL_PRESENT="${present}" bash -c '
     source ./provision
+    create_env >/dev/null
+    dotenv_set COMPOSE_PROFILES local-db,ai "$ENV_FILE"
     docker() {
       printf "%s\n" "$*" >> "$MOCK_LOG"
       case "$1" in
@@ -57,5 +59,25 @@ grep -Fx 'GOOGLE_REDIRECT_URI=http://localhost:8181/api/v1/mail-accounts/google/
 
 if PROVISION_ENV_FILE="${temp_dir}/.env" bash -c 'source ./provision; docker(){ return 1; }; require_docker' >/dev/null 2>&1; then
   echo 'expected Docker prerequisite failure' >&2
+  exit 1
+fi
+
+# Reject configurations that could target production containers or seed production.
+cp "$env_file" "$temp_dir/unsafe.env"
+for bad in 'COMPOSE_PROJECT_NAME=secureinbox' 'NODE_ENV=production' 'COMPOSE_PROFILES='; do
+  cp "$env_file" "$temp_dir/unsafe.env"
+  printf '%s\n' "$bad" >> "$temp_dir/unsafe.env"
+  if PROVISION_ENV_FILE="$temp_dir/unsafe.env" bash -c 'source ./provision; load_runtime_values' >/dev/null 2>&1; then
+    echo "Expected rejection: $bad" >&2
+    exit 1
+  fi
+done
+
+cp "$env_file" "$temp_dir/atlas.env"
+printf '%s\n' 'COMPOSE_PROFILES=' 'DB_URI=mongodb+srv://example.test/secureinbox_test' >> "$temp_dir/atlas.env"
+PROVISION_ENV_FILE="$temp_dir/atlas.env" bash -c 'source ./provision; load_runtime_values'
+printf '%s\n' 'DB_URI=mongodb+srv://example.test/secureinbox' >> "$temp_dir/atlas.env"
+if PROVISION_ENV_FILE="$temp_dir/atlas.env" bash -c 'source ./provision; load_runtime_values' >/dev/null 2>&1; then
+  echo 'Expected rejection of production database in development' >&2
   exit 1
 fi

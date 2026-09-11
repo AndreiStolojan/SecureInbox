@@ -1,11 +1,10 @@
 # Raspberry Pi production deployment
 
-For a deliberate production pause, tested backup evidence, and recovery
-commands, see [Hibernation and recovery runbook](hibernation-recovery-runbook.md).
-
-Production is a separate Compose path and branch. The default
-`docker-compose.yml` is for local development only; it starts local MongoDB,
-Prometheus, and Grafana and must not be used on the Pi.
+Production and development use the same source and Compose base. The root `.env`
+selects the production overlay, Atlas database, and separate runtime name.
+See [environment configuration](environments.md) for the complete variable list.
+For backup evidence and recovery, see the
+[recovery runbook](hibernation-recovery-runbook.md). Hibernation is optional.
 
 ```text
 Browser -> Cloudflare -> cloudflared -> nginx -> Express -> MongoDB Atlas
@@ -43,25 +42,17 @@ the Pi must never pull `main` as part of a routine update.
 
 ## Configure secrets
 
-Create the tunnel-token file and backend environment file:
+Use one root configuration:
 
 ```bash
-printf 'TUNNEL_TOKEN=replace-with-your-token\n' > .env
-cp backend/.env.production.local.example backend/.env.production.local
-chmod 600 .env backend/.env.production.local
+cp .env.example .env
+chmod 600 .env
 ```
 
-Generate unique `JWT_SECRET` and `MAIL_TOKEN_ENCRYPTION_KEY` values with
-`openssl rand -hex 32`. Fill every required value in
-`backend/.env.production.local`, including the Atlas URI and public HTTPS URL.
-`GOOGLE_REDIRECT_URI` must exactly match the URI registered with Google:
-
-```text
-https://YOUR_HOSTNAME/api/v1/mail-accounts/google/callback
-```
-
-In Cloudflare Zero Trust, create a remotely managed tunnel and public hostname
-whose service is `http://frontend:80`; put its token only in `.env`.
+Apply the production values from [environments.md](environments.md). Keep the
+existing Atlas URI, JWT secret, Gmail encryption key, OAuth credentials, and
+tunnel token when migrating. The tunnel service remains `http://frontend:80`.
+For a new installation, generate unique secrets with `openssl rand -hex 32`.
 
 ## Proxy and rate-limit identity
 
@@ -70,38 +61,20 @@ network has cloudflared as nginx's only peer; nginx resolves and trusts that
 service name for `CF-Connecting-IP`, then replaces rather than appends the
 forwarded client-IP chain. It forwards that client IP and `https` to the
 backend, so Express's single trusted nginx hop keeps distinct public visitors
-in distinct rate-limit buckets. No service publishes a host port, so the
+in distinct rate-limit buckets. Only optional monitoring publishes loopback ports, so the
 backend and nginx are reachable only through the private Compose network and
 cloudflared.
 
 ## Validate and start
 
 ```bash
-docker compose -f docker-compose.prod.yml config --quiet
-docker compose -f docker-compose.prod.yml build --pull
-docker compose -f docker-compose.prod.yml up -d
-docker compose -f docker-compose.prod.yml ps
-docker compose -f docker-compose.prod.yml exec ollama ollama pull qwen2.5:7b-instruct
-```
-
-### Upgrading an existing install
-
-`provision` fills in missing values but never overwrites an existing `.env`,
-which is right for configuration you may have edited — but it means a host
-installed before this change keeps its old `OLLAMA_MODEL` and silently stays on
-the weaker model. Change it by hand, then re-run `./provision`, which pulls
-whatever `OLLAMA_MODEL` names:
-
-```bash
-sed -i 's|^OLLAMA_MODEL=.*|OLLAMA_MODEL=qwen2.5:7b-instruct|' .env
+docker compose config --quiet
 ./provision
+docker compose ps
 ```
 
-The old model keeps occupying disk until removed:
-
-```bash
-docker compose exec -T ollama ollama rm qwen2.5:1.5b-instruct-q4_K_M
-```
+Ollama is optional. Enable the `ai` profile before running provisioning if the
+Pi should host the model. Monitoring uses the separate `monitoring` profile.
 
 ### Choosing the model
 
@@ -133,7 +106,7 @@ costs throughput rather than interactivity.
 Check private health endpoints and then the public hostname:
 
 ```bash
-docker compose -f docker-compose.prod.yml exec frontend wget -qO- http://backend:5500/api/v1/ready
+docker compose exec frontend wget -qO- http://backend:5500/api/v1/ready
 curl -i https://YOUR_HOSTNAME/api/v1/ready
 ```
 
@@ -149,9 +122,9 @@ cd /opt/secureinbox
 git fetch origin
 git switch prod
 git pull --ff-only origin prod
-docker compose -f docker-compose.prod.yml build --pull
-docker compose -f docker-compose.prod.yml up -d
-docker compose -f docker-compose.prod.yml ps
+docker compose build --pull
+docker compose up -d
+docker compose ps
 ```
 
 Record `git rev-parse HEAD` after each deployment. Stop if the working tree is
@@ -164,10 +137,9 @@ until dedicated deployment infrastructure is introduced.
 
 Atlas backups protect the database, but Gmail OAuth tokens stored there cannot
 be recovered without the matching `MAIL_TOKEN_ENCRYPTION_KEY`. Keep encrypted,
-access-controlled backups of both `.env` and
-`backend/.env.production.local` separately from the database backup. Test a
+access-controlled backups of `.env` separately from the database backup. Test a
 restore before relying on it.
 
-Regularly check `docker compose -f docker-compose.prod.yml ps`, disk space,
+Regularly check `docker compose ps`, disk space,
 Pi temperature, tunnel status, Atlas access rules, and container logs. Keep
 the OS and Docker patched.
