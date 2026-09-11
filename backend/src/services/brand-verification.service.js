@@ -15,7 +15,7 @@
 // e paypal-secure.ru (impersonare prin text), asta rămâne în grija semnalului AI de
 // impersonare din Ollama, care rulează doar când expeditorul NU e verificat aici.
 //
-// Detalii: docs/EXPLICATIE_BACKEND.md §4.4, punctul 1 ("Brand verificat").
+// Detalii: docs/detection-engine.md.
 // ─────────────────────────────────────────────────────────────────────────────
 
 import {

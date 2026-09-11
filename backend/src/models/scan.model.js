@@ -8,8 +8,7 @@
 // rescanare, scorul vechi se înlocuiește (index unic userId + emailId, vezi
 // mai jos).
 //
-// Detalii: docs/EXPLICATIE_BACKEND.md §3 și §4 (motorul de scanare,
-// CURRENT_SCAN_ENGINE_VERSION din scan.service.js).
+// Detalii: docs/detection-engine.md.
 // ─────────────────────────────────────────────────────────────────────────────
 
 import mongoose from 'mongoose';

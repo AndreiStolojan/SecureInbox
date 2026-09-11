@@ -1,15 +1,6 @@
-// ─────────────────────────────────────────────────────────────────────────────
-// scan.service.js — INIMA aplicației: motorul de scanare a emailurilor.
-//
-// Ce face, pe scurt: ia un email deja salvat în baza de date, îi calculează un
-// SCOR de risc (reguli fixe + semnale AI), îl traduce într-un VERDICT
-// (safe / suspicious / likely_phishing), îi atașează o explicație și salvează
-// rezultatul ca un "scan". Folosit atât la sincronizare (automat), cât și la
-// apăsarea butonului "Scan again" (manual).
-//
-// Modelul de scor: scorFinal = min(100, scorReguli + scorAI), apoi pragurile din
-// scoring.config.js dau verdictul. Detalii: docs/EXPLICATIE_BACKEND.md §4.
-// ─────────────────────────────────────────────────────────────────────────────
+// Coordonează scanarea manuală și automată a emailurilor deținute de utilizator.
+// Colectează contextul, rulează detecția și salvează verdictul cu dovezile și
+// explicația aferente. Scorul și cerințele de coroborare sunt în docs/detection-engine.md.
 
 import crypto from 'node:crypto';
 import mongoose from 'mongoose'; // utilitar pentru a valida id-urile MongoDB
@@ -594,7 +585,7 @@ const resolveExplanationResult = ({
 };
 
 // Funcția principală: scanează UN email și salvează rezultatul. Pașii (vezi
-// docs/EXPLICATIE_BACKEND.md §4.5): 1) ia emailul; 2) context liste user;
+// docs/detection-engine.md): 1) ia emailul; 2) context liste user;
 // 3) context brand; 4) input pentru AI; 5) reguli; 6) semnale AI; 7) scor final
 // + verdict; 8) explicație; 9) salvare (un singur scan curent per email).
 export const scanEmailWithRules = async ({

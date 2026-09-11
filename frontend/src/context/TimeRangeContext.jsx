@@ -18,7 +18,7 @@
 // - Starea e doar în memorie (useState): la un refresh complet al paginii,
 //   se resetează la valoarea implicită (ultimele 30 de zile, din getDefaultRange).
 //
-// Detalii: docs/EXPLICATIE_FRONTEND.md §5.3.
+// Detalii: docs/architecture.md.
 // ─────────────────────────────────────────────────────────────────────────────
 
 import { createContext, useContext, useMemo, useState } from 'react';

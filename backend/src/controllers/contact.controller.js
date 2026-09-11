@@ -6,7 +6,7 @@
 // de rezultat (trimis cu succes, eroare de configurare server, sau altă
 // eroare la trimitere).
 //
-// Detalii: docs/EXPLICATIE_BACKEND.md §2 (route -> middleware -> controller).
+// Detalii: docs/architecture.md.
 // ─────────────────────────────────────────────────────────────────────────────
 
 import { sendContactMessageForUser } from '../services/contact.service.js';

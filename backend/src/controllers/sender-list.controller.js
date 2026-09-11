@@ -15,7 +15,7 @@
 //   POST   /sender-lists
 //   DELETE /sender-lists/:id
 //
-// Detalii: docs/EXPLICATIE_BACKEND.md §2 și §4.4.
+// Detalii: docs/detection-engine.md.
 // ─────────────────────────────────────────────────────────────────────────────
 
 import {

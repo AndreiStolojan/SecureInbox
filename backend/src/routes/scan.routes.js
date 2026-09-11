@@ -6,7 +6,7 @@
 // `scan.controller.js`. Ca la toate rutele protejate, `authorize` verifică
 // tokenul JWT și pune userul logat pe `req.user` înainte de controller.
 //
-// Detalii despre straturi: docs/EXPLICATIE_BACKEND.md §2.
+// Detalii despre straturi: docs/detection-engine.md.
 // ─────────────────────────────────────────────────────────────────────────────
 
 import { Router } from 'express';

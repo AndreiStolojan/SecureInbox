@@ -7,7 +7,7 @@
 // e activat). Frontend-ul folosește aceste informații pentru a decide ce
 // să arate userului.
 //
-// Detalii: docs/EXPLICATIE_BACKEND.md §2 (route -> middleware -> controller).
+// Detalii: docs/architecture.md.
 // ─────────────────────────────────────────────────────────────────────────────
 
 import { getStatusForUser } from '../services/meta.service.js';

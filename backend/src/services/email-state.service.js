@@ -10,7 +10,7 @@
 // (`riskBucket`) și dacă emailul mai are nevoie de atenția userului
 // (`reviewStatus`).
 //
-// Detalii: docs/EXPLICATIE_BACKEND.md §5.4.
+// Detalii: docs/detection-engine.md.
 // ─────────────────────────────────────────────────────────────────────────────
 
 // Calculează starea de "review" a unui email, combinând:

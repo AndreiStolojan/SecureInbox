@@ -15,7 +15,7 @@
 // MailAccountProvider înfășoară doar zona logată (din AppShell), nu toată
 // aplicația ca AuthProvider.
 //
-// Detalii: docs/EXPLICATIE_FRONTEND.md §5.2.
+// Detalii: docs/architecture.md.
 // ─────────────────────────────────────────────────────────────────────────────
 
 import { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react';

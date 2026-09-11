@@ -23,7 +23,7 @@
 // mailul tranzacțional/marketing legitim care era fals marcat ca suspect. Se pot
 // adăuga branduri/domenii noi aici fără să se schimbe vreun cod de regulă.
 //
-// Detalii: docs/EXPLICATIE_BACKEND.md §4.4 (stratul "brand verificat").
+// Detalii: docs/detection-engine.md.
 // ─────────────────────────────────────────────────────────────────────────────
 
 // Harta brand -> { nume afișat, listă de domenii oficiale }. Fiecare grup de mai

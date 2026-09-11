@@ -7,7 +7,7 @@
 // trimite răspunsul HTTP (res) sau pasează eroarea către next(err) (care
 // e prins de middleware-ul de erori).
 //
-// Detalii: docs/EXPLICATIE_BACKEND.md §2 (cum curge o cerere prin backend).
+// Detalii: docs/architecture.md.
 // ─────────────────────────────────────────────────────────────────────────────
 
 import {

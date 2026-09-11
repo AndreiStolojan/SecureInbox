@@ -8,7 +8,7 @@
 // cerere în antetul "Authorization: Bearer <token>". Nu există logout pe backend —
 // frontend-ul pur și simplu șterge token-ul.
 //
-// Detalii: docs/EXPLICATIE_BACKEND.md §1-2 (ce e un token/JWT, cum curge o cerere).
+// Detalii: docs/architecture.md.
 // ─────────────────────────────────────────────────────────────────────────────
 
 import bcrypt from 'bcryptjs'; // bibliotecă pentru criptarea (hash-uirea) parolelor

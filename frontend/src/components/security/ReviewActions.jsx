@@ -13,7 +13,7 @@
 // dinainte și se arată o eroare. Astfel aplicația pare rapidă, dar tot se
 // corectează singură dacă ceva nu merge.
 //
-// Detalii: docs/EXPLICATIE_FRONTEND.md §6.4.
+// Detalii: docs/architecture.md.
 // ─────────────────────────────────────────────────────────────────────────────
 
 import { useEffect, useState } from 'react';

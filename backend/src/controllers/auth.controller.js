@@ -7,8 +7,7 @@
 // împachetează rezultatul într-un răspuns JSON standard. NU conține logică de
 // business.
 //
-// Detalii: docs/EXPLICATIE_BACKEND.md §2 (straturile route -> middleware ->
-// controller -> service -> model).
+// Detalii: docs/architecture.md.
 // ─────────────────────────────────────────────────────────────────────────────
 
 import { loginUser, registerUser } from '../services/auth.service.js';

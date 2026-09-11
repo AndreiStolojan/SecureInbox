@@ -12,7 +12,7 @@
 // Folosit pe pagina de detaliu a emailului, ca să arate userului starea curentă
 // de trust/block pentru expeditorul emailului afișat.
 //
-// Detalii: docs/EXPLICATIE_BACKEND.md (sender-list.service.js).
+// Detalii: docs/architecture.md.
 // ─────────────────────────────────────────────────────────────────────────────
 
 // Normalizează o adresă de email: extrage adresa din formatul `"Nume" <adresa@x.com>`

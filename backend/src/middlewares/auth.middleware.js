@@ -12,7 +12,7 @@
 // Folosit pe orice rută care cere autentificare, de ex.:
 //   emailRouter.get('/', authorize, getEmails);
 //
-// Detalii: docs/EXPLICATIE_BACKEND.md §2 (ce e un token / JWT / Bearer).
+// Detalii: docs/architecture.md.
 // ───────────────────e──────────────────────────────────────────────────────────
 
 import jwt from 'jsonwebtoken';

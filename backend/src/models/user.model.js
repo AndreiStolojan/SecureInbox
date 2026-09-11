@@ -6,7 +6,7 @@
 // niciodată în clar), rol (user/admin) și setările personale (AI activat,
 // alerte, digest zilnic).
 //
-// Detalii: docs/EXPLICATIE_BACKEND.md §3.
+// Detalii: docs/architecture.md.
 // ─────────────────────────────────────────────────────────────────────────────
 
 import mongoose from "mongoose";
