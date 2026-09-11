@@ -1,8 +1,16 @@
 # Project retrospective and handoff
 
-Snapshot date: 2026-08-13
+Original snapshot: 2026-08-13. Operational update: 2026-09-11.
 
-Maintenance status: active feature development paused on 2026-08-13
+Development has resumed. PR #110 integrated the application audit and shared
+environments; measurements are in [pi-workspace-review.md](pi-workspace-review.md).
+Production remains at `dd7b89f` pending #95 and the rollout checks in #74.
+The [recovery runbook](hibernation-recovery-runbook.md) preserves the historical
+Atlas drill and lists the remaining #77 evidence. Hibernation is optional.
+
+The sections below retain historical implementation/test evidence. For current
+startup and configuration commands use [environments.md](environments.md) and
+[raspberry-pi-deployment.md](raspberry-pi-deployment.md).
 
 SecureInbox remains public as a portfolio and learning reference. There is no
 support or security-response SLA, and repository documentation does not prove
@@ -48,7 +56,7 @@ or against live third-party services.
 | Current Cloudflare, Atlas, Google OAuth, Gmail push, DNS, threat-intelligence, MalwareBazaar, Pi firewall, temperature, storage, and backup state | Requires live account and device inspection | Not verified by this handoff |
 | Production deployment and rollback | CI validates inputs; deployment remains manual | Not exercised by CI |
 | Real-world phishing accuracy or improvement over a baseline | Existing fixtures are regression and small semantic-evaluation inputs | Not established; tracked in #82 |
-| Restore of Atlas plus matching production secrets into an isolated target | No committed completed drill | Not established; tracked in #77 |
+| Restore of Atlas plus matching production secrets into an isolated target | August archive/count drill in the recovery runbook | Application recovery checks remain in #77 |
 | Unattended privacy, retention, rotation, patching, and alert-response policy | Open operational checklist | Not finalized; tracked in #79 |
 
 The safe public claim is that SecureInbox has tested security mechanisms and an
@@ -171,36 +179,11 @@ another device or storage provider.
 
 ### Raspberry Pi production
 
-Production uses only the `prod` branch and `docker-compose.prod.yml`. Stop if
-`git status --short` is not clean.
-
-```bash
-cd /opt/secureinbox
-test -z "$(git status --porcelain)" || { echo "Dirty worktree" >&2; exit 1; }
-git fetch origin
-git switch prod
-git pull --ff-only origin prod
-docker compose -f docker-compose.prod.yml config --quiet
-docker compose -f docker-compose.prod.yml build --pull
-docker compose -f docker-compose.prod.yml up -d
-docker compose -f docker-compose.prod.yml ps
-docker compose -f docker-compose.prod.yml exec frontend \
-  wget -qO- http://backend:5500/api/v1/ready
-curl -i https://YOUR_HOSTNAME/api/v1/ready
-git rev-parse HEAD
-```
-
-For diagnosis:
-
-```bash
-docker compose -f docker-compose.prod.yml ps
-docker compose -f docker-compose.prod.yml logs --tail=100
-docker compose -f docker-compose.prod.yml logs --follow backend
-```
-
-The full deployment and promotion procedure is in
-[raspberry-pi-deployment.md](raspberry-pi-deployment.md). Before using it,
-complete the inventory, backup, recovery, and live-state checks in #77 and #79.
+Use the [deployment guide](raspberry-pi-deployment.md) for the shared Compose
+base plus production overlay, and the [recovery runbook](hibernation-recovery-runbook.md)
+for the legacy rollback target and its matching two-file environment layout.
+The `prod` branch requires independent approval. A merged promotion is not a
+verified deployment; #74 remains open until the running release is checked.
 
 ## Lessons learned
 
