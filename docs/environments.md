@@ -11,7 +11,15 @@ MongoDB, and a six-message demo inbox. The app listens on loopback port 8080;
 MongoDB listens on loopback port 27018. Production has its own containers and data.
 Re-running provisioning updates images and the demo account; other messages remain.
 
-For hot reload, keep only MongoDB in Docker and run the app with Node and Vite:
+For hot reload, update the root `.env` URLs to the Vite origin first:
+
+```dotenv
+FRONTEND_APP_URL=http://localhost:5173
+GOOGLE_REDIRECT_URI=http://localhost:5173/api/v1/mail-accounts/google/callback
+```
+
+Register that callback separately with Google if testing Gmail OAuth. Keep only
+MongoDB in Docker and run the app with Node and Vite:
 
 ```bash
 docker compose stop frontend backend
@@ -26,7 +34,8 @@ npm run dev --prefix frontend
 Use Node 24.20 or newer in the Node 24 line. The backend reads the root `.env`,
 derives the local MongoDB URI, and watches source changes with Node's built-in
 watcher. Vite uses the root `PORT` to reach the backend. Open localhost:5173.
-Restart development processes after changing `.env`.
+Restart development processes after changing `.env`. When returning to the
+container app, change both URLs back to port 8080 before running `./provision`.
 
 From a laptop, `ssh -L 8080:127.0.0.1:8080 polo@<pi-address>` gives access to the
 container app; forward 5173 instead for Vite. Neither endpoint is public.
