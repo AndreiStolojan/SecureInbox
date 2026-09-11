@@ -38,6 +38,12 @@ const queries = [
     ['safe', { riskBucket: 'safe' }], ['reviewed', { riskBucket: 'reviewed_safe' }],
     ['unscanned', { riskBucket: 'unscanned' }], ['phishing', { verdict: 'phishing' }],
 ];
+// Keep the index/scan/sort evidence without engine-generated projection bytecode.
+const summarizePlan = (plan) => Object.fromEntries(Object.entries(plan?.queryPlan || plan || {})
+    .filter(([key]) => ['stage', 'indexName', 'keyPattern', 'direction', 'indexBounds',
+        'sortPattern', 'limitAmount', 'filter', 'inputStage', 'inputStages'].includes(key))
+    .map(([key, value]) => [key, key === 'inputStage' ? summarizePlan(value)
+        : key === 'inputStages' ? value.map(summarizePlan) : value]));
 const originalAggregate = Email.aggregate;
 let pipelines = [];
 Email.aggregate = function (pipeline) { pipelines.push(pipeline); return originalAggregate.call(this, pipeline); };
@@ -99,7 +105,7 @@ try {
                     const cursor = explain.stages?.find((stage) => stage.$cursor)?.$cursor || explain;
                     plans.push({ documentsExamined: cursor.executionStats?.totalDocsExamined,
                         keysExamined: cursor.executionStats?.totalKeysExamined,
-                        winningPlan: cursor.queryPlanner?.winningPlan,
+                        winningPlan: summarizePlan(cursor.queryPlanner?.winningPlan),
                         blockingSort: JSON.stringify(cursor.queryPlanner?.winningPlan).includes('"SORT"')
                             || (explain.stages || []).some((stage) => stage.$sort || stage.$facet?.items?.some((item) => item.$sort)),
                         lookups: (explain.stages || []).filter((stage) => stage.$lookup).map((stage) => ({
