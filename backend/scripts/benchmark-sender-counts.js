@@ -89,7 +89,7 @@ try {
             if (sample >= 0) { durations.push(duration); memory.push(Math.max(peakRss, process.memoryUsage().rss)); }
         }
         assert.deepEqual(await getSenderListEntries({ userId: otherUser, withMatchCounts: true }), []);
-        results.push({ rules: count, aggregationCount: count, totalQueries: count + 1, maxInflightAggregations: peak,
+        results.push({ rules: count, aggregationCount: count, databaseOperations: count + 1, maxInflightAggregations: peak,
             medianMs: percentile(durations, 0.5), p95Ms: percentile(durations, 0.95),
             peakSampledRssBytes: Math.max(...memory), samplesMs: durations });
     }
