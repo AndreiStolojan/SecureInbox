@@ -15,7 +15,7 @@
 //    aprobă/refuză; conectăm contul și redirecționăm userul înapoi spre
 //    frontend (cu query params de succes/eroare), nu cu JSON.
 //
-// Detalii: docs/EXPLICATIE_BACKEND.md §5.1 (OAuth) și §5.2 (sincronizare).
+// Detalii: docs/architecture.md.
 // ─────────────────────────────────────────────────────────────────────────────
 
 import {

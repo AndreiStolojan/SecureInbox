@@ -16,7 +16,7 @@
 // Astfel userul poate inspecta conținutul emailului în siguranță, fără ca acel
 // conținut să poată "rula" cod în aplicația noastră.
 //
-// Detalii: docs/EXPLICATIE_FRONTEND.md §8.
+// Detalii: docs/architecture.md.
 // ─────────────────────────────────────────────────────────────────────────────
 
 import DOMPurify from 'dompurify';
@@ -88,12 +88,8 @@ const blockRemoteImages = (documentNode) => {
  *
  * @returns {{ html: string, blockedImages: number }}
  */
-// Funcția principală, exportată: curăță HTML-ul unui email pentru afișare.
-// - Tagurile <script>, <iframe>, <form>, <object>, <embed> sunt scoase ÎNTOTDEAUNA
-//   (DOMPurify le elimină indiferent de configurare, dar le listăm explicit ca
-//   să fie clar din cod ce e interzis).
-// - Atributul "srcset" e interzis, ca să nu rămână o portiță pentru imagini extra.
-// - blockImages = true => activează și blocarea imaginilor remote (vezi mai sus).
+// Interzicem explicit și object/embed. srcset este blocat pentru a nu permite
+// încărcarea imaginilor prin surse alternative.
 export const sanitizeEmailHtml = (html, { blockImages = false } = {}) => {
   // Dacă nu avem text valid, returnăm un rezultat "gol" sigur.
   if (typeof html !== 'string' || html.trim().length === 0) {

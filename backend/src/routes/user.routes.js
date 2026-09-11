@@ -6,7 +6,7 @@
 // la final, controllerul care răspunde efectiv. Ordinea contează — fiecare
 // middleware poate opri cererea înainte să ajungă la următorul.
 //
-// Detalii: docs/EXPLICATIE_BACKEND.md §2 (route -> middleware -> controller).
+// Detalii: docs/architecture.md.
 // ─────────────────────────────────────────────────────────────────────────────
 
 import { Router } from 'express';

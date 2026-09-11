@@ -345,3 +345,25 @@ This is a repository-content review, not proof about untracked files, GitHub
 secrets, previous Git history, external services, or production databases. Run
 the same review again before adding screenshots, fixtures, benchmark corpora, or
 operational evidence. Never commit raw Gmail exports or real phishing samples.
+
+## Source comment review, 2026-09-11
+
+The source inventory at `5a9881a` found 68 missing documentation references in
+`backend/src` and `frontend/src`: 53 to `EXPLICATIE_BACKEND.md`, 13 to
+`EXPLICATIE_FRONTEND.md`, one to `DECISIONS.md`, and one to
+`SCORING_WEIGHTS_REVIEW.md`. The historical issue count was 69.
+
+These references now point to [architecture](architecture.md),
+[detection](detection-engine.md), and [Gmail push setup](gmail-push-setup.md).
+Old section numbers were removed. Concrete corrections include:
+
+| Source | Correction |
+| --- | --- |
+| [`scheduler.service.js`](../backend/src/services/scheduler.service.js) | Documents watch renewal alongside polling and digest scheduling; removes the obsolete claim that Gmail push is not used. |
+| [`scoring.config.js`](../backend/src/config/scoring.config.js) and [frontend scales](../frontend/src/lib/scoring.js) | Separates allowlist reductions from blocklist points and explains that frontend scale constants must still be synchronized manually. |
+| [`meta.service.js`](../backend/src/services/meta.service.js) | Describes the existence query's `_id` result and public boolean conversion. |
+| [`sanitizeEmailHtml.js`](../frontend/src/utils/sanitizeEmailHtml.js) | Keeps explicit HTML and remote-resource restrictions while removing a duplicate description. |
+
+This is a comment-only source change. Parsed JavaScript/JSX remains identical;
+it does not improve runtime performance. The source reference check reports no
+missing `docs/*.md` targets after the pass.

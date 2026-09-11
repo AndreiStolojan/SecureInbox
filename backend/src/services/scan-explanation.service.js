@@ -8,7 +8,7 @@
 // (allowlist/blocklist). Acesta e textul de rezervă folosit când AI e dezactivat
 // sau a eșuat — vezi `resolveExplanationResult` din scan.service.js.
 //
-// Detalii: docs/EXPLICATIE_BACKEND.md §4.6.
+// Detalii: docs/detection-engine.md.
 // ─────────────────────────────────────────────────────────────────────────────
 
 // Propoziția de bază pentru fiecare verdict posibil — prima frază din explicație.
@@ -149,7 +149,7 @@ const buildAiSentence = (aiSignals) => {
     return `The AI analysis indicates that ${fragments.slice(0, 2).join(' and ')}.`;
 };
 
-// Construiește propoziția despre stratul "brand verificat" (vezi §4.4 din docs):
+// Construiește propoziția despre stratul "brand verificat" (vezi docs/detection-engine.md):
 // dacă emailul vine de pe un domeniu oficial al unui brand cunoscut, explicăm
 // userului că semnalele tipice de brand (urgență, multe linkuri, butoane "Sign in")
 // au fost reduse pentru că sunt normale pentru acel brand.
@@ -164,7 +164,7 @@ const buildVerifiedBrandSentence = (senderVerifiedBrand, verifiedBrandName) => {
 };
 
 // Construiește propoziția despre stratul "liste de expeditori ale userului"
-// (allowlist/blocklist — vezi §4.4 din docs). Dacă userul a blocat expeditorul,
+// (allowlist/blocklist, vezi docs/detection-engine.md). Dacă userul a blocat expeditorul,
 // explicăm că verdictul e mereu "probabil phishing"; dacă l-a pus pe lista de
 // încredere, explicăm că semnalele contextuale au fost reduse (dar nu cele critice).
 const buildSenderListSentence = (senderListMatch) => {

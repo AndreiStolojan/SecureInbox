@@ -7,7 +7,7 @@
 // `const { user, logout } = useAuth();` și are acces la userul logat, fără să
 // fie nevoie să fie pasat prin props.
 //
-// Detalii: docs/EXPLICATIE_FRONTEND.md §5.1.
+// Detalii: docs/architecture.md.
 // ─────────────────────────────────────────────────────────────────────────────
 
 import { useContext } from 'react';

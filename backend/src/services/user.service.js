@@ -10,7 +10,7 @@
 // celelalte colecții (emailuri, scanări, conturi de mail, liste expeditori) —
 // asta se numește "cascadă" (cascade).
 //
-// Detalii: docs/EXPLICATIE_BACKEND.md §1-2 (straturi, modele, JWT/"me").
+// Detalii: docs/architecture.md.
 // ─────────────────────────────────────────────────────────────────────────────
 
 import User from '../models/user.model.js';

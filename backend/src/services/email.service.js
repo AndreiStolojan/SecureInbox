@@ -1,22 +1,6 @@
-// ─────────────────────────────────────────────────────────────────────────────
-// email.service.js — stratul de acces la date pentru emailuri (citire/listare).
-//
-// Ce face, pe scurt: oferă funcțiile pe care le folosește email.controller.js
-// pentru a afișa lista de emailuri (cu filtre, căutare, paginare), detaliile
-// unui email (cu "starea" lui calculată: effectiveVerdict, riskBucket,
-// reviewStatus — vezi email-state.service.js), conținutul brut al unui email,
-// și statistici pentru dashboard (trend pe zile, top expeditori riscanți,
-// numărul de emailuri din fiecare "găleată" de risc).
-//
-// Multe dintre aceste calcule (effectiveVerdict, riskBucket etc.) se fac direct
-// în baza de date, printr-un "aggregation pipeline" MongoDB — o secvență de pași
-// ($match, $lookup, $addFields...) care transformă datele brute în forma finală
-// înainte să ajungă în Node.js. Asta e mai rapid decât să aducem toate emailurile
-// și să calculăm în JavaScript.
-//
-// Detalii: docs/EXPLICATIE_BACKEND.md §3 (modelele de date) și §5.4 (starea finală
-// a emailului).
-// ─────────────────────────────────────────────────────────────────────────────
+// Listează emailurile, detaliile și statisticile pentru utilizatorul curent.
+// Interogările MongoDB derivă verdictul și starea de review înainte de filtrarea
+// după risc. Vezi email-state.service.js și docs/architecture.md.
 
 import mongoose from 'mongoose';
 

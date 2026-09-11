@@ -10,7 +10,7 @@
 // Tot aici: dacă după sync apar emailuri noi cu verdict "likely_phishing" și
 // userul a activat alertele, se trimite un email de avertizare instant.
 //
-// Detalii: docs/EXPLICATIE_BACKEND.md §5.2 și §6.
+// Detalii: docs/architecture.md.
 // ─────────────────────────────────────────────────────────────────────────────
 
 import MailAccount from '../models/mail-account.model.js';

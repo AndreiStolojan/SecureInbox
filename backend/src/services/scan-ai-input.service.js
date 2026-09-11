@@ -12,7 +12,7 @@
 // face să dea erori). Reducem inputul la "esențial", dar păstrăm informația
 // relevantă pentru detectarea phishingului.
 //
-// Detalii: docs/EXPLICATIE_BACKEND.md §4.5 (pasul 4) și §4.7.
+// Detalii: docs/detection-engine.md.
 // ─────────────────────────────────────────────────────────────────────────────
 
 // Elemente al căror CONȚINUT nu e text citibil de om. Trebuie eliminate cu totul,

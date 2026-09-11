@@ -31,7 +31,7 @@
 //     să-și dea seama — așa că respingem operația cu 409 LIST_CONFLICT, cu mesaj
 //     explicativ (vezi findOppositeCoverageConflict).
 //
-// Detalii: docs/EXPLICATIE_BACKEND.md §4.4, punctul 2 ("Liste de expeditori ale userului").
+// Detalii: docs/detection-engine.md.
 // ─────────────────────────────────────────────────────────────────────────────
 
 import mongoose from 'mongoose';

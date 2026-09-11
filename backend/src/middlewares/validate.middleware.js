@@ -12,7 +12,7 @@
 // Folosit pe orice rută care primește date de la user, de ex.:
 //   authRouter.post('/register', validate(registerSchema), register);
 //
-// Detalii: docs/EXPLICATIE_BACKEND.md §2 (straturile route -> middleware -> ...).
+// Detalii: docs/architecture.md.
 // ─────────────────────────────────────────────────────────────────────────────
 
 import sendErrorResponse from '../common/http/send-error-response.js';

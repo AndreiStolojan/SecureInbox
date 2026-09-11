@@ -8,7 +8,7 @@
 // expeditor/domeniu" (block). Folosit de scan.service.js (prin
 // sender-list.service.js) ca semnal în calculul scorului de risc.
 //
-// Detalii: docs/EXPLICATIE_BACKEND.md §3.
+// Detalii: docs/detection-engine.md.
 // ─────────────────────────────────────────────────────────────────────────────
 
 import mongoose from 'mongoose';

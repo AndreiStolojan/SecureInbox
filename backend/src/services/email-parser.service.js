@@ -14,7 +14,7 @@
 // în baza de date, iar regulile de scor din scan.service.js "citesc" exact
 // aceste câmpuri. Parsarea e separată de scanare ca să fie testabilă și ca
 // scanarea să nu refacă această muncă de fiecare dată. Detalii:
-// docs/EXPLICATIE_BACKEND.md §5.3.
+// docs/detection-engine.md.
 // ─────────────────────────────────────────────────────────────────────────────
 
 import { analyzeEmailLinks } from './link-analysis.service.js';

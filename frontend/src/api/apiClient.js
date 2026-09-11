@@ -14,7 +14,7 @@
 //      invalidă, deci șterge token-ul local (te deloghează). Un `401` legat de
 //      Gmail (ex. token Google expirat) NU deloghează userul.
 //
-// Detalii: docs/EXPLICATIE_FRONTEND.md §4.1 și §4.3.
+// Detalii: docs/architecture.md.
 // ─────────────────────────────────────────────────────────────────────────────
 
 import { clearStoredToken, getStoredToken, getSessionVersion } from '../utils/tokenStorage.js';
