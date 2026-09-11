@@ -1,10 +1,11 @@
 import bcrypt from 'bcryptjs';
 
-import { ADMIN_EMAIL, ADMIN_NAME, ADMIN_PASSWORD } from '../src/config/env.js';
+import { ADMIN_EMAIL, ADMIN_NAME, ADMIN_PASSWORD, APP_READ_ONLY } from '../src/config/env.js';
 import connectToDatabase from '../src/database/mongodb.js';
 import User from '../src/models/user.model.js';
 
 const bootstrapAdmin = async () => {
+    if (APP_READ_ONLY) throw new Error('Admin bootstrap is disabled in read-only mode.');
     if (!ADMIN_NAME || !ADMIN_EMAIL || !ADMIN_PASSWORD) {
         throw new Error(
             'Missing admin bootstrap config. Set ADMIN_NAME, ADMIN_EMAIL and ADMIN_PASSWORD in your env file.'

@@ -4,7 +4,7 @@
 
 import cron from 'node-cron';
 import mongoose from 'mongoose';
-import { SYNC_INTERVAL_MINUTES } from '../config/env.js';
+import { SYNC_INTERVAL_MINUTES, APP_READ_ONLY } from '../config/env.js';
 import { runAutoSyncForAllUsers } from './auto-sync.service.js';
 import { recordScheduledTask } from '../monitoring/metrics.js';
 import { getDailySummaryForUser } from './report.service.js';
@@ -150,6 +150,7 @@ const runDailyDigestForHour = async (currentHour) => {
 // header-ul fișierului. Erorile din interiorul joburilor sunt prinse aici —
 // dacă un job pică, nu trebuie să oprească tot serverul.
 export const startSchedulers = () => {
+    if (APP_READ_ONLY) return { stop() {} };
     const syncIntervalMinutes = parseSyncInterval();
     const syncCron = buildSyncCronExpression(syncIntervalMinutes);
 

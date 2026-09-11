@@ -116,3 +116,94 @@ See [the deployment guide](raspberry-pi-deployment.md).
 honor `PROVISION_ENV_FILE`. Atlas backup/restore uses Atlas tooling. Store the
 matching encryption key separately from database backups. Never restore
 production data into development automatically.
+
+## Native development without Docker
+
+Use Node 24.20 or newer in the Node 24 line and npm with the committed lockfiles.
+There is no Bun or pnpm migration. Supply either a native MongoDB server or an
+Atlas database restricted to development, with a name ending in `_dev` or `_test`.
+No Docker service is required when that database already exists.
+
+From a clean checkout, create a private root configuration without overwriting
+an existing environment:
+
+```bash
+umask 077
+cp -n .env.example .env.native.local
+node --input-type=module <<'JS'
+import { readFileSync, writeFileSync } from 'node:fs';
+import { randomBytes } from 'node:crypto';
+const path = '.env.native.local';
+const text = readFileSync(path, 'utf8').replaceAll('replace-with-a-generated-value',
+  () => randomBytes(32).toString('hex'));
+writeFileSync(path, text, { mode: 0o600 });
+JS
+```
+
+Edit that private file: set `DB_URI` to the isolated database, `SEED_DEMO=false`,
+`COMPOSE_PROFILES=`, `PORT=5501`, `FRONTEND_APP_URL=http://localhost:5173` and
+`GOOGLE_REDIRECT_URI=http://localhost:5173/api/v1/mail-accounts/google/callback`.
+Leave OAuth, SMTP, Arcjet and reputation keys blank unless testing that integration.
+Set `AI_SEMANTIC_ENABLED=false` when Ollama is unavailable; local rules still work.
+For Gmail testing, register the local redirect in a separate OAuth client and use
+a test mailbox. An ordinary development server runs the synchronization/digest/watch
+schedulers; it must never point at a shared production database.
+
+Run from the repository root in separate terminals:
+
+```bash
+npm ci --prefix backend
+npm ci --prefix frontend
+ENV_FILE="$PWD/.env.native.local" npm run dev --prefix backend
+```
+
+```bash
+PORT=5501 npm run dev --prefix frontend
+```
+
+Open `http://localhost:5173`, register a development user and log in normally.
+If synthetic demo data is desired, set `SEED_DEMO=true` and run
+`ENV_FILE="$PWD/.env.native.local" npm run seed:local --prefix backend` once.
+Configure a generated `DEMO_USER_PASSWORD` in the private file before seeding.
+
+```bash
+curl --fail --max-time 5 http://127.0.0.1:5501/api/v1/ready
+curl --fail --max-time 5 http://127.0.0.1:5173/api/v1/ready
+```
+
+Both servers bind loopback. Press Ctrl-C in both terminals to stop them. The
+backend stops its schedulers, drains queued Gmail work and disconnects MongoDB;
+its shutdown deadline is ten seconds. The external MongoDB server remains running.
+
+## Inspect shared data without writes
+
+Use the same native server with `APP_READ_ONLY=true` in `.env.native.local` and
+a separate Atlas credential granted only the `read` role on the inspected database.
+Use a fresh local `JWT_SECRET` generated above, never the production signing key.
+Keep the local generated `MAIL_TOKEN_ENCRYPTION_KEY`; reading stored messages does
+not require decrypting Gmail tokens. Do not copy production OAuth, tunnel, SMTP,
+Arcjet or provider credentials. Do not seed shared data.
+
+The development database-name check permits shared names only in this mode.
+Database permissions are a second boundary: the inspection credential must have
+no write or administrative roles. This mode is rejected under `NODE_ENV=production`
+and forces the native backend to bind `127.0.0.1`, regardless of `APP_HOST`.
+It is deliberately not passed into production Compose containers.
+
+Log in using the existing SecureInbox account password. Login checks the stored
+password hash and issues a token signed by the local key; it does not write data
+or call Arcjet. This local token is not valid in production. If the password is
+unavailable, recover access separately; do not add a bypass or paste a production
+token into a script.
+
+The server disables scheduled synchronization, digests, watch renewal, Gmail push
+handling, and Mongoose automatic index/collection creation. An explicit route list
+allows login, readiness, the current user's profile, inbox/details/raw stored data,
+scan results, mail-account summaries, reports, sender counts and metadata reads.
+All other routes, including OAuth GET callbacks, return `403 READ_ONLY_MODE` before
+handlers run. New routes must be reviewed before being allowed. UI mutation buttons
+remain visible and receive that error; no new UI was introduced.
+
+Read-only is a server/data boundary, not browser network isolation. Existing HTML
+sanitization and remote-image blocking still apply; clicking an external link is
+an explicit browser action. Log out of the inspection session afterward to remove its local token. Keep any exported private data out of commits and public reports.

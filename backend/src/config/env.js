@@ -9,13 +9,21 @@ if (process.env.NODE_ENV !== 'test') {
 }
 const nodeEnv = process.env.NODE_ENV || 'development';
 process.env.NODE_ENV = nodeEnv;
+const readOnlyValue = process.env.APP_READ_ONLY || 'false';
+if (!['true', 'false'].includes(readOnlyValue)) {
+    throw new Error('APP_READ_ONLY must be true or false.');
+}
+export const APP_READ_ONLY = readOnlyValue === 'true';
+if (APP_READ_ONLY && nodeEnv === 'production') {
+    throw new Error('APP_READ_ONLY is only supported for local inspection.');
+}
 if (!process.env.DB_URI && nodeEnv === 'development' && process.env.MONGO_ROOT_PASSWORD) {
     const username = encodeURIComponent(process.env.MONGO_ROOT_USERNAME || 'secureinbox_root');
     const password = encodeURIComponent(process.env.MONGO_ROOT_PASSWORD);
     process.env.DB_URI = `mongodb://${username}:${password}@127.0.0.1:${process.env.MONGO_PORT || '27018'}/${process.env.MONGO_DATABASE || 'secureinbox_dev'}?authSource=admin`;
 }
 
-if (nodeEnv === 'development' && process.env.DB_URI) {
+if (nodeEnv === 'development' && !APP_READ_ONLY && process.env.DB_URI) {
     const database = new URL(process.env.DB_URI).pathname.slice(1);
     if (!/(?:_|-)(dev|test)$/.test(database)) {
         throw new Error('Development DB_URI must select a database ending in _dev or _test.');
