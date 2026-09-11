@@ -1,8 +1,8 @@
-import { ARCJET_KEY } from '../../src/config/env.js';
+import { ARCJET_KEY, APP_READ_ONLY } from '../../src/config/env.js';
 import aj from './arcjet.config.js';
 
 const arcjetMiddleware = async (req, res, next) => {
-    if (!ARCJET_KEY || !aj) return next();
+    if (APP_READ_ONLY || !ARCJET_KEY || !aj) return next();
     try {
         const decision = await aj.protect(req, { requested: 1 });
 

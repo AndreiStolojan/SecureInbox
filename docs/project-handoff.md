@@ -8,6 +8,10 @@ Production remains at `dd7b89f` pending #95 and the rollout checks in #74.
 The [recovery runbook](hibernation-recovery-runbook.md) preserves the historical
 Atlas drill and lists the remaining #77 evidence. Hibernation is optional.
 
+Native development and shared-data inspection now use the same backend with an
+explicit read-only mode; see [the native workflow](environments.md#native-development-without-docker).
+It disables scheduled work and denies unreviewed routes before their handlers.
+
 The sections below retain historical implementation/test evidence. For current
 startup and configuration commands use [environments.md](environments.md) and
 [raspberry-pi-deployment.md](raspberry-pi-deployment.md).
