@@ -207,3 +207,18 @@ remain visible and receive that error; no new UI was introduced.
 Read-only is a server/data boundary, not browser network isolation. Existing HTML
 sanitization and remote-image blocking still apply; clicking an external link is
 an explicit browser action. Log out of the inspection session afterward to remove its local token. Keep any exported private data out of commits and public reports.
+
+### Verification, 2026-09-11
+
+On Linux ARM64 with Node 24.20.0, the native server was exercised against MongoDB
+8.0.28 using a database-scoped `read` credential and synthetic user/email records.
+Login and eight authenticated read routes succeeded; mutation and OAuth callbacks
+returned 403. Collection contents, collection inventory and indexes matched before
+and after. The backend forced loopback despite `APP_HOST=0.0.0.0`, started no
+schedulers, and exited with code zero on SIGTERM.
+
+The documented `npm run dev` commands served Vite and proxied backend readiness;
+both process groups stopped on Ctrl-C. The test database ran in a disposable
+container solely for validation and was removed afterward. The application
+processes were native, and neither Atlas nor live Gmail was accessed. Backend
+and frontend clean installs, tests, lint/build and provisioning checks passed.
