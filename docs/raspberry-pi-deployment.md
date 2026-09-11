@@ -3,6 +3,8 @@
 Production and development use the same source and Compose base. The root `.env`
 selects the production overlay, Atlas database, and separate runtime name.
 See [environment configuration](environments.md) for the complete variable list.
+For backup evidence and recovery, see the
+[recovery runbook](hibernation-recovery-runbook.md). Hibernation is optional.
 
 ```text
 Browser -> Cloudflare -> cloudflared -> nginx -> Express -> MongoDB Atlas
