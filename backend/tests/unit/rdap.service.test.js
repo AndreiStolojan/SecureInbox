@@ -154,7 +154,7 @@ test('RDAP serves a stale bootstrap during a short refresh outage', async () => 
         bootstrapTtlMs: 60_000,
         bootstrapNegativeTtlMs: 1_000,
         safeJsonGet: async (url) => {
-            if (url.includes('iana.org')) {
+            if (new URL(url).hostname === 'data.iana.org') {
                 bootstrapRequests += 1;
                 return bootstrapRequests === 1
                     ? { ok: true, status: 200, body: bootstrap }
@@ -191,7 +191,7 @@ test('a cancelled bootstrap waiter does not cancel the shared refresh for anothe
     });
     const service = createRdapService({
         safeJsonGet: (url, { signal }) => {
-            if (url.includes('iana.org')) {
+            if (new URL(url).hostname === 'data.iana.org') {
                 bootstrapSignal = signal;
                 bootstrapStartedResolve();
                 return new Promise((resolve) => {

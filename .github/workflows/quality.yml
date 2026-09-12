@@ -42,6 +42,7 @@ jobs:
         with: { node-version: 24.20.0 }
       - run: npm ci --prefix backend --ignore-scripts
       - run: bash -n provision scripts/dotenv.sh scripts/backup scripts/restore tests/provisioning.test.sh && bash tests/provisioning.test.sh
+      - run: node --test design/tools.test.mjs
       - run: |
           # Every command below that reaches Docker Hub is a third-party network
           # call on an unauthenticated runner, and those fail intermittently —

@@ -34,7 +34,7 @@ test('aggregates current sources, redirect evidence and domain age without expos
                 calls.webRisk += 1;
                 return {
                     status: 'ok',
-                    matches: url.includes('bit.ly') ? ['MALWARE'] : ['SOCIAL_ENGINEERING'],
+                    matches: new URL(url).hostname === 'bit.ly' ? ['MALWARE'] : ['SOCIAL_ENGINEERING'],
                     expiresAt: '2026-08-04T12:00:00.000Z',
                 };
             },
@@ -42,7 +42,7 @@ test('aggregates current sources, redirect evidence and domain age without expos
         urlhaus: {
             async lookup(url) {
                 calls.urlhaus += 1;
-                return { status: 'ok', match: url.includes('bad.com') };
+                return { status: 'ok', match: new URL(url).hostname === 'bad.com' };
             },
         },
         rdap: {
@@ -115,13 +115,13 @@ test('deduplicates links and enforces the per-email URL cap', async () => {
         maxUrls: 2,
         webRisk: {
             async lookup(url) {
-                calls.push(`web:${url}`);
+                calls.push({ source: 'web', hostname: new URL(url).hostname });
                 return { status: 'ok', matches: [] };
             },
         },
         urlhaus: {
             async lookup(url) {
-                calls.push(`haus:${url}`);
+                calls.push({ source: 'haus', hostname: new URL(url).hostname });
                 return { status: 'ok', match: false };
             },
         },
@@ -144,7 +144,7 @@ test('deduplicates links and enforces the per-email URL cap', async () => {
     assert.equal(result.checkedUrlCount, 2);
     assert.equal(result.cappedUrlCount, 1);
     assert.equal(calls.length, 4);
-    assert.ok(calls.every((entry) => !entry.includes('three.com')));
+    assert.ok(calls.every((entry) => entry.hostname !== 'three.com'));
 });
 
 test('fails open when sources fail independently or the total budget expires', async () => {
