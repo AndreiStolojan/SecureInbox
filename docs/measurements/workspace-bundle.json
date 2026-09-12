@@ -1,0 +1,14 @@
+{
+  "baselineRevision": "9567caf",
+  "implementationRevision": "5cec9dc",
+  "before": {
+    "initialJsBytes": 1044673,
+    "initialGzipBytes": 317114,
+    "totalJsBytes": 1044673
+  },
+  "after": {
+    "initialJsBytes": 553639,
+    "initialGzipBytes": 174593,
+    "totalJsBytes": 1048454
+  }
+}
