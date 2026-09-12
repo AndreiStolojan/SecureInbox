@@ -1,5 +1,8 @@
 # Deployment security review, 2026-09-06
 
+See the [12 September refresh](security-review-2026-09-12.md) for current host,
+Atlas privilege and GitHub alert evidence.
+
 This is a dated, partial review for #79, not approval for unattended operation.
 The Pi was inspected read-only over SSH. Its checkout was clean at `dd7b89f`.
 Cloudflare console work was deferred at the owner's request. No service was

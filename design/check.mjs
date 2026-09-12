@@ -20,6 +20,9 @@ const KEYS = ['dossier', 'briefing', 'instrument', 'quartz', 'harbor', 'ember', 
 // The warning still exists to catch a drift back to the original neon rainbow.
 const MAX_HUE_FAMILIES = 4;
 const targets = process.argv.slice(2).length ? process.argv.slice(2) : KEYS;
+if (targets.some((key) => !KEYS.includes(key))) {
+  throw new Error(`Unknown direction. Choose from: ${KEYS.join(', ')}`);
+}
 
 // Values from SPEC.md §5 that must survive verbatim, or the six screens are no
 // longer showing the same data and the comparison is meaningless.
@@ -149,7 +152,7 @@ for (const key of targets) {
 
   if (/<!doctype/i.test(html) || /<html[\s>]/i.test(html) || /<body[\s>]/i.test(html))
     errs.push('contains a full-document wrapper');
-  if (/<script[\s>]/i.test(html)) errs.push('contains <script>');
+  if (/<script\b/i.test(html)) errs.push('contains <script>');
   if (/<img[\s>]/i.test(html)) errs.push('contains <img>');
   if (/url\(\s*['"]?(https?:)?\/\//i.test(html)) errs.push('external URL in CSS');
   if (/url\(\s*['"]?data:/i.test(html)) errs.push('data: URI');
@@ -170,7 +173,8 @@ for (const key of targets) {
   // rendering as C via selectors the second half never overrides. Scoping,
   // data and size all still pass, so nothing else here catches it. The tell is
   // the root rule being declared twice: one stylesheet declares it once.
-  const roots = (css.match(new RegExp(`(^|\\})\\s*\\.dir-${key}\\s*\\{`, 'g')) || []).length;
+  const roots = [...css.matchAll(/(^|})\s*\.dir-([a-z]+)\s*\{/g)]
+    .filter((match) => match[2] === key).length;
   if (roots > 1) errs.push(`root .dir-${key} declared ${roots}x — two stylesheets concatenated?`);
 
   // Exact duplicate selector lists. Some are legitimate (a shared type mixin
