@@ -8,23 +8,23 @@
 //   - praguri de verdict (RISK_THRESHOLDS),
 //   - punctele fiecărei reguli deterministe (RULE_WEIGHTS),
 //   - punctele fiecărui semnal AI (AI_SIGNAL_WEIGHTS) + plafonul AI (AI_SCORE_MAX),
-//   - două straturi de "context" care pot REDUCE (niciodată crește) punctele:
-//     brand verificat (VERIFIED_BRAND_MODIFIERS) și liste ale userului
-//     (USER_ALLOWLIST_MODIFIERS / USER_BLOCKLIST_RULE_POINTS).
+//   - reduceri pentru brand verificat și allowlist (VERIFIED_BRAND_MODIFIERS,
+//     USER_ALLOWLIST_MODIFIERS), plus puncte pentru blocklist
+//     (USER_BLOCKLIST_RULE_POINTS).
 //
 // Modelul de scor: scorFinal = min(SCORE_MAX, scorReguli + scorAI), apoi
 // RISK_THRESHOLDS traduce scorul în verdict. Scala e 0–100 (echivalent cu 1.0
 // normalizat).
 //
 // Cele trei invariante (regulile de aur) care trebuie păstrate de orice modificare
-// a numerelor de mai jos (vezi și docs/SCORING_WEIGHTS_REVIEW.md §4):
+// a numerelor de mai jos (vezi și docs/detection-engine.md):
 //   1. Niciun semnal singur nu atinge pragul HIGH_RISK (60).
 //   2. Niciun semnal slab singur nu trece de banda MEDIUM (>=30).
 //   3. AI singur nu poate declara phishing (AI_SCORE_MAX < pragul de 60);
 //      pragul de 60 se atinge prin reguli doar dacă DOUĂ reguli forte se
 //      confirmă reciproc (corroborare).
 //
-// Detalii: docs/EXPLICATIE_BACKEND.md §4.1, §4.3, §4.4.
+// Detalii: docs/detection-engine.md.
 // ─────────────────────────────────────────────────────────────────────────────
 
 import {
@@ -69,8 +69,8 @@ export const AI_UNCORROBORATED_SCORE_MAX = 25;
 
 // Valoarea maximă de referință pentru bara de progres "scor reguli" din UI.
 // scorReguli nu e plafonat individual în motor, dar folosește aceeași scală
-// 0–100 ca scorul final — deci bara se desenează relativ la SCORE_MAX. Expus
-// aici ca frontendul să nu "hardcodeze" o valoare separat.
+// 0–100 ca scorul final. Frontend-ul păstrează separat aceeași scară în
+// frontend/src/lib/scoring.js; modificările trebuie sincronizate.
 export const RULE_SCORE_MAX = SCORE_MAX;
 
 /*

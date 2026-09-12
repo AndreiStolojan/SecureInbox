@@ -15,11 +15,12 @@
 // is unreachable, so a broken setup cannot look like a passing evaluation.
 
 import { OLLAMA_MODEL, OLLAMA_BASE_URL } from '../src/config/env.js';
+import { fileURLToPath } from 'node:url';
 import { buildAiAnalysisInput } from '../src/services/scan-ai-input.service.js';
 import { analyzeEmailSemanticsWithOllama } from '../src/services/ollama-semantic.service.js';
 import { collectAiSemanticSignals } from '../src/detection/providers/ai-semantic.provider.js';
 import { AI_SIGNAL_WEIGHTS, AI_UNCORROBORATED_SCORE_MAX, RISK_THRESHOLDS } from '../src/config/scoring.config.js';
-import { SEMANTIC_EVAL_FIXTURES, BENIGN_COUNT, MALICIOUS_COUNT } from '../tests/fixtures/semantic-eval.fixtures.js';
+import { SEMANTIC_EVAL_FIXTURES } from '../tests/fixtures/semantic-eval.fixtures.js';
 
 const args = process.argv.slice(2);
 const asJson = args.includes('--json');
@@ -122,57 +123,11 @@ const runFixture = async (fixture) => {
     };
 };
 
-const main = async () => {
-    const fixtures = only
-        ? SEMANTIC_EVAL_FIXTURES.filter((fixture) => fixture.id === only)
-        : SEMANTIC_EVAL_FIXTURES;
-
-    if (!fixtures.length) {
-        console.error(`No fixture matched --only=${only}`);
-        process.exit(2);
-    }
-
-    log(`model      ${OLLAMA_MODEL}`);
-    log(`endpoint   ${OLLAMA_BASE_URL}`);
-    log(`fixtures   ${fixtures.length} (${BENIGN_COUNT} benign, ${MALICIOUS_COUNT} malicious)`);
-    log('');
-
-    const results = [];
-
-    // Sequential on purpose: Ollama largely serialises anyway, and concurrent
-    // requests would make the per-fixture latency figures meaningless.
-    for (const fixture of fixtures) {
-        const result = await runFixture(fixture);
-        results.push(result);
-
-        if (result.status !== 'evaluated') {
-            log(`  ERROR  ${result.id ?? fixture.id} — ${result.error}`);
-            continue;
-        }
-
-        const flagged = result.label === 'benign' && result.spuriousSignals.length > 0;
-        const missed = result.label === "malicious" && result.spuriousSignals.length === 0;
-        const mark = flagged ? 'FALSE POS' : missed ? 'MISSED   ' : 'ok       ';
-
-        log(
-            `  ${mark} ${result.id.padEnd(30)} ai=${String(result.aiScore).padStart(2)}`
-            + ` ${(result.latencyMs / 1000).toFixed(1)}s`
-            + (result.signalKeys.length ? `  ${result.signalKeys.join(', ')}` : '')
-        );
-
-        for (const mismatch of result.mismatches) {
-            log(`            ${mismatch}`);
-        }
-    }
-
+// Rates describe evaluated semantic signals only. Missing classes are unknown,
+// and provider failures remain visible in coverage rather than disappearing.
+export const summarizeSemanticResults = (results, model) => {
     const evaluated = results.filter((result) => result.status === 'evaluated');
     const failed = results.filter((result) => result.status !== 'evaluated');
-
-    if (!evaluated.length) {
-        console.error(`\nEvery call failed (${failed[0]?.error}). Is Ollama running with ${OLLAMA_MODEL} pulled?`);
-        process.exit(1);
-    }
-
     const benign = evaluated.filter((result) => result.label === 'benign');
     const malicious = evaluated.filter((result) => result.label === 'malicious');
     const falsePositives = benign.filter((result) => result.spuriousSignals.length);
@@ -185,28 +140,71 @@ const main = async () => {
     // which these fixtures do not exercise.
     const detected = malicious.filter((result) => result.spuriousSignals.length > 0);
     const withMismatches = evaluated.filter((result) => result.mismatches.length);
-    const rate = (part, whole) => (whole ? ((part / whole) * 100).toFixed(1) : '0.0');
+    const rate = (part, whole) => whole ? Number(((part / whole) * 100).toFixed(1)) : null;
 
-    const report = {
-        model: OLLAMA_MODEL,
+    return {
+        model,
+        complete: results.length > 0 && failed.length === 0,
+        selected: results.length,
+        coveragePercent: rate(evaluated.length, results.length),
+        rateDenominator: 'evaluated messages of the relevant class',
+        selectedClassCounts: {
+            benign: results.filter((result) => result.label === 'benign').length,
+            malicious: results.filter((result) => result.label === 'malicious').length,
+        },
+        evaluatedClassCounts: { benign: benign.length, malicious: malicious.length },
         evaluated: evaluated.length,
         failed: failed.length,
-        falsePositiveRate: Number(rate(falsePositives.length, benign.length)),
-        overThresholdRate: Number(rate(overThreshold.length, benign.length)),
-        detectionRate: Number(rate(detected.length, malicious.length)),
-        signalAccuracy: Number(rate(evaluated.length - withMismatches.length, evaluated.length)),
+        falsePositiveRate: rate(falsePositives.length, benign.length),
+        overThresholdRate: rate(overThreshold.length, benign.length),
+        detectionRate: rate(detected.length, malicious.length),
+        signalAccuracy: rate(evaluated.length - withMismatches.length, evaluated.length),
         meanBenignAiScore: benign.length
             ? Number((benign.reduce((sum, r) => sum + r.aiScore, 0) / benign.length).toFixed(1))
-            : 0,
+            : null,
         meanMaliciousAiScore: malicious.length
             ? Number((malicious.reduce((sum, r) => sum + r.aiScore, 0) / malicious.length).toFixed(1))
-            : 0,
-        medianLatencyMs: evaluated.map((r) => r.latencyMs).sort((a, b) => a - b)[Math.floor(evaluated.length / 2)],
+            : null,
+        medianLatencyMs: evaluated.length
+            ? evaluated.map((r) => r.latencyMs).sort((a, b) => a - b)[Math.floor(evaluated.length / 2)]
+            : null,
         parserFallbacks: evaluated.filter((r) => r.parserFallback).length,
         falsePositives: falsePositives.map((r) => ({ id: r.id, aiScore: r.aiScore, signals: r.spuriousSignals })),
         missed: malicious.filter((r) => !r.spuriousSignals.length).map((r) => ({ id: r.id, aiScore: r.aiScore })),
         results,
     };
+};
+
+const main = async () => {
+    const fixtures = only
+        ? SEMANTIC_EVAL_FIXTURES.filter((fixture) => fixture.id === only)
+        : SEMANTIC_EVAL_FIXTURES;
+    if (!fixtures.length) {
+        console.error(`No fixture matched --only=${only}`);
+        process.exitCode = 2;
+        return;
+    }
+    const benignCount = fixtures.filter((fixture) => fixture.label === 'benign').length;
+    log(`model      ${OLLAMA_MODEL}`);
+    log(`endpoint   ${OLLAMA_BASE_URL}`);
+    log(`fixtures   ${fixtures.length} (${benignCount} benign, ${fixtures.length - benignCount} malicious)`);
+    const results = [];
+    // Sequential requests keep fixture latency independent of queue contention.
+    for (const fixture of fixtures) {
+        const result = await runFixture(fixture);
+        results.push(result);
+        if (result.status !== 'evaluated') {
+            log(`  ERROR  ${fixture.id}: ${result.error}`);
+            continue;
+        }
+        const flagged = result.label === 'benign' && result.spuriousSignals.length > 0;
+        const missed = result.label === 'malicious' && result.spuriousSignals.length === 0;
+        const mark = flagged ? 'FALSE POS' : missed ? 'MISSED' : 'ok';
+        log(`  ${mark} ${result.id} ai=${result.aiScore} ${(result.latencyMs / 1000).toFixed(1)}s ${result.signalKeys.join(', ')}`);
+        for (const mismatch of result.mismatches) log(`    ${mismatch}`);
+    }
+    const report = summarizeSemanticResults(results, OLLAMA_MODEL);
+    if (!report.complete) process.exitCode = 1;
 
     if (asJson) {
         console.log(JSON.stringify(report, null, 2));
@@ -214,16 +212,16 @@ const main = async () => {
     }
 
     log('');
-    log('────────────────────────────────────────────────');
-    log(`false positives   ${falsePositives.length}/${benign.length}  (${report.falsePositiveRate}%)   target < 5%   [benign mail accused of intent]`);
-    log(`over threshold    ${overThreshold.length}/${benign.length}  (${report.overThresholdRate}%)              [benign mail AI alone pushes past ${RISK_THRESHOLDS.suspicious}]`);
-    log(`ai contribution   ${detected.length}/${malicious.length}  (${report.detectionRate}%)   target > 90%   [malicious mail where AI gives corroboratable signal]`);
-    log(`signal accuracy   ${report.signalAccuracy}%  (fixtures with no contradicted expectation)`);
-    log(`mean AI score     benign ${report.meanBenignAiScore}   malicious ${report.meanMaliciousAiScore}`);
-    log(`median latency    ${(report.medianLatencyMs / 1000).toFixed(1)}s`);
-    if (report.parserFallbacks) log(`parser fallbacks  ${report.parserFallbacks}`);
-    if (failed.length) log(`failed calls      ${failed.length}`);
-    log('────────────────────────────────────────────────');
+    const percent = (value) => value === null ? 'n/a' : `${value}%`;
+    log(`coverage          ${report.evaluated}/${report.selected} (${percent(report.coveragePercent)}); failed ${report.failed}`);
+    log(`false positives   ${percent(report.falsePositiveRate)} of evaluated benign mail accused of intent`);
+    log(`over threshold    ${percent(report.overThresholdRate)} of evaluated benign mail above ${RISK_THRESHOLDS.suspicious}`);
+    log(`ai contribution   ${percent(report.detectionRate)} of evaluated malicious mail with a corroboratable signal`);
+    log(`signal accuracy   ${percent(report.signalAccuracy)} with no contradicted expectation`);
+    log(`mean AI score     benign ${report.meanBenignAiScore ?? 'n/a'}; malicious ${report.meanMaliciousAiScore ?? 'n/a'}`);
+    log(`median latency    ${report.medianLatencyMs === null ? 'n/a' : `${report.medianLatencyMs}ms`}`);
+    log(`parser fallbacks  ${report.parserFallbacks}`);
+    if (!report.complete) log('Incomplete evaluation; do not report these rates as full-corpus results.');
 };
 
-await main();
+if (process.argv[1] === fileURLToPath(import.meta.url)) await main();

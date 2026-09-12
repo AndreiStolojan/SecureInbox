@@ -72,3 +72,21 @@ describe('apiClient', () => {
     }
   );
 });
+
+it('does not let an old AUTH_401 log out the replacement session', async () => {
+  setStoredToken('A');
+  const pending = Promise.withResolvers();
+  vi.stubGlobal('fetch', vi.fn(() => pending.promise));
+  const request = apiClient.get('/emails');
+  setStoredToken('B');
+  pending.resolve({ ok: false, status: 401, text: async () => JSON.stringify({ code: 'AUTH_EXPIRED' }) });
+  await expect(request).rejects.toMatchObject({ statusCode: 401 });
+  expect(window.localStorage.getItem('secureinbox_token')).toBe('B');
+});
+
+it.each([['AUTH_EXPIRED', null], ['GMAIL_EXPIRED', 'A']])('handles current-session %s without confusing Gmail and app auth', async (code, expected) => {
+  setStoredToken('A');
+  vi.stubGlobal('fetch', vi.fn().mockResolvedValue({ ok: false, status: 401, text: async () => JSON.stringify({ code }) }));
+  await expect(apiClient.get('/emails')).rejects.toMatchObject({ code });
+  expect(window.localStorage.getItem('secureinbox_token')).toBe(expected);
+});

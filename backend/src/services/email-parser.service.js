@@ -14,7 +14,7 @@
 // în baza de date, iar regulile de scor din scan.service.js "citesc" exact
 // aceste câmpuri. Parsarea e separată de scanare ca să fie testabilă și ca
 // scanarea să nu refacă această muncă de fiecare dată. Detalii:
-// docs/EXPLICATIE_BACKEND.md §5.3.
+// docs/detection-engine.md.
 // ─────────────────────────────────────────────────────────────────────────────
 
 import { analyzeEmailLinks } from './link-analysis.service.js';
@@ -113,6 +113,7 @@ const extractAttachmentExtensions = (payload) => {
 };
 
 const MAX_ATTACHMENT_METADATA_ITEMS = 50;
+const MAX_ATTACHMENT_PARTS = 1_000;
 const MAX_ATTACHMENT_ID_CHARS = 2_048;
 const MAX_ATTACHMENT_FILENAME_CHARS = 512;
 const MAX_ATTACHMENT_MIME_CHARS = 255;
@@ -126,12 +127,14 @@ export const extractAttachments = (payload) => {
     const attachments = [];
     const queue = payload ? [payload] : [];
 
-    while (queue.length > 0 && attachments.length < MAX_ATTACHMENT_METADATA_ITEMS) {
-        const currentPart = queue.shift();
+    for (let cursor = 0; cursor < queue.length && attachments.length < MAX_ATTACHMENT_METADATA_ITEMS; cursor += 1) {
+        const currentPart = queue[cursor];
         if (!currentPart) continue;
 
-        if (Array.isArray(currentPart.parts) && currentPart.parts.length > 0) {
-            queue.push(...currentPart.parts);
+        if (Array.isArray(currentPart.parts)) {
+            for (let i = 0; i < currentPart.parts.length && queue.length < MAX_ATTACHMENT_PARTS; i += 1) {
+                queue.push(currentPart.parts[i]);
+            }
         }
 
         const filename = boundedString(

@@ -21,27 +21,28 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
-      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
-      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
-        with: { node-version: 24.5.0, cache: npm, cache-dependency-path: backend/package-lock.json }
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with: { node-version: 24.20.0, cache: npm, cache-dependency-path: backend/package-lock.json }
       - run: npm ci --prefix backend && npm run lint --prefix backend && npm test --prefix backend
   frontend:
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
-      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
-      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
-        with: { node-version: 24.5.0, cache: npm, cache-dependency-path: frontend/package-lock.json }
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with: { node-version: 24.20.0, cache: npm, cache-dependency-path: frontend/package-lock.json }
       - run: npm ci --prefix frontend && npm test --prefix frontend && npm run build --prefix frontend
   infra:
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
-      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
-      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
-        with: { node-version: 24.5.0 }
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with: { node-version: 24.20.0 }
       - run: npm ci --prefix backend --ignore-scripts
       - run: bash -n provision scripts/dotenv.sh scripts/backup scripts/restore tests/provisioning.test.sh && bash tests/provisioning.test.sh
+      - run: node --test design/tools.test.mjs
       - run: |
           # Every command below that reaches Docker Hub is a third-party network
           # call on an unauthenticated runner, and those fail intermittently —
@@ -63,14 +64,12 @@ jobs:
           PROVISION_ENV_FILE="$env_file" bash -c 'source ./provision; create_env; load_runtime_values'
           test "$(stat -c %a "$env_file")" = 600
           docker compose --env-file "$env_file" config --quiet
-          cp backend/.env.production.local.example backend/.env.production.local
-          TUNNEL_TOKEN=ci docker compose -f docker-compose.prod.yml config --quiet
+          DB_URI=mongodb+srv://ci.example/secureinbox FRONTEND_APP_URL=https://example.test TUNNEL_TOKEN=ci docker compose --env-file "$env_file" -f docker-compose.yml -f docker-compose.prod.yml config --quiet
           (
             cd backend
             if NODE_ENV=production PORT=5500 DB_URI=mongodb://example.test/db JWT_SECRET=x JWT_EXPIRES_IN=1h MAIL_TOKEN_ENCRYPTION_KEY=x node --input-type=module -e "await import('./src/config/env.js')"; then exit 1; fi
             NODE_ENV=production PORT=5500 DB_URI=mongodb://example.test/db JWT_SECRET=x JWT_EXPIRES_IN=1h MAIL_TOKEN_ENCRYPTION_KEY=x GOOGLE_CLIENT_ID=x GOOGLE_CLIENT_SECRET=x GOOGLE_REDIRECT_URI=https://example.test/callback FRONTEND_APP_URL=https://example.test EMAIL_FROM=no-reply@example.test EMAIL_PASSWORD=x node --input-type=module -e "await import('./src/config/env.js')"
           )
-          rm backend/.env.production.local
           retry docker run --rm --add-host backend:127.0.0.1 --add-host cloudflared:127.0.0.2 -v "$PWD/frontend/nginx.prod.conf:/etc/nginx/conf.d/default.conf:ro" nginx:stable-alpine@sha256:97d490c12ba55b4946b01546d1c3ed324e8d41ab1c9fcb2a616aa470620e5b46 nginx -t
           retry docker run --rm --entrypoint /bin/promtool -v "$PWD/monitoring/prometheus:/etc/prometheus:ro" prom/prometheus:v3.12.0@sha256:69f5241418838263316593f7274a304b095c40bcf22e57272865da91bd60a8ac check config /etc/prometheus/prometheus.yml
           node -e "const d=require('./monitoring/grafana/dashboards/secureinbox-local.json');const p=Object.fromEntries(d.panels.map(x=>[x.id,x]));if(!d.panels.every(({gridPos})=>Number.isInteger(gridPos?.x)&&Number.isInteger(gridPos?.y)&&Number.isInteger(gridPos?.w)&&Number.isInteger(gridPos?.h))||!p[3].targets[0].expr.includes('clamp_min')||p[3].fieldConfig.defaults.unit!=='percentunit'||!p[6].targets[0].expr.includes('[1h]')||p[4].targets.length!==1||!p[4].targets[0].expr.includes('histogram_quantile(0.95')||p[7].fieldConfig.defaults.unit!=='dateTimeAsLocal')process.exit(1)"
@@ -86,10 +85,14 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 25
     steps:
-      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
-      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
-        with: { node-version: 24.5.0 }
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with: { node-version: 24.20.0 }
       - name: Start disposable local stack
+        env:
+          COMPOSE_PROFILES: local-db,ai,monitoring
+          PROMETHEUS_PORT: 9090
+          GRAFANA_PORT: 3000
         run: |
           PROVISION_ENV_FILE=.env bash -c 'source ./provision; create_env'
           docker compose up -d --build --wait --wait-timeout 180
@@ -115,10 +118,31 @@ jobs:
           docker compose exec -T backend node -e "fetch('http://127.0.0.1:5500/metrics').then(r=>r.text()).then(t=>process.exit(t.includes('secureinbox_http_requests_total') ? 0 : 1))"
           login="$(curl --fail --silent --show-error -H 'Content-Type: application/json' --data '{"email":"demo@secureinbox.test","password":"'"$(awk -F= '/^DEMO_USER_PASSWORD=/{print $2}' .env)"'"}' http://127.0.0.1:8080/api/v1/auth/login)"
           token="$(node -e 'console.log(JSON.parse(process.argv[1]).data.token)' "$login")"
+          inbox="$(curl --fail --silent --show-error -H "Authorization: Bearer $token" 'http://127.0.0.1:8080/api/v1/emails?limit=1')"
+          email_id="$(node -e 'console.log(JSON.parse(process.argv[1]).data.items[0]._id)' "$inbox")"
+
+          # Exercise every authenticated GET used by the private pages against
+          # the synthetic account. Mutating routes have focused tests elsewhere.
+          for path in \
+            users/me mail-accounts emails emails/stats emails/trend \
+            emails/top-risky-senders "emails/$email_id" "emails/$email_id/raw" \
+            meta/status "scans/emails/$email_id/latest" reports/monthly-summary \
+            'sender-lists?withMatchCounts=1'; do
+            curl --fail --silent --show-error -H "Authorization: Bearer $token" \
+              "http://127.0.0.1:8080/api/v1/$path" > /dev/null
+          done
+
+          # nginx must serve the SPA shell for current private routes and the
+          # legacy message deep link translated by the React router.
+          for path in dashboard inbox sender-lists settings "inbox/$email_id"; do
+            page="$(curl --fail --silent --show-error "http://127.0.0.1:8080/$path")"
+            grep -q '<div id="root"></div>' <<< "$page"
+          done
+
           gmail_response="$(curl --silent -w '\n%{http_code}' -H "Authorization: Bearer $token" http://127.0.0.1:8080/api/v1/mail-accounts/google/start)"
           test "${gmail_response##*$'\n'}" = 503
           node -e 'if (JSON.parse(process.argv[1]).code !== "INTEGRATION_NOT_CONFIGURED") process.exit(1)' "${gmail_response%$'\n'*}"
-          counts="$(docker compose exec -T mongodb mongosh --quiet --username secureinbox_root --password "$(awk -F= '/^MONGO_ROOT_PASSWORD=/{print $2}' .env)" --authenticationDatabase admin --eval 'const d=db.getSiblingDB("secureinbox"); print(JSON.stringify({users:d.users.countDocuments({}),emails:d.emails.countDocuments({}),scans:d.scans.countDocuments({})}))')"
+          counts="$(docker compose exec -T mongodb mongosh --quiet --username secureinbox_root --password "$(awk -F= '/^MONGO_ROOT_PASSWORD=/{print $2}' .env)" --authenticationDatabase admin --eval 'const d=db.getSiblingDB("secureinbox_dev"); print(JSON.stringify({users:d.users.countDocuments({}),emails:d.emails.countDocuments({}),scans:d.scans.countDocuments({})}))')"
           test "$counts" = '{"users":1,"emails":6,"scans":6}'
           # Prometheus scrapes every 15s, and these ran immediately after the
           # stack came up — before the first scrape of the backend had happened.
@@ -152,7 +176,7 @@ jobs:
           test "$(stat -c %a backups)" = 700
           archive="$(find backups -name '*.archive.gz' -print -quit)"
           ./scripts/restore "$archive" --confirm-replace
-          counts="$(docker compose exec -T mongodb mongosh --quiet --username secureinbox_root --password "$(awk -F= '/^MONGO_ROOT_PASSWORD=/{print $2}' .env)" --authenticationDatabase admin --eval 'const d=db.getSiblingDB("secureinbox"); print(JSON.stringify({users:d.users.countDocuments({}),emails:d.emails.countDocuments({}),scans:d.scans.countDocuments({})}))')"
+          counts="$(docker compose exec -T mongodb mongosh --quiet --username secureinbox_root --password "$(awk -F= '/^MONGO_ROOT_PASSWORD=/{print $2}' .env)" --authenticationDatabase admin --eval 'const d=db.getSiblingDB("secureinbox_dev"); print(JSON.stringify({users:d.users.countDocuments({}),emails:d.emails.countDocuments({}),scans:d.scans.countDocuments({})}))')"
           test "$counts" = '{"users":1,"emails":6,"scans":6}'
       - if: always()
-        run: docker compose down --volumes --remove-orphans
+        run: docker compose --profile "*" down --volumes --remove-orphans

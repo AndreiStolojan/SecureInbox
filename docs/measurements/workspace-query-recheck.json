@@ -1,0 +1,79 @@
+{
+  "baselineRevision": "9567caf",
+  "implementationRevision": "5cec9dc",
+  "measuredRevision": "a6b998ad7805a677773901a8738ea81790584c71",
+  "environment": {
+    "node": "v24.20.0",
+    "platform": "linux",
+    "arch": "arm64"
+  },
+  "database": {
+    "syntheticEmails": 600,
+    "writesDuringMeasurement": 0
+  },
+  "warmups": 4,
+  "samples": 16,
+  "queries": [
+    {
+      "query": {},
+      "before": { "medianMs": 150.71381399999973, "minMs": 148.40298699999948, "maxMs": 185.23865399999977, "samples": 16 },
+      "after": { "medianMs": 9.349003999999695, "minMs": 8.6772890000002, "maxMs": 10.95713700000033, "samples": 16 }
+    },
+    {
+      "query": { "page": 2 },
+      "before": { "medianMs": 149.44548199999917, "minMs": 147.5064459999994, "maxMs": 207.51903200000015, "samples": 16 },
+      "after": { "medianMs": 9.200432000001456, "minMs": 8.757509999999456, "maxMs": 12.336977000000843, "samples": 16 }
+    },
+    {
+      "query": { "riskBucket": "safe" },
+      "before": { "medianMs": 149.15716900000007, "minMs": 147.46768299999894, "maxMs": 156.5283109999982, "samples": 16 },
+      "after": { "medianMs": 143.30892700000004, "minMs": 142.3285109999997, "maxMs": 164.25279299999966, "samples": 16 }
+    },
+    {
+      "query": { "q": "needle" },
+      "before": { "medianMs": 27.253692999998748, "minMs": 26.6256429999994, "maxMs": 31.108600999999908, "samples": 16 },
+      "after": { "medianMs": 10.921879999998055, "minMs": 10.667772000000696, "maxMs": 16.729401000000507, "samples": 16 }
+    }
+  ],
+  "equivalenceCases": 17,
+  "detailEquivalenceCases": 3,
+  "ownershipIsolationCases": 2,
+  "explain": {
+    "before": [
+      [
+        { "stage": "$cursor", "nReturned": 600, "totalDocsExamined": 600, "totalKeysExamined": 601, "executionTimeMillis": 150 },
+        { "stage": "$lookup", "nReturned": 600, "totalDocsExamined": 540, "totalKeysExamined": 540, "indexesUsed": ["userId_1_emailId_1"] },
+        { "stage": "$addFields", "nReturned": 600 },
+        { "stage": "$addFields", "nReturned": 600 },
+        { "stage": "$sort", "nReturned": 20 },
+        { "stage": "$project", "nReturned": 20 }
+      ],
+      [
+        { "stage": "$cursor", "nReturned": 600, "totalDocsExamined": 600, "totalKeysExamined": 601, "executionTimeMillis": 149 },
+        { "stage": "$lookup", "nReturned": 600, "totalDocsExamined": 540, "totalKeysExamined": 540, "indexesUsed": ["userId_1_emailId_1"] },
+        { "stage": "$addFields", "nReturned": 600 },
+        { "stage": "$addFields", "nReturned": 600 },
+        { "stage": "$group", "nReturned": 1 },
+        { "stage": "$project", "nReturned": 1 }
+      ]
+    ],
+    "after": [
+      [
+        { "stage": "$cursor", "nReturned": 20, "totalDocsExamined": 600, "totalKeysExamined": 601, "executionTimeMillis": 15 },
+        { "stage": "$lookup", "nReturned": 20, "totalDocsExamined": 18, "totalKeysExamined": 18, "indexesUsed": ["userId_1_emailId_1"] },
+        { "stage": "$addFields", "nReturned": 20 },
+        { "stage": "$addFields", "nReturned": 20 },
+        { "stage": "$project", "nReturned": 20 }
+      ],
+      [
+        { "stage": "$cursor", "nReturned": 1, "totalDocsExamined": 0, "totalKeysExamined": 601, "executionTimeMillis": 2 },
+        { "stage": "$project", "nReturned": 1 }
+      ]
+    ]
+  },
+  "senderExists": {
+    "matchingOtherEmails": 99,
+    "before": { "medianMs": 2.3261449999990873, "minMs": 2.2155170000005455, "maxMs": 2.5463649999983318, "samples": 16 },
+    "after": { "medianMs": 1.1908040000016626, "minMs": 1.0926939999990282, "maxMs": 1.5086339999979828, "samples": 16 }
+  }
+}

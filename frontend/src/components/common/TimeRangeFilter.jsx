@@ -9,7 +9,7 @@
 // modifică prin setRange(). Nu atinge backend-ul: intervalul ajunge la API tot
 // ca ?from=&to= (vezi toISOWindow din lib/timeRange.js).
 //
-// Detalii: docs/EXPLICATIE_FRONTEND.md §5.3.
+// Detalii: docs/architecture.md.
 // ─────────────────────────────────────────────────────────────────────────────
 
 import { useEffect, useRef, useState } from 'react';

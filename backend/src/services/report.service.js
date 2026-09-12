@@ -13,8 +13,8 @@
 //   GET /reports/monthly-summary[?from=&to=&label=]  (sau legacy ?month=)
 //   POST /reports/monthly-summary/send
 //
-// Detalii despre verdict efectiv / riskBucket: docs/EXPLICATIE_BACKEND.md §5.4.
-// Despre formele de date (Email, Scan): docs/EXPLICATIE_BACKEND.md §3.
+// Detalii despre verdict efectiv / riskBucket: docs/architecture.md.
+// Despre formele de date (Email, Scan): docs/architecture.md.
 // ─────────────────────────────────────────────────────────────────────────────
 
 import mongoose from 'mongoose';

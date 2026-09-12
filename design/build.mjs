@@ -49,9 +49,10 @@ const fragments = DIRECTIONS.map((d) => {
       .replace(/<\/body>[\s\S]*/i, '')
       .replace(/<!doctype[^>]*>/gi, '');
   }
-  if (/<script[\s>]/i.test(html)) {
-    problems.push(`${d.key}: contains a <script> tag — stripping`);
-    html = html.replace(/<script[\s\S]*?<\/script>/gi, '');
+  // These are trusted repository fragments, not a general HTML sanitizer.
+  // Refuse scripts instead of trying to repair executable markup with a regex.
+  if (/<script\b/i.test(html)) {
+    throw new Error(`${d.key}: scripts are not allowed in mockup fragments`);
   }
   if (!html.includes(`dir-${d.key}`)) {
     problems.push(`${d.key}: root class .dir-${d.key} not found`);

@@ -187,6 +187,23 @@ test('isolates fetch failures and returns partial results at the wall-clock dead
     assert.equal(sawAbort, true);
 });
 
+test('classifies a fetch timeout error as timed_out', async () => {
+    const service = createAttachmentAnalysisService({
+        enabled: true,
+        fetchAttachment: async () => {
+            const error = new DOMException('The operation timed out', 'TimeoutError');
+            throw error;
+        },
+        ...dependencies(),
+    });
+
+    const result = await service.analyze({
+        attachments: [{ attachmentId: 'slow', filename: 'slow.pdf', size: 1 }],
+    });
+
+    assert.equal(result.items[0].reason, 'timed_out');
+});
+
 test('passes the deadline signal to an in-flight hash lookup', async () => {
     let hashSignal;
     let sawHashAbort = false;

@@ -79,3 +79,12 @@ backups/
 
 # Private thesis material
 /materiale-licenta/
+
+# Environment backup copies can contain the same credentials as the original.
+.env*.bak*
+.env*.backup*
+.env*.old
+
+# Per-environment root configuration. Only templates belong in Git.
+/.env.*
+!/.env.example

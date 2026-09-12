@@ -1,0 +1,2882 @@
+{
+  "mode": "rules",
+  "startedAt": "2026-09-12T08:04:49.989Z",
+  "sourceRevision": "217cf9a5b00c8cb3b894f492b70b08ba0cdf5b71",
+  "node": "v24.20.0",
+  "arch": "arm64",
+  "emails": 600,
+  "concurrency": 1,
+  "ai": false,
+  "coldScan": {
+    "durationMs": 52.50092600000016,
+    "verdict": "safe",
+    "aiStatus": "disabled",
+    "explanationStatus": "fallback",
+    "fallbackReason": "ai_disabled"
+  },
+  "warmupScan": {
+    "durationMs": 17.32823499999995,
+    "verdict": "safe",
+    "aiStatus": "disabled",
+    "explanationStatus": "fallback",
+    "fallbackReason": "ai_disabled"
+  },
+  "scans": {
+    "medianMs": 7.223423999999795,
+    "p95Ms": 10.927885999999944,
+    "samplesMs": [
+      18.0550310000001,
+      13.776217000000088,
+      12.700495000000046,
+      12.399792000000161,
+      13.617828000000145,
+      11.318051999999852,
+      10.692718000000013,
+      10.26351499999987,
+      9.131497000000081,
+      9.070459999999912,
+      9.264885999999933,
+      9.703570000000127,
+      9.43316300000015,
+      9.051090000000158,
+      8.414145999999846,
+      8.913719000000128,
+      10.1351259999999,
+      8.376590000000078,
+      9.102163999999902,
+      10.927885999999944,
+      9.461070999999947,
+      10.969514999999774,
+      9.316663999999946,
+      8.851959999999963,
+      9.474811999999929,
+      8.68499699999984,
+      9.60908900000004,
+      8.252330000000256,
+      8.556422999999995,
+      8.683051999999861,
+      9.43379300000015,
+      9.176884999999857,
+      8.382589999999709,
+      9.004997000000003,
+      9.143607999999858,
+      7.920608999999786,
+      8.73803399999997,
+      8.262978999999632,
+      7.947181999999884,
+      9.415477999999894,
+      8.796736999999666,
+      8.95286699999997,
+      7.855923000000075,
+      9.25055199999997,
+      8.366645000000062,
+      7.826238000000103,
+      10.819995999999719,
+      10.382736999999906,
+      12.443569999999909,
+      11.284681000000091,
+      8.117588999999953,
+      9.448237999999947,
+      9.2882010000003,
+      8.969830000000002,
+      7.790719999999965,
+      7.956349000000046,
+      7.879923000000417,
+      7.60016399999995,
+      7.5562190000000555,
+      11.646365999999944,
+      8.738977999999861,
+      8.375756999999794,
+      14.28681000000006,
+      8.128459999999905,
+      7.692145999999866,
+      7.213424000000032,
+      8.052885999999944,
+      8.242126999999982,
+      7.593609000000015,
+      8.058737999999721,
+      7.155015999999705,
+      8.823460000000068,
+      9.900441000000228,
+      10.04001500000004,
+      8.921921999999995,
+      7.642349000000195,
+      7.86005299999988,
+      7.887201000000005,
+      7.558238000000074,
+      8.01768200000015,
+      9.78549699999985,
+      8.428349000000253,
+      8.179034000000229,
+      9.360478000000057,
+      7.661720000000059,
+      7.126256999999896,
+      7.200738000000001,
+      8.183403999999882,
+      8.136015999999927,
+      7.820386999999755,
+      8.778737000000092,
+      8.239812000000256,
+      10.201404000000366,
+      7.688589999999749,
+      12.572161999999935,
+      8.06597899999997,
+      8.35870100000011,
+      7.928572000000258,
+      11.973163000000113,
+      11.005162999999811,
+      16.39793899999995,
+      8.930311000000074,
+      7.483664000000317,
+      7.313220000000001,
+      6.916163999999753,
+      6.567108000000189,
+      6.225257000000056,
+      6.587052999999742,
+      6.415904999999839,
+      6.509923999999955,
+      7.4906819999996515,
+      6.643275999999787,
+      6.645997999999963,
+      7.043533999999909,
+      7.281627000000299,
+      6.59985000000006,
+      7.349275000000034,
+      6.788850000000366,
+      7.474478999999974,
+      6.607906000000185,
+      6.833849999999984,
+      6.912682000000132,
+      6.9942009999999755,
+      7.413590000000113,
+      8.337422999999944,
+      9.456423000000086,
+      9.746719000000212,
+      9.212921999999708,
+      8.008107999999993,
+      7.073702000000139,
+      6.610220000000027,
+      7.220850000000155,
+      7.15216399999963,
+      7.118348999999853,
+      7.63694200000009,
+      7.846238000000085,
+      7.8779420000000755,
+      6.484015999999883,
+      6.640349999999671,
+      6.526922999999897,
+      6.506163999999899,
+      7.150997000000189,
+      6.695830999999998,
+      6.706737999999859,
+      7.233052999999927,
+      7.232756999999765,
+      7.0758310000001075,
+      6.971794000000045,
+      8.059496999999737,
+      6.3245909999996,
+      6.7988500000001295,
+      7.427572000000055,
+      6.431071999999858,
+      6.671978999999737,
+      6.130349999999908,
+      7.096516000000065,
+      7.094312000000173,
+      7.94814499999984,
+      6.41321999999991,
+      6.414072000000033,
+      6.432737999999972,
+      6.624182999999903,
+      6.374774999999772,
+      6.222367999999733,
+      6.67614599999979,
+      7.38064600000007,
+      6.7326640000001134,
+      6.123387000000093,
+      10.123755999999958,
+      7.161571999999978,
+      6.242275000000063,
+      6.049441999999999,
+      7.277998000000025,
+      6.480442000000039,
+      6.173996999999872,
+      6.620405000000119,
+      6.795849999999973,
+      6.86229400000002,
+      6.236257000000023,
+      6.013719999999921,
+      6.091221000000132,
+      5.992331999999806,
+      6.250923999999941,
+      6.384070999999949,
+      6.858183000000281,
+      6.687683000000106,
+      7.159646000000066,
+      7.76390500000025,
+      7.223423999999795,
+      7.376460000000407,
+      7.141053000000284,
+      7.609646000000339,
+      7.611311999999998,
+      7.083182999999735,
+      6.6989049999997405,
+      7.1674410000000535,
+      6.878720000000158,
+      7.586867999999868,
+      7.002979000000323,
+      6.894275000000107,
+      7.017628000000059,
+      7.424960999999712,
+      7.480756999999812,
+      7.859533999999712,
+      7.595498000000134,
+      7.600127000000157,
+      7.186312000000271,
+      6.997941999999966,
+      7.405146000000059,
+      7.33833100000038,
+      7.307553000000098,
+      7.222479000000021,
+      7.5154600000000755,
+      7.164757000000009,
+      7.35240500000009,
+      7.095072000000073,
+      7.369238000000223,
+      7.206368000000111,
+      7.281145999999808,
+      7.730442000000039,
+      7.794182000000092,
+      7.53881199999978,
+      7.131941999999981,
+      7.385682999999972,
+      7.491829999999936,
+      6.324275999999827,
+      6.533646000000317,
+      6.524034000000029,
+      6.158516000000418,
+      6.3186829999999645,
+      6.467830999999933,
+      7.164350000000013,
+      6.920626999999968,
+      7.126275000000078,
+      7.548182999999881,
+      9.260701000000154,
+      8.83660800000007,
+      6.689313000000311,
+      5.978739000000132,
+      6.3500529999996616,
+      6.352053000000069,
+      8.965052000000014,
+      7.554460999999719,
+      5.883146000000124,
+      7.080256999999619,
+      6.285182999999961,
+      5.94484999999986,
+      6.524017000000185,
+      6.134367999999995,
+      6.259183000000121,
+      6.418830999999955,
+      7.724941999999828,
+      6.901626999999735,
+      8.636089999999967,
+      6.259276000000227,
+      6.657126999999946,
+      5.887054000000262,
+      5.569054000000051,
+      6.1087390000002415,
+      6.1659239999999045,
+      6.500554000000193,
+      6.22692300000017,
+      6.999960000000101,
+      6.541424000000006,
+      5.922350000000279,
+      5.750590000000102,
+      5.689221000000089,
+      5.687053999999989,
+      5.583239000000049,
+      6.13314599999967,
+      5.996868000000177,
+      5.893626999999924,
+      6.087331000000177,
+      6.177406000000246,
+      6.256276000000071,
+      5.92147900000009,
+      6.8594600000001265,
+      5.8680349999999635,
+      5.917257000000063,
+      5.780795000000126,
+      6.235165000000052,
+      7.1272939999998925,
+      5.881350000000111,
+      5.826849000000038,
+      5.733701999999994,
+      6.620626999999786,
+      6.445627000000059,
+      5.923608999999942,
+      5.958442000000105,
+      5.7628679999997985,
+      5.831739000000198,
+      5.836905999999999,
+      6.281126999999742,
+      5.861387000000377,
+      5.874201999999968,
+      6.162906000000021,
+      5.886145999999826,
+      6.0640900000007605,
+      5.695682999999917,
+      5.721571999999469
+    ],
+    "results": [
+      {
+        "durationMs": 18.0550310000001,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 13.776217000000088,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 12.700495000000046,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 12.399792000000161,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 13.617828000000145,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 11.318051999999852,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 10.692718000000013,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 10.26351499999987,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 9.131497000000081,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 9.070459999999912,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 9.264885999999933,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 9.703570000000127,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 9.43316300000015,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 9.051090000000158,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 8.414145999999846,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 8.913719000000128,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 10.1351259999999,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 8.376590000000078,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 9.102163999999902,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 10.927885999999944,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 9.461070999999947,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 10.969514999999774,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 9.316663999999946,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 8.851959999999963,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 9.474811999999929,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 8.68499699999984,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 9.60908900000004,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 8.252330000000256,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 8.556422999999995,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 8.683051999999861,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 9.43379300000015,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 9.176884999999857,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 8.382589999999709,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 9.004997000000003,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 9.143607999999858,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 7.920608999999786,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 8.73803399999997,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 8.262978999999632,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 7.947181999999884,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 9.415477999999894,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 8.796736999999666,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 8.95286699999997,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 7.855923000000075,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 9.25055199999997,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 8.366645000000062,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 7.826238000000103,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 10.819995999999719,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 10.382736999999906,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 12.443569999999909,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 11.284681000000091,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 8.117588999999953,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 9.448237999999947,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 9.2882010000003,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 8.969830000000002,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 7.790719999999965,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 7.956349000000046,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 7.879923000000417,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 7.60016399999995,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 7.5562190000000555,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 11.646365999999944,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 8.738977999999861,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 8.375756999999794,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 14.28681000000006,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 8.128459999999905,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 7.692145999999866,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 7.213424000000032,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 8.052885999999944,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 8.242126999999982,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 7.593609000000015,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 8.058737999999721,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 7.155015999999705,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 8.823460000000068,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 9.900441000000228,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 10.04001500000004,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 8.921921999999995,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 7.642349000000195,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 7.86005299999988,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 7.887201000000005,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 7.558238000000074,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 8.01768200000015,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 9.78549699999985,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 8.428349000000253,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 8.179034000000229,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 9.360478000000057,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 7.661720000000059,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 7.126256999999896,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 7.200738000000001,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 8.183403999999882,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 8.136015999999927,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 7.820386999999755,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 8.778737000000092,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 8.239812000000256,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 10.201404000000366,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 7.688589999999749,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 12.572161999999935,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 8.06597899999997,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 8.35870100000011,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 7.928572000000258,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 11.973163000000113,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 11.005162999999811,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 16.39793899999995,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 8.930311000000074,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 7.483664000000317,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 7.313220000000001,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 6.916163999999753,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 6.567108000000189,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 6.225257000000056,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 6.587052999999742,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 6.415904999999839,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 6.509923999999955,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 7.4906819999996515,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 6.643275999999787,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 6.645997999999963,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 7.043533999999909,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 7.281627000000299,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 6.59985000000006,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 7.349275000000034,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 6.788850000000366,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 7.474478999999974,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 6.607906000000185,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 6.833849999999984,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 6.912682000000132,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 6.9942009999999755,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 7.413590000000113,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 8.337422999999944,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 9.456423000000086,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 9.746719000000212,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 9.212921999999708,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 8.008107999999993,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 7.073702000000139,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 6.610220000000027,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 7.220850000000155,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 7.15216399999963,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 7.118348999999853,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 7.63694200000009,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 7.846238000000085,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 7.8779420000000755,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 6.484015999999883,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 6.640349999999671,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 6.526922999999897,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 6.506163999999899,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 7.150997000000189,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 6.695830999999998,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 6.706737999999859,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 7.233052999999927,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 7.232756999999765,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 7.0758310000001075,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 6.971794000000045,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 8.059496999999737,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 6.3245909999996,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 6.7988500000001295,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 7.427572000000055,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 6.431071999999858,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 6.671978999999737,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 6.130349999999908,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 7.096516000000065,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 7.094312000000173,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 7.94814499999984,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 6.41321999999991,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 6.414072000000033,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 6.432737999999972,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 6.624182999999903,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 6.374774999999772,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 6.222367999999733,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 6.67614599999979,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 7.38064600000007,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 6.7326640000001134,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 6.123387000000093,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 10.123755999999958,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 7.161571999999978,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 6.242275000000063,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 6.049441999999999,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 7.277998000000025,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 6.480442000000039,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 6.173996999999872,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 6.620405000000119,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 6.795849999999973,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 6.86229400000002,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 6.236257000000023,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 6.013719999999921,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 6.091221000000132,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 5.992331999999806,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 6.250923999999941,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 6.384070999999949,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 6.858183000000281,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 6.687683000000106,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 7.159646000000066,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 7.76390500000025,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 7.223423999999795,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 7.376460000000407,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 7.141053000000284,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 7.609646000000339,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 7.611311999999998,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 7.083182999999735,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 6.6989049999997405,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 7.1674410000000535,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 6.878720000000158,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 7.586867999999868,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 7.002979000000323,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 6.894275000000107,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 7.017628000000059,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 7.424960999999712,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 7.480756999999812,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 7.859533999999712,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 7.595498000000134,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 7.600127000000157,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 7.186312000000271,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 6.997941999999966,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 7.405146000000059,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 7.33833100000038,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 7.307553000000098,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 7.222479000000021,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 7.5154600000000755,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 7.164757000000009,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 7.35240500000009,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 7.095072000000073,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 7.369238000000223,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 7.206368000000111,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 7.281145999999808,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 7.730442000000039,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 7.794182000000092,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 7.53881199999978,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 7.131941999999981,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 7.385682999999972,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 7.491829999999936,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 6.324275999999827,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 6.533646000000317,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 6.524034000000029,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 6.158516000000418,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 6.3186829999999645,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 6.467830999999933,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 7.164350000000013,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 6.920626999999968,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 7.126275000000078,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 7.548182999999881,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 9.260701000000154,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 8.83660800000007,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 6.689313000000311,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 5.978739000000132,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 6.3500529999996616,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 6.352053000000069,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 8.965052000000014,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 7.554460999999719,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 5.883146000000124,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 7.080256999999619,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 6.285182999999961,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 5.94484999999986,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 6.524017000000185,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 6.134367999999995,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 6.259183000000121,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 6.418830999999955,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 7.724941999999828,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 6.901626999999735,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 8.636089999999967,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 6.259276000000227,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 6.657126999999946,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 5.887054000000262,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 5.569054000000051,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 6.1087390000002415,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 6.1659239999999045,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 6.500554000000193,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 6.22692300000017,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 6.999960000000101,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 6.541424000000006,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 5.922350000000279,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 5.750590000000102,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 5.689221000000089,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 5.687053999999989,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 5.583239000000049,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 6.13314599999967,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 5.996868000000177,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 5.893626999999924,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 6.087331000000177,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 6.177406000000246,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 6.256276000000071,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 5.92147900000009,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 6.8594600000001265,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 5.8680349999999635,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 5.917257000000063,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 5.780795000000126,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 6.235165000000052,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 7.1272939999998925,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 5.881350000000111,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 5.826849000000038,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 5.733701999999994,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 6.620626999999786,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 6.445627000000059,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 5.923608999999942,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 5.958442000000105,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 5.7628679999997985,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 5.831739000000198,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 5.836905999999999,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 6.281126999999742,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 5.861387000000377,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 5.874201999999968,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 6.162906000000021,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 5.886145999999826,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 6.0640900000007605,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 5.695682999999917,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      },
+      {
+        "durationMs": 5.721571999999469,
+        "verdict": "safe",
+        "aiStatus": "disabled",
+        "explanationStatus": "fallback",
+        "fallbackReason": "ai_disabled"
+      }
+    ]
+  },
+  "scansPerSecond": 130.42865155474274,
+  "elapsedMs": 2376.901341,
+  "processPeakRssBytes": 271712256,
+  "failures": 0,
+  "databaseDropped": true,
+  "host": {
+    "label": "rules",
+    "startedAt": "2026-09-12T08:04:49.980Z",
+    "finishedAt": "2026-09-12T08:04:53.005Z",
+    "requestedDurationSeconds": 600,
+    "durationSeconds": 3.025,
+    "sampleIntervalMs": 1000,
+    "containerMemoryMetric": "sum_process_rss_bytes",
+    "rootDevice": "nvme0n1",
+    "throttleStart": "0x0",
+    "throttleEnd": "0x0",
+    "diskDeltaBytes": {
+      "read": 0,
+      "write": 1323008
+    },
+    "hostSummary": {
+      "cpuPercent": {
+        "median": 32.83582089552238,
+        "p95": 40.51282051282051,
+        "min": 12.311557788944727,
+        "max": 40.51282051282051
+      },
+      "memoryUsedBytes": {
+        "median": 2623913984,
+        "p95": 2624684032,
+        "min": 2615705600,
+        "max": 2624684032
+      },
+      "load1": {
+        "median": 1.53,
+        "p95": 1.53,
+        "min": 1.53,
+        "max": 1.53
+      },
+      "temperatureC": {
+        "median": 57.3,
+        "p95": 57.3,
+        "min": 55.65,
+        "max": 57.3
+      },
+      "fanState": {
+        "median": 2,
+        "p95": 2,
+        "min": 2,
+        "max": 2
+      },
+      "swapUsedBytes": {
+        "median": 0,
+        "p95": 0,
+        "min": 0,
+        "max": 0
+      }
+    },
+    "hostSamples": [
+      {
+        "second": 1,
+        "cpuPercent": 40.51282051282051,
+        "memoryUsedBytes": 2615705600,
+        "swapUsedBytes": 0,
+        "load1": 1.53,
+        "temperatureC": 57.3,
+        "fanState": 2
+      },
+      {
+        "second": 2,
+        "cpuPercent": 32.83582089552238,
+        "memoryUsedBytes": 2624684032,
+        "swapUsedBytes": 0,
+        "load1": 1.53,
+        "temperatureC": 57.3,
+        "fanState": 2
+      },
+      {
+        "second": 3,
+        "cpuPercent": 12.311557788944727,
+        "memoryUsedBytes": 2623913984,
+        "swapUsedBytes": 0,
+        "load1": 1.53,
+        "temperatureC": 55.65,
+        "fanState": 2
+      }
+    ],
+    "containers": [
+      {
+        "name": "secureinbox-pi-profile-mongo",
+        "cpuCorePercent": {
+          "median": 25.019002901022773,
+          "p95": 30.275032483505825,
+          "min": 12.231343023783145,
+          "max": 30.275032483505825
+        },
+        "memoryBytes": {
+          "median": 212680704,
+          "p95": 212680704,
+          "min": 212680704,
+          "max": 212680704
+        },
+        "ioDeltaBytes": {
+          "read": 0,
+          "write": 0
+        },
+        "samples": [
+          {
+            "second": 1,
+            "cpuCorePercent": 25.019002901022773,
+            "memoryBytes": 212680704
+          },
+          {
+            "second": 2,
+            "cpuCorePercent": 30.275032483505825,
+            "memoryBytes": 212680704
+          },
+          {
+            "second": 3,
+            "cpuCorePercent": 12.231343023783145,
+            "memoryBytes": 212680704
+          }
+        ]
+      },
+      {
+        "name": "secureinbox-pi-profile-ollama",
+        "cpuCorePercent": {
+          "median": 0,
+          "p95": 0,
+          "min": 0,
+          "max": 0
+        },
+        "memoryBytes": {
+          "median": 59670528,
+          "p95": 59670528,
+          "min": 59670528,
+          "max": 59670528
+        },
+        "ioDeltaBytes": {
+          "read": 0,
+          "write": 0
+        },
+        "samples": [
+          {
+            "second": 1,
+            "cpuCorePercent": 0,
+            "memoryBytes": 59670528
+          },
+          {
+            "second": 2,
+            "cpuCorePercent": 0,
+            "memoryBytes": 59670528
+          },
+          {
+            "second": 3,
+            "cpuCorePercent": 0,
+            "memoryBytes": 59670528
+          }
+        ]
+      },
+      {
+        "name": "secureinbox-dev-backend-1",
+        "cpuCorePercent": {
+          "median": 0.3906615849873402,
+          "p95": 16.158652923057566,
+          "min": 0.21411606865281999,
+          "max": 16.158652923057566
+        },
+        "memoryBytes": {
+          "median": 159449088,
+          "p95": 159449088,
+          "min": 159449088,
+          "max": 159449088
+        },
+        "ioDeltaBytes": {
+          "read": 0,
+          "write": 0
+        },
+        "samples": [
+          {
+            "second": 1,
+            "cpuCorePercent": 16.158652923057566,
+            "memoryBytes": 159449088
+          },
+          {
+            "second": 2,
+            "cpuCorePercent": 0.3906615849873402,
+            "memoryBytes": 159449088
+          },
+          {
+            "second": 3,
+            "cpuCorePercent": 0.21411606865281999,
+            "memoryBytes": 159449088
+          }
+        ]
+      },
+      {
+        "name": "secureinbox-dev-frontend-1",
+        "cpuCorePercent": {
+          "median": 0,
+          "p95": 0,
+          "min": 0,
+          "max": 0
+        },
+        "memoryBytes": {
+          "median": 26378240,
+          "p95": 26378240,
+          "min": 26378240,
+          "max": 26378240
+        },
+        "ioDeltaBytes": {
+          "read": 0,
+          "write": 0
+        },
+        "samples": [
+          {
+            "second": 1,
+            "cpuCorePercent": 0,
+            "memoryBytes": 26378240
+          },
+          {
+            "second": 2,
+            "cpuCorePercent": 0,
+            "memoryBytes": 26378240
+          },
+          {
+            "second": 3,
+            "cpuCorePercent": 0,
+            "memoryBytes": 26378240
+          }
+        ]
+      },
+      {
+        "name": "secureinbox-dev-mongodb-1",
+        "cpuCorePercent": {
+          "median": 0.5480054947588476,
+          "p95": 0.5987680607159238,
+          "min": 0.467662700036915,
+          "max": 0.5987680607159238
+        },
+        "memoryBytes": {
+          "median": 224526336,
+          "p95": 224526336,
+          "min": 224526336,
+          "max": 224526336
+        },
+        "ioDeltaBytes": {
+          "read": 0,
+          "write": 0
+        },
+        "samples": [
+          {
+            "second": 1,
+            "cpuCorePercent": 0.5987680607159238,
+            "memoryBytes": 224526336
+          },
+          {
+            "second": 2,
+            "cpuCorePercent": 0.467662700036915,
+            "memoryBytes": 224526336
+          },
+          {
+            "second": 3,
+            "cpuCorePercent": 0.5480054947588476,
+            "memoryBytes": 224526336
+          }
+        ]
+      },
+      {
+        "name": "secureinbox-prometheus-1",
+        "cpuCorePercent": {
+          "median": 0.19319738531123987,
+          "p95": 0.40992505840311705,
+          "min": 0.15208523739895224,
+          "max": 0.40992505840311705
+        },
+        "memoryBytes": {
+          "median": 96583680,
+          "p95": 96583680,
+          "min": 96583680,
+          "max": 96583680
+        },
+        "ioDeltaBytes": {
+          "read": 0,
+          "write": 0
+        },
+        "samples": [
+          {
+            "second": 1,
+            "cpuCorePercent": 0.40992505840311705,
+            "memoryBytes": 96583680
+          },
+          {
+            "second": 2,
+            "cpuCorePercent": 0.19319738531123987,
+            "memoryBytes": 96583680
+          },
+          {
+            "second": 3,
+            "cpuCorePercent": 0.15208523739895224,
+            "memoryBytes": 96583680
+          }
+        ]
+      },
+      {
+        "name": "secureinbox-backend-1",
+        "cpuCorePercent": {
+          "median": 0.41685784062276254,
+          "p95": 0.9050889772582092,
+          "min": 0.2401450830535587,
+          "max": 0.9050889772582092
+        },
+        "memoryBytes": {
+          "median": 184631296,
+          "p95": 184631296,
+          "min": 184631296,
+          "max": 184631296
+        },
+        "ioDeltaBytes": {
+          "read": 0,
+          "write": 0
+        },
+        "samples": [
+          {
+            "second": 1,
+            "cpuCorePercent": 0.9050889772582092,
+            "memoryBytes": 184631296
+          },
+          {
+            "second": 2,
+            "cpuCorePercent": 0.41685784062276254,
+            "memoryBytes": 184631296
+          },
+          {
+            "second": 3,
+            "cpuCorePercent": 0.2401450830535587,
+            "memoryBytes": 184631296
+          }
+        ]
+      },
+      {
+        "name": "secureinbox-frontend-1",
+        "cpuCorePercent": {
+          "median": 0,
+          "p95": 0,
+          "min": 0,
+          "max": 0
+        },
+        "memoryBytes": {
+          "median": 24936448,
+          "p95": 24936448,
+          "min": 24936448,
+          "max": 24936448
+        },
+        "ioDeltaBytes": {
+          "read": 0,
+          "write": 0
+        },
+        "samples": [
+          {
+            "second": 1,
+            "cpuCorePercent": 0,
+            "memoryBytes": 24936448
+          },
+          {
+            "second": 2,
+            "cpuCorePercent": 0,
+            "memoryBytes": 24936448
+          },
+          {
+            "second": 3,
+            "cpuCorePercent": 0,
+            "memoryBytes": 24936448
+          }
+        ]
+      },
+      {
+        "name": "secureinbox-cloudflared-1",
+        "cpuCorePercent": {
+          "median": 0.22088243346630093,
+          "p95": 0.23675858312923387,
+          "min": 0.15607435837990838,
+          "max": 0.23675858312923387
+        },
+        "memoryBytes": {
+          "median": 41779200,
+          "p95": 41779200,
+          "min": 41779200,
+          "max": 41779200
+        },
+        "ioDeltaBytes": {
+          "read": 0,
+          "write": 0
+        },
+        "samples": [
+          {
+            "second": 1,
+            "cpuCorePercent": 0.22088243346630093,
+            "memoryBytes": 41779200
+          },
+          {
+            "second": 2,
+            "cpuCorePercent": 0.23675858312923387,
+            "memoryBytes": 41779200
+          },
+          {
+            "second": 3,
+            "cpuCorePercent": 0.15607435837990838,
+            "memoryBytes": 41779200
+          }
+        ]
+      },
+      {
+        "name": "secureinbox-grafana-1",
+        "cpuCorePercent": {
+          "median": 0.9687685943171789,
+          "p95": 1.869202363651516,
+          "min": 0.5214444066823655,
+          "max": 1.869202363651516
+        },
+        "memoryBytes": {
+          "median": 318406656,
+          "p95": 318406656,
+          "min": 318406656,
+          "max": 318406656
+        },
+        "ioDeltaBytes": {
+          "read": 0,
+          "write": 0
+        },
+        "samples": [
+          {
+            "second": 1,
+            "cpuCorePercent": 0.9687685943171789,
+            "memoryBytes": 318406656
+          },
+          {
+            "second": 2,
+            "cpuCorePercent": 0.5214444066823655,
+            "memoryBytes": 318406656
+          },
+          {
+            "second": 3,
+            "cpuCorePercent": 1.869202363651516,
+            "memoryBytes": 318406656
+          }
+        ]
+      }
+    ]
+  }
+}

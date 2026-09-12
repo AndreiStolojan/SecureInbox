@@ -3,7 +3,7 @@
 //
 // Ce face, pe scurt: trimite datele formularului către backend. Răspunsul
 // conține { token, user }; salvarea token-ului în localStorage se face în
-// AuthContext, nu aici (vezi docs/EXPLICATIE_FRONTEND.md §4.3).
+// AuthContext, nu aici (vezi docs/architecture.md).
 // ─────────────────────────────────────────────────────────────────────────────
 
 import { apiClient } from './apiClient.js';

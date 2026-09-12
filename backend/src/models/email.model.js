@@ -11,7 +11,7 @@
 // de fiecare dată, ci extragem semnalele o singură dată, la sincronizare, și
 // le ținem gata de folosit de scan.service.js.
 //
-// Detalii: docs/EXPLICATIE_BACKEND.md §3.
+// Detalii: docs/architecture.md.
 // ─────────────────────────────────────────────────────────────────────────────
 
 import mongoose from 'mongoose';

@@ -1,86 +1,35 @@
-x-logging: &default-logging
-  driver: json-file
-  options:
-    max-size: "10m"
-    max-file: "3"
-
+# Production overlays the same application and images used in development.
+# Selected by COMPOSE_FILE in the root .env.
 services:
   backend:
-    build:
-      context: ./backend
-    restart: unless-stopped
-    logging: *default-logging
-    env_file:
-      - ./backend/.env.production.local
-    expose:
-      - "5500"
-    healthcheck:
-      test: ["CMD", "node", "-e", "fetch('http://127.0.0.1:5500/api/v1/ready').then(r => process.exit(r.ok ? 0 : 1)).catch(() => process.exit(1))"]
-      interval: 30s
-      timeout: 5s
-      retries: 3
-      start_period: 30s
+    environment:
+      NODE_ENV: production
+      DB_URI: ${DB_URI:?Set an Atlas DB_URI in .env}
+      FRONTEND_APP_URL: ${FRONTEND_APP_URL:?Set the public HTTPS URL}
+      SEED_DEMO: "false"
+    depends_on: !reset {}
 
   frontend:
-    build:
-      context: ./frontend
-    restart: unless-stopped
-    logging: *default-logging
+    ports: !reset []
     volumes:
       - ./frontend/nginx.prod.conf:/etc/nginx/conf.d/default.conf:ro
-    networks:
-      - default
-      - edge
-    expose:
-      - "80"
-    depends_on:
-      backend:
-        condition: service_healthy
-    healthcheck:
-      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://127.0.0.1/"]
-      interval: 30s
-      timeout: 5s
-      retries: 3
-      start_period: 10s
-
-  ollama:
-    image: ollama/ollama:0.32.1@sha256:6345fbc18bd73a1e16404be681dbc6fd291a027cab43ed541abe78c4c81051b0
-    restart: unless-stopped
-    logging: *default-logging
-    environment:
-      OLLAMA_HOST: 0.0.0.0:11434
-      OLLAMA_CONTEXT_LENGTH: "4096"
-      # Must stay ABOVE SYNC_INTERVAL_MINUTES. At 10m with a 15m sync the model
-      # was evicted between every cycle, so each scan run began by reloading
-      # ~4.7 GB from disk before doing any work.
-      OLLAMA_KEEP_ALIVE: 30m
-      OLLAMA_MAX_LOADED_MODELS: "1"
-      OLLAMA_NUM_PARALLEL: "1"
-      OLLAMA_NO_CLOUD: "1"
-    expose:
-      - "11434"
-    volumes:
-      - ollama-data:/root/.ollama
-    healthcheck:
-      test: ["CMD", "ollama", "list"]
-      interval: 30s
-      timeout: 10s
-      retries: 5
-      start_period: 30s
+    networks: [default, edge]
 
   cloudflared:
     image: cloudflare/cloudflared:2026.7.2@sha256:4f6655284ab3d252b7f28fedb19fe6c8fc82ee5b1295c20ac74d475e5398a52d
     restart: unless-stopped
-    logging: *default-logging
-    command: tunnel --no-autoupdate run --token ${TUNNEL_TOKEN:?Set TUNNEL_TOKEN in .env}
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
+    command: tunnel --no-autoupdate run
+    environment:
+      TUNNEL_TOKEN: ${TUNNEL_TOKEN:?Set TUNNEL_TOKEN in .env}
     depends_on:
       frontend:
         condition: service_healthy
-    networks:
-      - edge
-
-volumes:
-  ollama-data:
+    networks: [edge]
 
 networks:
   edge:

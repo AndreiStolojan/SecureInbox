@@ -1,25 +1,10 @@
-// ─────────────────────────────────────────────────────────────────────────────
-// scheduler.service.js — pornește SARCINILE PROGRAMATE (cron jobs) ale aplicației.
-//
-// Ce face, pe scurt: la pornirea serverului, înregistrează DOUĂ joburi cu
-// biblioteca node-cron (un "cron job" = o sarcină care rulează automat după un
-// orar, ca un ceas deșteptător repetat):
-//   1. Auto-sync — la fiecare SYNC_INTERVAL_MINUTES minute (implicit 15),
-//      cheamă runAutoSyncForAllUsers din auto-sync.service.js.
-//   2. Digest zilnic — rulează din oră în oră și trimite, fiecărui user a
-//      cărui "oră de digest" coincide cu ora curentă (UTC), un rezumat al
-//      activității din ultimele 24h (dacă a existat activitate).
-//
-// De ce node-cron și nu Gmail Push Notifications? Pentru un proiect de licență
-// care nu se deployează public, polling-ul periodic e mai simplu de explicat
-// și demonstrat (decizie acceptată — vezi docs/DECISIONS.md).
-//
-// Detalii: docs/EXPLICATIE_BACKEND.md §6.
-// ─────────────────────────────────────────────────────────────────────────────
+// Programează sincronizarea periodică, digestul zilnic și reînnoirea Gmail Watch.
+// Polling-ul și notificările Gmail folosesc aceeași stare de sincronizare.
+// Vezi docs/architecture.md și docs/gmail-push-setup.md.
 
 import cron from 'node-cron';
 import mongoose from 'mongoose';
-import { SYNC_INTERVAL_MINUTES } from '../config/env.js';
+import { SYNC_INTERVAL_MINUTES, APP_READ_ONLY } from '../config/env.js';
 import { runAutoSyncForAllUsers } from './auto-sync.service.js';
 import { recordScheduledTask } from '../monitoring/metrics.js';
 import { getDailySummaryForUser } from './report.service.js';
@@ -165,6 +150,7 @@ const runDailyDigestForHour = async (currentHour) => {
 // header-ul fișierului. Erorile din interiorul joburilor sunt prinse aici —
 // dacă un job pică, nu trebuie să oprească tot serverul.
 export const startSchedulers = () => {
+    if (APP_READ_ONLY) return { stop() {} };
     const syncIntervalMinutes = parseSyncInterval();
     const syncCron = buildSyncCronExpression(syncIntervalMinutes);
 

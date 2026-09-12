@@ -1,22 +1,6 @@
-// ─────────────────────────────────────────────────────────────────────────────
-// email.service.js — stratul de acces la date pentru emailuri (citire/listare).
-//
-// Ce face, pe scurt: oferă funcțiile pe care le folosește email.controller.js
-// pentru a afișa lista de emailuri (cu filtre, căutare, paginare), detaliile
-// unui email (cu "starea" lui calculată: effectiveVerdict, riskBucket,
-// reviewStatus — vezi email-state.service.js), conținutul brut al unui email,
-// și statistici pentru dashboard (trend pe zile, top expeditori riscanți,
-// numărul de emailuri din fiecare "găleată" de risc).
-//
-// Multe dintre aceste calcule (effectiveVerdict, riskBucket etc.) se fac direct
-// în baza de date, printr-un "aggregation pipeline" MongoDB — o secvență de pași
-// ($match, $lookup, $addFields...) care transformă datele brute în forma finală
-// înainte să ajungă în Node.js. Asta e mai rapid decât să aducem toate emailurile
-// și să calculăm în JavaScript.
-//
-// Detalii: docs/EXPLICATIE_BACKEND.md §3 (modelele de date) și §5.4 (starea finală
-// a emailului).
-// ─────────────────────────────────────────────────────────────────────────────
+// Listează emailurile, detaliile și statisticile pentru utilizatorul curent.
+// Interogările MongoDB derivă verdictul și starea de review înainte de filtrarea
+// după risc. Vezi email-state.service.js și docs/architecture.md.
 
 import mongoose from 'mongoose';
 
@@ -175,14 +159,12 @@ const toEmailDetails = async ({
     latestScan,
     attachmentAnalysisEnabled,
 }) => {
-    const [emailState, priorSenderCount] = await Promise.all([
+    const [emailState, priorSender] = await Promise.all([
         buildEmailStateForUser({ userId, email, latestScan }),
-        // Numărăm câte alte emailuri (diferite de acesta) am mai primit de la
-        // același expeditor. Dacă from e gol, considerăm "nu e prima dată"
-        // (countDocuments cu from gol ar da rezultate înșelătoare).
+        // Stop at the first other message from this sender; only existence matters.
         email.from
-            ? Email.countDocuments({ userId, from: email.from, _id: { $ne: email._id } })
-            : Promise.resolve(1),
+            ? Email.exists({ userId, from: email.from, _id: { $ne: email._id } })
+            : Promise.resolve(true),
     ]);
 
     return {
@@ -220,7 +202,7 @@ const toEmailDetails = async ({
         lastProviderActionError: email.lastProviderActionError || null,
         createdAt: email.createdAt,
         updatedAt: email.updatedAt,
-        isFirstTimeSender: priorSenderCount === 0,
+        isFirstTimeSender: !priorSender,
         latestScan: toCompactLatestScan(latestScan),
         ...emailState,
     };
@@ -639,20 +621,21 @@ export const getEmailsForUser = async ({ userId, query }) => {
     const stateMatchStages =
         Object.keys(stateMatch).length > 0 ? [{ $match: stateMatch }] : [];
 
-    // Pașii comuni de filtrare, reutilizați atât pentru lista paginată
-    // (listPipeline), cât și pentru numărul total de rezultate (countPipeline).
+    // Risk filters need scan-derived state before pagination. Otherwise enrich
+    // only the requested page, and count emails without joining scans.
+    const hasStateFilter = stateMatchStages.length > 0;
+    const enrichmentStages = [...latestScanStages, ...emailStateStages];
     const filterStages = [
         { $match: baseMatch },
-        ...latestScanStages,
-        ...emailStateStages,
+        ...(hasStateFilter ? enrichmentStages : []),
         ...stateMatchStages,
     ];
 
-    const listPipeline = [
-        ...filterStages,
+    const pageStages = [
         { $sort: { receivedAt: -1, _id: -1 } },
         { $skip: skip },
         { $limit: limit },
+        ...(!hasStateFilter ? enrichmentStages : []),
         {
             // $project = alegem explicit ce câmpuri să rămână în rezultat
             // (reducem volumul de date trimis mai departe).
@@ -689,17 +672,22 @@ export const getEmailsForUser = async ({ userId, query }) => {
         },
     ];
 
-    const countPipeline = [
-        ...filterStages,
-        { $count: 'total' },
-    ];
-
-    // Cele două pipeline-uri (lista de pe pagina curentă + numărul total)
-    // rulează în paralel, ca să nu așteptăm unul după altul.
-    const [items, countResult] = await Promise.all([
-        Email.aggregate(listPipeline),
-        Email.aggregate(countPipeline),
-    ]);
+    let items;
+    let countResult;
+    if (hasStateFilter) {
+        // Reuse the enriched set for both pagination and counts.
+        const [result] = await Email.aggregate([
+            ...filterStages,
+            { $facet: { items: pageStages, count: [{ $count: 'total' }] } },
+        ]);
+        items = result.items;
+        countResult = result.count;
+    } else {
+        [items, countResult] = await Promise.all([
+            Email.aggregate([...filterStages, ...pageStages]),
+            Email.aggregate([...filterStages, { $count: 'total' }]),
+        ]);
+    }
 
     const total = countResult[0]?.total || 0;
     const totalPages = total === 0 ? 0 : Math.ceil(total / limit);

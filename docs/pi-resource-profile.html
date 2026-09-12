@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="ro">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>SecureInbox · măsurători Raspberry Pi</title>
+<style>
+  *{box-sizing:border-box}body{margin:0;background:#080808;color:#f5f5f5;font:18px/1.5 system-ui,sans-serif}
+  main{max-width:1080px;margin:auto;padding:48px}h1{font-size:40px;line-height:1.15;margin:14px 0 20px}
+  h2{font-size:23px;margin:32px 0 12px}p{margin:12px 0}.meta,small{font-size:14px;color:#bbb}
+  .lead{font-size:23px;max-width:940px}.numbers{display:flex;gap:54px;padding:24px 0;border-block:1px solid #444;margin:26px 0}
+  .numbers strong{display:block;font-size:38px;line-height:1.2;color:#92e6bc}.numbers span{font-size:15px}
+  table{border-collapse:collapse;width:100%;font-size:17px}td,th{text-align:left;padding:11px 0;border-bottom:1px solid #333}
+  th{font-size:14px;color:#bbb;font-weight:500}td:not(:first-child),th:not(:first-child){text-align:right}
+  .decision{border-left:3px solid #92e6bc;padding-left:18px;margin-top:24px}a{color:#92e6bc}
+  @media(max-width:650px){main{padding:24px}h1{font-size:30px}.numbers{gap:24px;flex-wrap:wrap}.numbers strong{font-size:30px}table{font-size:14px}}
+</style>
+<main>
+  <p class="meta">SECUREINBOX / RASPBERRY PI 5 · 16 GB · 12 SEPTEMBRIE 2026</p>
+  <h1>Regulile sunt rapide.<br>AI-ul ocupă aproape tot procesorul.</h1>
+  <p class="lead">Păstrăm scanarea deterministă implicită și AI-ul opțional. Măsurătorile nu justifică o rescriere în Rust.</p>
+  <div class="numbers">
+    <div><strong>14,23 ms</strong><span>inbox, mediană API</span></div>
+    <div><strong>7,22 ms</strong><span>scanare cu reguli</span></div>
+    <div><strong>16,81 s</strong><span>scanare cu AI 1,5B</span></div>
+  </div>
+  <h2>Timpi măsurați pe Pi</h2>
+  <table>
+    <tr><th>Operație</th><th>Mediană</th><th>p95</th><th>Eșantioane</th></tr>
+    <tr><td>Inbox</td><td>14,23 ms</td><td>21,93 ms</td><td>30</td></tr>
+    <tr><td>Statistici dashboard</td><td>137,59 ms</td><td>165,88 ms</td><td>30</td></tr>
+    <tr><td>Detaliu email</td><td>8,77 ms</td><td>11,98 ms</td><td>30</td></tr>
+    <tr><td>Scanare deterministă</td><td>7,22 ms</td><td>10,93 ms</td><td>300</td></tr>
+    <tr><td>Scanare cu qwen2.5:1.5b</td><td>16,81 s</td><td>17,40 s</td><td>5</td></tr>
+  </table>
+  <p class="meta">Prima scanare cu încărcarea modelului: 45,97 s. API-ul și regulile au fost repetate în două rulări. Zero erori HTTP; AI evaluat fără fallback.</p>
+  <h2>Resursele întregului Pi</h2>
+  <table>
+    <tr><th>Profil</th><th>CPU median</th><th>RAM maxim eșantionat</th><th>Temperatură maximă</th></tr>
+    <tr><td>Idle, 30 s</td><td>2,01%</td><td>2,34 GiB</td><td>58,4°C</td></tr>
+    <tr><td>Citiri API, 32 s</td><td>13,53%</td><td>2,53 GiB</td><td>58,4°C</td></tr>
+    <tr><td>Scanare AI, 148 s</td><td>99,00%</td><td>3,99 GiB</td><td>69,4°C</td></tr>
+  </table>
+  <p class="meta">Fără throttling și fără swap. Ollama: aproximativ 1,43 GiB RSS median. Consum la priză și temperatură ambientală: nemăsurate.</p>
+  <div class="decision">
+    <p><strong>TypeScript: da, treptat, pentru tipuri și întreținere.</strong> Nu accelerează interogările sau inferența AI.</p>
+    <p><strong>Rust: nu merită o migrare acum.</strong> Investighează mai întâi agregările MongoDB; inferența rulează deja separat în Ollama.</p>
+  </div>
+  <h2>Ce pot susține aceste rezultate</h2>
+  <p>600 emailuri sintetice într-o bază locală temporară. Scanările repetă același mesaj. Nu sunt măsurători Atlas, teste de browser sau dovezi de acuratețe. Mesajul care cere parola a primit „safe” în ambele variante; cazul rămâne de investigat.</p>
+  <p class="meta">Model Q4_K_M, context 4096, concurență 1. Modelul 1,5B nu este recomandat pentru producție pe baza acestui test. Producția nu a fost modificată; containerele și volumul de test au fost eliminate.</p>
+  <p class="meta">Surse și reproducere: <a href="pi-resource-profile-2026-09-12.md">raportul tehnic</a> · <a href="measurements/secureinbox-pi-api-recheck.json">API brut</a> · <a href="measurements/secureinbox-pi-rules-recheck.json">reguli brute</a> · <a href="measurements/secureinbox-pi-ai.json">AI brut</a><br>Cod aplicație: a6b998a. Reverificare API/reguli și scripturi: 217cf9a.</p>
+</main>
+</html>

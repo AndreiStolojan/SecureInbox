@@ -12,7 +12,7 @@
 //
 // Folosit în MessagePane (panoul de citire din inbox), lângă expeditor.
 //
-// Detalii: docs/EXPLICATIE_FRONTEND.md §6.3.
+// Detalii: docs/architecture.md.
 // ─────────────────────────────────────────────────────────────────────────────
 
 import { useState } from 'react';

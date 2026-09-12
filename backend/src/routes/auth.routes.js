@@ -7,7 +7,7 @@
 //   validate(schema)  -> verifică req.body cu schema Joi (din validations/)
 //   register / login  -> controllerul final (auth.controller.js)
 //
-// Detalii: docs/EXPLICATIE_BACKEND.md §2 (cum curge o cerere prin backend).
+// Detalii: docs/architecture.md.
 // ─────────────────────────────────────────────────────────────────────────────
 
 import { Router } from 'express';

@@ -17,7 +17,7 @@
 //
 // Rezultatul (linkuri, domenii, tipare suspecte) e folosit de
 // `email-parser.service.js` pentru a completa documentul Email, iar regulile de
-// scor din scan.service.js "citesc" aceste câmpuri. Detalii: docs/EXPLICATIE_BACKEND.md §5.3.
+// scor din scan.service.js "citesc" aceste câmpuri. Detalii: docs/detection-engine.md.
 // ─────────────────────────────────────────────────────────────────────────────
 
 import {

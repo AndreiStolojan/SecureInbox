@@ -9,7 +9,7 @@
 // clearError }`: `run(...)` execută acțiunea ținând evidența stării "în curs"
 // (`loading`) și a eventualei erori. Folosit de ex. în ReviewActions.jsx.
 //
-// Detalii: docs/EXPLICATIE_FRONTEND.md §4.4.
+// Detalii: docs/architecture.md.
 // ─────────────────────────────────────────────────────────────────────────────
 
 import { useCallback, useState } from 'react';

@@ -1,15 +1,6 @@
-// ─────────────────────────────────────────────────────────────────────────────
-// scan.controller.js — stratul "controller" pentru scanări (scan-uri).
-//
-// Ce face, pe scurt: expune endpoint-urile pentru a (re)scana manual un email
-// ("Scan again" din UI) și pentru a citi ultimul rezultat de scanare salvat.
-// Logica reală de scanare (calcul scor, verdict, explicație) trăiește în
-// `scan.service.js` — vezi acolo pentru detalii (motorul descris și în
-// docs/EXPLICATIE_BACKEND.md §4). Controllerul rămâne "subțire": doar citește
-// parametrii cererii, cheamă serviciul și împachetează răspunsul.
-//
-// Detalii despre straturi: docs/EXPLICATIE_BACKEND.md §2.
-// ─────────────────────────────────────────────────────────────────────────────
+// Deleagă rescanarea manuală și citirea ultimului rezultat către scan.service.js.
+// Vezi docs/architecture.md pentru fluxul cererilor și docs/detection-engine.md
+// pentru calculul verdictului și dovezile păstrate în rezultatul scanării.
 
 import {
     getLatestScanForEmail,

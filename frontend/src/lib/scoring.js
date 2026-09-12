@@ -1,19 +1,7 @@
-// ─────────────────────────────────────────────────────────────────────────────
-// scoring.js — oglinda din frontend a configului de scor din backend.
-//
-// Ce face, pe scurt: backend-ul (backend/src/config/scoring.config.js) calculează
-// scorul de risc al unui email, dar UI-ul are nevoie de MAXIMELE acelui scor ca
-// "numitori" pentru barele proporționale (ex: bara de scor reguli, bara de scor
-// AI). Vite nu poate importa direct configul ESM al backend-ului dintr-un pachet
-// separat, deci aceste valori sunt DUPLICATE aici — trebuie ținute manual în
-// sincron cu backend-ul.
-//
-// Tot aici, getAiStatus(scan) traduce starea analizei AI a unui scan într-un
-// mesaj prietenos pentru user (ex: "AI is turned off", "AI timed out"), câte un
-// mesaj specific per mod de eșec, nu o notă generică.
-//
-// Detalii: docs/EXPLICATIE_FRONTEND.md §6.2.
-// ─────────────────────────────────────────────────────────────────────────────
+// Scalele afișate în UI oglindesc backend/src/config/scoring.config.js.
+// Valorile sunt definite separat aici și trebuie păstrate în sincron cu backend-ul.
+// getAiStatus traduce metadatele analizei AI în mesaje pentru utilizator.
+// Vezi docs/detection-engine.md.
 
 // Capătul scalei de scor; scorul final e limitat (clamp) la această valoare în backend.
 export const SCORE_MAX = 100;

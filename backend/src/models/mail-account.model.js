@@ -7,7 +7,7 @@
 // email, tokenii OAuth (CRIPTAȚI înainte de salvare), starea conexiunii și
 // setările de sincronizare.
 //
-// Detalii: docs/EXPLICATIE_BACKEND.md §3.
+// Detalii: docs/architecture.md.
 // ─────────────────────────────────────────────────────────────────────────────
 
 import mongoose from 'mongoose';

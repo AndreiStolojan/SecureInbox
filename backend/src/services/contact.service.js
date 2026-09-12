@@ -9,7 +9,7 @@
 // asociată este protejată separat (în routes) cu Arcjet, împotriva boților și a
 // trimiterilor repetate (rate-limit).
 //
-// Detalii: docs/EXPLICATIE_BACKEND.md §1-2 (straturi service -> controller).
+// Detalii: docs/architecture.md.
 // ─────────────────────────────────────────────────────────────────────────────
 
 import { sendContactMessageEmail } from '../../extras/notifications/send-email.js';

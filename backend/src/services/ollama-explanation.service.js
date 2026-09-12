@@ -15,7 +15,7 @@
 // fallback controlat din scan-explanation.service.js — userul vede mereu o
 // explicație, generată de AI sau dintr-un șablon fix.
 //
-// Detalii: docs/EXPLICATIE_BACKEND.md §4.6.
+// Detalii: docs/detection-engine.md.
 // ─────────────────────────────────────────────────────────────────────────────
 
 import {

@@ -1,6 +1,6 @@
 import app from './app.js';
 import mongoose from 'mongoose';
-import { PORT } from './config/env.js';
+import { PORT, APP_READ_ONLY } from './config/env.js';
 import connectToDatabase from './database/mongodb.js';
 import { startSchedulers } from './services/scheduler.service.js';
 import {
@@ -13,8 +13,9 @@ const startServer = async () => {
         await connectToDatabase();
         const schedulers = startSchedulers();
 
-        const server = app.listen(PORT, '0.0.0.0', () => {
-            console.log(`running api on http://0.0.0.0:${PORT}`);
+        const host = APP_READ_ONLY ? '127.0.0.1' : process.env.APP_HOST || '127.0.0.1';
+        const server = app.listen(PORT, host, () => {
+            console.log(`running api on http://${host}:${PORT}`);
         });
 
         const shutdown = (signal) => {

@@ -24,7 +24,7 @@
 //  - dacă AI e oprit / nu răspunde / dă output invalid, se întoarce un status
 //    'disabled' sau 'failed' — aplicația NU se blochează, doar folosește regulile.
 //
-// Detalii: docs/EXPLICATIE_BACKEND.md §4.7.
+// Detalii: docs/detection-engine.md.
 // ─────────────────────────────────────────────────────────────────────────────
 
 import {

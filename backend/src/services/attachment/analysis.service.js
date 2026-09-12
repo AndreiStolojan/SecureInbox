@@ -48,6 +48,9 @@ const timeoutOutcome = (timeoutMs) => new Promise((resolve) => {
     timer.unref?.();
 });
 
+const isAttachmentTimeoutError = (error) =>
+    error?.name === 'TimeoutError' || error?.code === 'ETIMEDOUT';
+
 const hasPasswordNearArchiveReference = (textBody, htmlBody) => {
     const body = `${boundedString(textBody, MAX_BODY_CHARS)}\n${boundedString(
         htmlBody,
@@ -273,10 +276,12 @@ export const createAttachmentAnalysisService = ({
                 if (!Buffer.isBuffer(buffer) || buffer.length !== size) {
                     throw new TypeError('Attachment fetch returned invalid bytes');
                 }
-            } catch {
+            } catch (error) {
                 items[resultIndex] = unavailableItem(
                     attachmentIndex,
-                    controller.signal.aborted ? 'timed_out' : 'fetch_failed'
+                    controller.signal.aborted || isAttachmentTimeoutError(error)
+                        ? 'timed_out'
+                        : 'fetch_failed'
                 );
                 return;
             }

@@ -8,7 +8,7 @@
 // `req.user`. Fără token valid, cererea e respinsă cu 401 înainte să ajungă
 // la controller.
 //
-// Detalii despre straturi: docs/EXPLICATIE_BACKEND.md §2.
+// Detalii despre straturi: docs/architecture.md.
 // ─────────────────────────────────────────────────────────────────────────────
 
 import { Router } from 'express';

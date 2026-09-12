@@ -1,8 +1,8 @@
 import arcjet, { detectBot, shield, tokenBucket } from '@arcjet/node';
 
-import { ARCJET_KEY } from '../../src/config/env.js';
+import { ARCJET_KEY, APP_READ_ONLY } from '../../src/config/env.js';
 
-const aj = ARCJET_KEY
+const aj = !APP_READ_ONLY && ARCJET_KEY
     ? arcjet({
         key: ARCJET_KEY,
         characteristics: ['ip.src'],

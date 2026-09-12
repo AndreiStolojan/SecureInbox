@@ -116,8 +116,3 @@ export const createReputationCacheService = ({
 
     return { get, getByHash, set, setByHash };
 };
-
-const defaultService = createReputationCacheService();
-
-export const getCachedReputation = (input) => defaultService.get(input);
-export const setCachedReputation = (input) => defaultService.set(input);
