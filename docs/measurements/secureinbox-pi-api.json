@@ -1,0 +1,2420 @@
+{
+  "mode": "api",
+  "startedAt": "2026-09-12T07:59:39.930Z",
+  "sourceRevision": "a6b998ad7805a677773901a8738ea81790584c71",
+  "node": "v24.20.0",
+  "arch": "arm64",
+  "emails": 600,
+  "concurrency": 1,
+  "ai": false,
+  "warmupRounds": 3,
+  "rounds": 30,
+  "pauseBetweenRoundsMs": 500,
+  "requests": 165,
+  "routes": [
+    {
+      "route": "emails",
+      "medianMs": 14.481447000000117,
+      "p95Ms": 19.759885999999824,
+      "samplesMs": [
+        15.69539000000077,
+        14.946964999999182,
+        17.3072030000003,
+        14.648114000000533,
+        14.860595000000103,
+        17.82403599999998,
+        14.366039999998975,
+        15.082094999999754,
+        28.18695099999968,
+        16.12494499999957,
+        14.481447000000117,
+        14.135929000000033,
+        14.361335999998118,
+        19.759885999999824,
+        14.592021000000386,
+        14.21087400000033,
+        14.09663300000102,
+        14.013299999998708,
+        17.56442600000082,
+        14.32185500000196,
+        13.728744000000006,
+        13.832355999998981,
+        14.96342899999945,
+        13.729264000001422,
+        19.497647000000143,
+        13.546801000000414,
+        13.969892999997683,
+        14.234486000001198,
+        14.348856000000524,
+        17.583110999999917
+      ]
+    },
+    {
+      "route": "emails/stats",
+      "medianMs": 138.79553600000145,
+      "p95Ms": 181.67131999999947,
+      "samplesMs": [
+        149.6905740000002,
+        145.15822799999933,
+        168.50725799999964,
+        138.07329200000004,
+        137.03897900000084,
+        171.96184900000117,
+        143.12204699999893,
+        181.67131999999947,
+        337.6730029999999,
+        139.85675599999922,
+        136.6797600000009,
+        138.79553600000145,
+        141.6957360000015,
+        168.2328009999983,
+        137.61420499999804,
+        139.8193140000003,
+        135.1091149999993,
+        136.86018900000272,
+        168.86447000000044,
+        137.53629999999976,
+        135.59076500000083,
+        152.54898899999898,
+        136.90358000000197,
+        135.2085079999997,
+        162.62481300000218,
+        135.83698899999945,
+        135.93817499999932,
+        134.7805649999973,
+        136.92236000000048,
+        160.71498399999837
+      ]
+    },
+    {
+      "route": "emails/trend",
+      "medianMs": 138.54922699999952,
+      "p95Ms": 187.30837000000065,
+      "samplesMs": [
+        139.02616099999977,
+        137.98451400000067,
+        146.2768390000001,
+        140.67877100000078,
+        140.6975679999996,
+        175.59532599999875,
+        141.085790000001,
+        187.30837000000065,
+        230.67837899999904,
+        138.93740600000092,
+        137.56259200000022,
+        138.08157299999948,
+        137.61162999999942,
+        138.38498199999958,
+        142.65864399999919,
+        146.66525100000217,
+        151.5711360000023,
+        138.3250939999998,
+        137.78646500000104,
+        137.82478099999935,
+        137.68017099999997,
+        160.34686900000088,
+        137.45583800000168,
+        143.0241849999984,
+        138.54922699999952,
+        137.3453580000023,
+        136.9528219999993,
+        137.99117299999853,
+        137.19963700000153,
+        151.21932699999888
+      ]
+    },
+    {
+      "route": "emails/top-risky-senders",
+      "medianMs": 139.00922600000195,
+      "p95Ms": 181.75907899999947,
+      "samplesMs": [
+        138.0632539999997,
+        146.03248600000006,
+        158.7073989999999,
+        137.2638310000002,
+        138.32090400000016,
+        181.75907899999947,
+        140.7954950000003,
+        180.99293299999954,
+        183.56391200000144,
+        136.9449259999983,
+        137.7970179999993,
+        137.75266700000066,
+        137.42340799999874,
+        137.69888999999966,
+        139.3224250000021,
+        139.80548099999942,
+        140.2035560000004,
+        174.36822299999767,
+        172.88085500000307,
+        140.62403800000175,
+        137.84255900000062,
+        141.98936999999933,
+        137.79811500000142,
+        139.00922600000195,
+        137.64419100000305,
+        155.0894499999995,
+        135.9678419999982,
+        137.002711000001,
+        137.31230399999913,
+        170.47995500000252
+      ]
+    },
+    {
+      "route": "emails/:id",
+      "medianMs": 8.544268999998167,
+      "p95Ms": 15.206946000000244,
+      "samplesMs": [
+        9.942284999999174,
+        9.125045999999202,
+        9.118119000000661,
+        10.2861550000016,
+        9.467416000001322,
+        9.624155999999857,
+        8.700157000001127,
+        18.237739000000147,
+        15.206946000000244,
+        9.285507999999027,
+        8.651490999998714,
+        7.38799199999994,
+        8.78313899999921,
+        8.17067600000155,
+        9.59415600000284,
+        8.51721400000315,
+        7.290288000000146,
+        10.875285000001895,
+        7.911991000000853,
+        8.449101999998675,
+        10.033971000000747,
+        8.400621000000683,
+        8.215269000000262,
+        8.436934999997902,
+        8.544268999998167,
+        8.408491000001959,
+        6.825400000001537,
+        8.040399000001344,
+        8.220806000001176,
+        7.9256769999992684
+      ]
+    }
+  ],
+  "elapsedMs": 32149.481727,
+  "processPeakRssBytes": 245186560,
+  "failures": 0,
+  "databaseDropped": true,
+  "host": {
+    "label": "api",
+    "startedAt": "2026-09-12T07:59:39.921Z",
+    "finishedAt": "2026-09-12T08:00:13.035Z",
+    "requestedDurationSeconds": 600,
+    "durationSeconds": 33.114,
+    "sampleIntervalMs": 1000,
+    "containerMemoryMetric": "sum_process_rss_bytes",
+    "rootDevice": "nvme0n1",
+    "throttleStart": "0x0",
+    "throttleEnd": "0x0",
+    "diskDeltaBytes": {
+      "read": 65536,
+      "write": 9895936
+    },
+    "hostSummary": {
+      "cpuPercent": {
+        "median": 16.12090680100756,
+        "p95": 61.16751269035533,
+        "min": 0.5012531328320802,
+        "max": 73.2824427480916
+      },
+      "memoryUsedBytes": {
+        "median": 2591784960,
+        "p95": 2733801472,
+        "min": 2561163264,
+        "max": 2738225152
+      },
+      "load1": {
+        "median": 0.55,
+        "p95": 0.59,
+        "min": 0.49,
+        "max": 0.59
+      },
+      "temperatureC": {
+        "median": 54.55,
+        "p95": 55.65,
+        "min": 53.45,
+        "max": 56.75
+      },
+      "fanState": {
+        "median": 1,
+        "p95": 1,
+        "min": 1,
+        "max": 1
+      },
+      "swapUsedBytes": {
+        "median": 0,
+        "p95": 0,
+        "min": 0,
+        "max": 0
+      }
+    },
+    "hostSamples": [
+      {
+        "second": 1,
+        "cpuPercent": 19.499999999999996,
+        "memoryUsedBytes": 2678390784,
+        "swapUsedBytes": 0,
+        "load1": 0.56,
+        "temperatureC": 53.45,
+        "fanState": 1
+      },
+      {
+        "second": 2,
+        "cpuPercent": 14.71321695760599,
+        "memoryUsedBytes": 2666463232,
+        "swapUsedBytes": 0,
+        "load1": 0.56,
+        "temperatureC": 54,
+        "fanState": 1
+      },
+      {
+        "second": 3,
+        "cpuPercent": 13.249999999999995,
+        "memoryUsedBytes": 2645671936,
+        "swapUsedBytes": 0,
+        "load1": 0.56,
+        "temperatureC": 53.45,
+        "fanState": 1
+      },
+      {
+        "second": 4,
+        "cpuPercent": 16.12090680100756,
+        "memoryUsedBytes": 2633383936,
+        "swapUsedBytes": 0,
+        "load1": 0.56,
+        "temperatureC": 54.55,
+        "fanState": 1
+      },
+      {
+        "second": 5,
+        "cpuPercent": 18.9873417721519,
+        "memoryUsedBytes": 2647064576,
+        "swapUsedBytes": 0,
+        "load1": 0.59,
+        "temperatureC": 54,
+        "fanState": 1
+      },
+      {
+        "second": 6,
+        "cpuPercent": 16.249999999999996,
+        "memoryUsedBytes": 2610266112,
+        "swapUsedBytes": 0,
+        "load1": 0.59,
+        "temperatureC": 54,
+        "fanState": 1
+      },
+      {
+        "second": 7,
+        "cpuPercent": 13.350125944584379,
+        "memoryUsedBytes": 2592686080,
+        "swapUsedBytes": 0,
+        "load1": 0.59,
+        "temperatureC": 54,
+        "fanState": 1
+      },
+      {
+        "second": 8,
+        "cpuPercent": 34.42211055276382,
+        "memoryUsedBytes": 2631254016,
+        "swapUsedBytes": 0,
+        "load1": 0.59,
+        "temperatureC": 54.55,
+        "fanState": 1
+      },
+      {
+        "second": 9,
+        "cpuPercent": 29.396984924623116,
+        "memoryUsedBytes": 2566307840,
+        "swapUsedBytes": 0,
+        "load1": 0.59,
+        "temperatureC": 55.1,
+        "fanState": 1
+      },
+      {
+        "second": 10,
+        "cpuPercent": 20.151133501259444,
+        "memoryUsedBytes": 2713288704,
+        "swapUsedBytes": 0,
+        "load1": 0.55,
+        "temperatureC": 55.1,
+        "fanState": 1
+      },
+      {
+        "second": 11,
+        "cpuPercent": 73.2824427480916,
+        "memoryUsedBytes": 2733801472,
+        "swapUsedBytes": 0,
+        "load1": 0.55,
+        "temperatureC": 56.75,
+        "fanState": 1
+      },
+      {
+        "second": 12,
+        "cpuPercent": 61.16751269035533,
+        "memoryUsedBytes": 2738225152,
+        "swapUsedBytes": 0,
+        "load1": 0.55,
+        "temperatureC": 54.55,
+        "fanState": 1
+      },
+      {
+        "second": 13,
+        "cpuPercent": 13.350125944584379,
+        "memoryUsedBytes": 2614837248,
+        "swapUsedBytes": 0,
+        "load1": 0.55,
+        "temperatureC": 55.1,
+        "fanState": 1
+      },
+      {
+        "second": 14,
+        "cpuPercent": 14.321608040201006,
+        "memoryUsedBytes": 2608365568,
+        "swapUsedBytes": 0,
+        "load1": 0.55,
+        "temperatureC": 54.55,
+        "fanState": 1
+      },
+      {
+        "second": 15,
+        "cpuPercent": 14.749999999999996,
+        "memoryUsedBytes": 2602139648,
+        "swapUsedBytes": 0,
+        "load1": 0.58,
+        "temperatureC": 54,
+        "fanState": 1
+      },
+      {
+        "second": 16,
+        "cpuPercent": 12.878787878787879,
+        "memoryUsedBytes": 2595127296,
+        "swapUsedBytes": 0,
+        "load1": 0.58,
+        "temperatureC": 53.45,
+        "fanState": 1
+      },
+      {
+        "second": 17,
+        "cpuPercent": 15.037593984962406,
+        "memoryUsedBytes": 2591784960,
+        "swapUsedBytes": 0,
+        "load1": 0.58,
+        "temperatureC": 54.55,
+        "fanState": 1
+      },
+      {
+        "second": 18,
+        "cpuPercent": 17.66169154228856,
+        "memoryUsedBytes": 2584723456,
+        "swapUsedBytes": 0,
+        "load1": 0.58,
+        "temperatureC": 54.55,
+        "fanState": 1
+      },
+      {
+        "second": 19,
+        "cpuPercent": 16.249999999999996,
+        "memoryUsedBytes": 2569502720,
+        "swapUsedBytes": 0,
+        "load1": 0.58,
+        "temperatureC": 54.55,
+        "fanState": 1
+      },
+      {
+        "second": 20,
+        "cpuPercent": 15.789473684210531,
+        "memoryUsedBytes": 2564882432,
+        "swapUsedBytes": 0,
+        "load1": 0.54,
+        "temperatureC": 55.1,
+        "fanState": 1
+      },
+      {
+        "second": 21,
+        "cpuPercent": 40.96692111959288,
+        "memoryUsedBytes": 2582626304,
+        "swapUsedBytes": 0,
+        "load1": 0.54,
+        "temperatureC": 54.55,
+        "fanState": 1
+      },
+      {
+        "second": 22,
+        "cpuPercent": 15.461346633416461,
+        "memoryUsedBytes": 2583068672,
+        "swapUsedBytes": 0,
+        "load1": 0.54,
+        "temperatureC": 55.65,
+        "fanState": 1
+      },
+      {
+        "second": 23,
+        "cpuPercent": 12.846347607052898,
+        "memoryUsedBytes": 2580381696,
+        "swapUsedBytes": 0,
+        "load1": 0.54,
+        "temperatureC": 54,
+        "fanState": 1
+      },
+      {
+        "second": 24,
+        "cpuPercent": 16.3727959697733,
+        "memoryUsedBytes": 2589179904,
+        "swapUsedBytes": 0,
+        "load1": 0.54,
+        "temperatureC": 53.45,
+        "fanState": 1
+      },
+      {
+        "second": 25,
+        "cpuPercent": 11.809045226130655,
+        "memoryUsedBytes": 2586869760,
+        "swapUsedBytes": 0,
+        "load1": 0.49,
+        "temperatureC": 54.55,
+        "fanState": 1
+      },
+      {
+        "second": 26,
+        "cpuPercent": 11.557788944723612,
+        "memoryUsedBytes": 2571370496,
+        "swapUsedBytes": 0,
+        "load1": 0.49,
+        "temperatureC": 54.55,
+        "fanState": 1
+      },
+      {
+        "second": 27,
+        "cpuPercent": 13.819095477386934,
+        "memoryUsedBytes": 2563031040,
+        "swapUsedBytes": 0,
+        "load1": 0.49,
+        "temperatureC": 54,
+        "fanState": 1
+      },
+      {
+        "second": 28,
+        "cpuPercent": 13.184079601990051,
+        "memoryUsedBytes": 2562883584,
+        "swapUsedBytes": 0,
+        "load1": 0.49,
+        "temperatureC": 54,
+        "fanState": 1
+      },
+      {
+        "second": 29,
+        "cpuPercent": 16.209476309226932,
+        "memoryUsedBytes": 2561163264,
+        "swapUsedBytes": 0,
+        "load1": 0.49,
+        "temperatureC": 55.1,
+        "fanState": 1
+      },
+      {
+        "second": 30,
+        "cpuPercent": 16.249999999999996,
+        "memoryUsedBytes": 2578628608,
+        "swapUsedBytes": 0,
+        "load1": 0.53,
+        "temperatureC": 54,
+        "fanState": 1
+      },
+      {
+        "second": 31,
+        "cpuPercent": 19.09547738693468,
+        "memoryUsedBytes": 2719465472,
+        "swapUsedBytes": 0,
+        "load1": 0.53,
+        "temperatureC": 54.55,
+        "fanState": 1
+      },
+      {
+        "second": 32,
+        "cpuPercent": 23.929471032745596,
+        "memoryUsedBytes": 2566963200,
+        "swapUsedBytes": 0,
+        "load1": 0.53,
+        "temperatureC": 55.1,
+        "fanState": 1
+      },
+      {
+        "second": 33,
+        "cpuPercent": 0.5012531328320802,
+        "memoryUsedBytes": 2563997696,
+        "swapUsedBytes": 0,
+        "load1": 0.53,
+        "temperatureC": 54,
+        "fanState": 1
+      }
+    ],
+    "containers": [
+      {
+        "name": "secureinbox-pi-profile-mongo",
+        "cpuCorePercent": {
+          "median": 46.94812886191031,
+          "p95": 48.50952320520589,
+          "min": 0.34900911098713566,
+          "max": 55.427644825804045
+        },
+        "memoryBytes": {
+          "median": 202719232,
+          "p95": 203571200,
+          "min": 202424320,
+          "max": 203571200
+        },
+        "ioDeltaBytes": {
+          "read": 0,
+          "write": 0
+        },
+        "samples": [
+          {
+            "second": 1,
+            "cpuCorePercent": 47.57413255621301,
+            "memoryBytes": 202424320
+          },
+          {
+            "second": 2,
+            "cpuCorePercent": 43.28550982372568,
+            "memoryBytes": 202522624
+          },
+          {
+            "second": 3,
+            "cpuCorePercent": 42.143423618363855,
+            "memoryBytes": 202522624
+          },
+          {
+            "second": 4,
+            "cpuCorePercent": 46.65116221401881,
+            "memoryBytes": 202522624
+          },
+          {
+            "second": 5,
+            "cpuCorePercent": 47.31365868343455,
+            "memoryBytes": 202522624
+          },
+          {
+            "second": 6,
+            "cpuCorePercent": 47.24176374234672,
+            "memoryBytes": 202555392
+          },
+          {
+            "second": 7,
+            "cpuCorePercent": 47.01561821417936,
+            "memoryBytes": 202571776
+          },
+          {
+            "second": 8,
+            "cpuCorePercent": 47.18531523818749,
+            "memoryBytes": 202571776
+          },
+          {
+            "second": 9,
+            "cpuCorePercent": 47.074444088615046,
+            "memoryBytes": 202604544
+          },
+          {
+            "second": 10,
+            "cpuCorePercent": 47.47721368580337,
+            "memoryBytes": 202686464
+          },
+          {
+            "second": 11,
+            "cpuCorePercent": 44.71059781757815,
+            "memoryBytes": 202686464
+          },
+          {
+            "second": 12,
+            "cpuCorePercent": 55.427644825804045,
+            "memoryBytes": 202686464
+          },
+          {
+            "second": 13,
+            "cpuCorePercent": 41.45541590309592,
+            "memoryBytes": 202702848
+          },
+          {
+            "second": 14,
+            "cpuCorePercent": 41.78884113027987,
+            "memoryBytes": 202702848
+          },
+          {
+            "second": 15,
+            "cpuCorePercent": 47.321374346321655,
+            "memoryBytes": 202702848
+          },
+          {
+            "second": 16,
+            "cpuCorePercent": 47.584525709664995,
+            "memoryBytes": 202719232
+          },
+          {
+            "second": 17,
+            "cpuCorePercent": 46.94812886191031,
+            "memoryBytes": 202719232
+          },
+          {
+            "second": 18,
+            "cpuCorePercent": 47.803816224922905,
+            "memoryBytes": 202719232
+          },
+          {
+            "second": 19,
+            "cpuCorePercent": 48.01074026979281,
+            "memoryBytes": 202719232
+          },
+          {
+            "second": 20,
+            "cpuCorePercent": 46.96218122775904,
+            "memoryBytes": 202719232
+          },
+          {
+            "second": 21,
+            "cpuCorePercent": 48.50952320520589,
+            "memoryBytes": 203210752
+          },
+          {
+            "second": 22,
+            "cpuCorePercent": 48.42440258510759,
+            "memoryBytes": 203259904
+          },
+          {
+            "second": 23,
+            "cpuCorePercent": 46.67064536472111,
+            "memoryBytes": 203259904
+          },
+          {
+            "second": 24,
+            "cpuCorePercent": 44.419845657902385,
+            "memoryBytes": 203259904
+          },
+          {
+            "second": 25,
+            "cpuCorePercent": 41.03521897369154,
+            "memoryBytes": 203276288
+          },
+          {
+            "second": 26,
+            "cpuCorePercent": 41.49666774023516,
+            "memoryBytes": 203276288
+          },
+          {
+            "second": 27,
+            "cpuCorePercent": 43.956441957351636,
+            "memoryBytes": 203292672
+          },
+          {
+            "second": 28,
+            "cpuCorePercent": 41.6958901922105,
+            "memoryBytes": 203325440
+          },
+          {
+            "second": 29,
+            "cpuCorePercent": 40.76812336748596,
+            "memoryBytes": 203358208
+          },
+          {
+            "second": 30,
+            "cpuCorePercent": 41.53845970345961,
+            "memoryBytes": 203554816
+          },
+          {
+            "second": 31,
+            "cpuCorePercent": 40.94207304957006,
+            "memoryBytes": 203554816
+          },
+          {
+            "second": 32,
+            "cpuCorePercent": 47.98097336312636,
+            "memoryBytes": 203571200
+          },
+          {
+            "second": 33,
+            "cpuCorePercent": 0.34900911098713566,
+            "memoryBytes": 203571200
+          }
+        ]
+      },
+      {
+        "name": "secureinbox-pi-profile-ollama",
+        "cpuCorePercent": {
+          "median": 0,
+          "p95": 0,
+          "min": 0,
+          "max": 0
+        },
+        "memoryBytes": {
+          "median": 38584320,
+          "p95": 38584320,
+          "min": 38584320,
+          "max": 38584320
+        },
+        "ioDeltaBytes": {
+          "read": 0,
+          "write": 0
+        },
+        "samples": [
+          {
+            "second": 1,
+            "cpuCorePercent": 0,
+            "memoryBytes": 38584320
+          },
+          {
+            "second": 2,
+            "cpuCorePercent": 0,
+            "memoryBytes": 38584320
+          },
+          {
+            "second": 3,
+            "cpuCorePercent": 0,
+            "memoryBytes": 38584320
+          },
+          {
+            "second": 4,
+            "cpuCorePercent": 0,
+            "memoryBytes": 38584320
+          },
+          {
+            "second": 5,
+            "cpuCorePercent": 0,
+            "memoryBytes": 38584320
+          },
+          {
+            "second": 6,
+            "cpuCorePercent": 0,
+            "memoryBytes": 38584320
+          },
+          {
+            "second": 7,
+            "cpuCorePercent": 0,
+            "memoryBytes": 38584320
+          },
+          {
+            "second": 8,
+            "cpuCorePercent": 0,
+            "memoryBytes": 38584320
+          },
+          {
+            "second": 9,
+            "cpuCorePercent": 0,
+            "memoryBytes": 38584320
+          },
+          {
+            "second": 10,
+            "cpuCorePercent": 0,
+            "memoryBytes": 38584320
+          },
+          {
+            "second": 11,
+            "cpuCorePercent": 0,
+            "memoryBytes": 38584320
+          },
+          {
+            "second": 12,
+            "cpuCorePercent": 0,
+            "memoryBytes": 38584320
+          },
+          {
+            "second": 13,
+            "cpuCorePercent": 0,
+            "memoryBytes": 38584320
+          },
+          {
+            "second": 14,
+            "cpuCorePercent": 0,
+            "memoryBytes": 38584320
+          },
+          {
+            "second": 15,
+            "cpuCorePercent": 0,
+            "memoryBytes": 38584320
+          },
+          {
+            "second": 16,
+            "cpuCorePercent": 0,
+            "memoryBytes": 38584320
+          },
+          {
+            "second": 17,
+            "cpuCorePercent": 0,
+            "memoryBytes": 38584320
+          },
+          {
+            "second": 18,
+            "cpuCorePercent": 0,
+            "memoryBytes": 38584320
+          },
+          {
+            "second": 19,
+            "cpuCorePercent": 0,
+            "memoryBytes": 38584320
+          },
+          {
+            "second": 20,
+            "cpuCorePercent": 0,
+            "memoryBytes": 38584320
+          },
+          {
+            "second": 21,
+            "cpuCorePercent": 0,
+            "memoryBytes": 38584320
+          },
+          {
+            "second": 22,
+            "cpuCorePercent": 0,
+            "memoryBytes": 38584320
+          },
+          {
+            "second": 23,
+            "cpuCorePercent": 0,
+            "memoryBytes": 38584320
+          },
+          {
+            "second": 24,
+            "cpuCorePercent": 0,
+            "memoryBytes": 38584320
+          },
+          {
+            "second": 25,
+            "cpuCorePercent": 0,
+            "memoryBytes": 38584320
+          },
+          {
+            "second": 26,
+            "cpuCorePercent": 0,
+            "memoryBytes": 38584320
+          },
+          {
+            "second": 27,
+            "cpuCorePercent": 0,
+            "memoryBytes": 38584320
+          },
+          {
+            "second": 28,
+            "cpuCorePercent": 0,
+            "memoryBytes": 38584320
+          },
+          {
+            "second": 29,
+            "cpuCorePercent": 0,
+            "memoryBytes": 38584320
+          },
+          {
+            "second": 30,
+            "cpuCorePercent": 0,
+            "memoryBytes": 38584320
+          },
+          {
+            "second": 31,
+            "cpuCorePercent": 0,
+            "memoryBytes": 38584320
+          },
+          {
+            "second": 32,
+            "cpuCorePercent": 0,
+            "memoryBytes": 38584320
+          },
+          {
+            "second": 33,
+            "cpuCorePercent": 0,
+            "memoryBytes": 38584320
+          }
+        ]
+      },
+      {
+        "name": "secureinbox-dev-backend-1",
+        "cpuCorePercent": {
+          "median": 0.2246068192301908,
+          "p95": 15.181631322606167,
+          "min": 0.14161965355754805,
+          "max": 22.427195095679643
+        },
+        "memoryBytes": {
+          "median": 159432704,
+          "p95": 159432704,
+          "min": 159432704,
+          "max": 231849984
+        },
+        "ioDeltaBytes": {
+          "read": 0,
+          "write": 0
+        },
+        "samples": [
+          {
+            "second": 1,
+            "cpuCorePercent": 0.2528571991496374,
+            "memoryBytes": 159432704
+          },
+          {
+            "second": 2,
+            "cpuCorePercent": 0.19514049206999223,
+            "memoryBytes": 159432704
+          },
+          {
+            "second": 3,
+            "cpuCorePercent": 0.18343871400344414,
+            "memoryBytes": 159432704
+          },
+          {
+            "second": 4,
+            "cpuCorePercent": 0.21265844943783457,
+            "memoryBytes": 159432704
+          },
+          {
+            "second": 5,
+            "cpuCorePercent": 15.181631322606167,
+            "memoryBytes": 231849984
+          },
+          {
+            "second": 6,
+            "cpuCorePercent": 9.03215021572339,
+            "memoryBytes": 159432704
+          },
+          {
+            "second": 7,
+            "cpuCorePercent": 0.20251083845784792,
+            "memoryBytes": 159432704
+          },
+          {
+            "second": 8,
+            "cpuCorePercent": 0.3248248204244754,
+            "memoryBytes": 159432704
+          },
+          {
+            "second": 9,
+            "cpuCorePercent": 0.3169176966955516,
+            "memoryBytes": 159432704
+          },
+          {
+            "second": 10,
+            "cpuCorePercent": 0.3288284761834399,
+            "memoryBytes": 159432704
+          },
+          {
+            "second": 11,
+            "cpuCorePercent": 0.5676506659496848,
+            "memoryBytes": 159432704
+          },
+          {
+            "second": 12,
+            "cpuCorePercent": 0.49746485105740595,
+            "memoryBytes": 159432704
+          },
+          {
+            "second": 13,
+            "cpuCorePercent": 0.21828296861845772,
+            "memoryBytes": 159432704
+          },
+          {
+            "second": 14,
+            "cpuCorePercent": 0.20833933343632452,
+            "memoryBytes": 159432704
+          },
+          {
+            "second": 15,
+            "cpuCorePercent": 0.19302997972057948,
+            "memoryBytes": 159432704
+          },
+          {
+            "second": 16,
+            "cpuCorePercent": 0.21820947671350965,
+            "memoryBytes": 159432704
+          },
+          {
+            "second": 17,
+            "cpuCorePercent": 0.20615825363026166,
+            "memoryBytes": 159432704
+          },
+          {
+            "second": 18,
+            "cpuCorePercent": 0.2806281359602069,
+            "memoryBytes": 159432704
+          },
+          {
+            "second": 19,
+            "cpuCorePercent": 0.2627570033354534,
+            "memoryBytes": 159432704
+          },
+          {
+            "second": 20,
+            "cpuCorePercent": 0.24432720131660626,
+            "memoryBytes": 159432704
+          },
+          {
+            "second": 21,
+            "cpuCorePercent": 22.427195095679643,
+            "memoryBytes": 159432704
+          },
+          {
+            "second": 22,
+            "cpuCorePercent": 0.21416832576557832,
+            "memoryBytes": 159432704
+          },
+          {
+            "second": 23,
+            "cpuCorePercent": 0.19519124496247867,
+            "memoryBytes": 159432704
+          },
+          {
+            "second": 24,
+            "cpuCorePercent": 0.2428671089577603,
+            "memoryBytes": 159432704
+          },
+          {
+            "second": 25,
+            "cpuCorePercent": 0.1843853496161497,
+            "memoryBytes": 159432704
+          },
+          {
+            "second": 26,
+            "cpuCorePercent": 0.1662599476595532,
+            "memoryBytes": 159432704
+          },
+          {
+            "second": 27,
+            "cpuCorePercent": 0.20916541972638508,
+            "memoryBytes": 159432704
+          },
+          {
+            "second": 28,
+            "cpuCorePercent": 0.19504853831263944,
+            "memoryBytes": 159432704
+          },
+          {
+            "second": 29,
+            "cpuCorePercent": 0.23009396975887786,
+            "memoryBytes": 159432704
+          },
+          {
+            "second": 30,
+            "cpuCorePercent": 0.2511160232339485,
+            "memoryBytes": 159432704
+          },
+          {
+            "second": 31,
+            "cpuCorePercent": 0.2246068192301908,
+            "memoryBytes": 159432704
+          },
+          {
+            "second": 32,
+            "cpuCorePercent": 0.24480444871937318,
+            "memoryBytes": 159432704
+          },
+          {
+            "second": 33,
+            "cpuCorePercent": 0.14161965355754805,
+            "memoryBytes": 159432704
+          }
+        ]
+      },
+      {
+        "name": "secureinbox-dev-frontend-1",
+        "cpuCorePercent": {
+          "median": 0,
+          "p95": 1.6771575100944935,
+          "min": 0,
+          "max": 1.746630743413701
+        },
+        "memoryBytes": {
+          "median": 26378240,
+          "p95": 26378240,
+          "min": 26378240,
+          "max": 26378240
+        },
+        "ioDeltaBytes": {
+          "read": 0,
+          "write": 0
+        },
+        "samples": [
+          {
+            "second": 1,
+            "cpuCorePercent": 0,
+            "memoryBytes": 26378240
+          },
+          {
+            "second": 2,
+            "cpuCorePercent": 0,
+            "memoryBytes": 26378240
+          },
+          {
+            "second": 3,
+            "cpuCorePercent": 0,
+            "memoryBytes": 26378240
+          },
+          {
+            "second": 4,
+            "cpuCorePercent": 1.746630743413701,
+            "memoryBytes": 26378240
+          },
+          {
+            "second": 5,
+            "cpuCorePercent": 0,
+            "memoryBytes": 26378240
+          },
+          {
+            "second": 6,
+            "cpuCorePercent": 0,
+            "memoryBytes": 26378240
+          },
+          {
+            "second": 7,
+            "cpuCorePercent": 0,
+            "memoryBytes": 26378240
+          },
+          {
+            "second": 8,
+            "cpuCorePercent": 0,
+            "memoryBytes": 26378240
+          },
+          {
+            "second": 9,
+            "cpuCorePercent": 0,
+            "memoryBytes": 26378240
+          },
+          {
+            "second": 10,
+            "cpuCorePercent": 0,
+            "memoryBytes": 26378240
+          },
+          {
+            "second": 11,
+            "cpuCorePercent": 0,
+            "memoryBytes": 26378240
+          },
+          {
+            "second": 12,
+            "cpuCorePercent": 0,
+            "memoryBytes": 26378240
+          },
+          {
+            "second": 13,
+            "cpuCorePercent": 0,
+            "memoryBytes": 26378240
+          },
+          {
+            "second": 14,
+            "cpuCorePercent": 0,
+            "memoryBytes": 26378240
+          },
+          {
+            "second": 15,
+            "cpuCorePercent": 0,
+            "memoryBytes": 26378240
+          },
+          {
+            "second": 16,
+            "cpuCorePercent": 0,
+            "memoryBytes": 26378240
+          },
+          {
+            "second": 17,
+            "cpuCorePercent": 0,
+            "memoryBytes": 26378240
+          },
+          {
+            "second": 18,
+            "cpuCorePercent": 0,
+            "memoryBytes": 26378240
+          },
+          {
+            "second": 19,
+            "cpuCorePercent": 1.6771575100944935,
+            "memoryBytes": 26378240
+          },
+          {
+            "second": 20,
+            "cpuCorePercent": 0,
+            "memoryBytes": 26378240
+          },
+          {
+            "second": 21,
+            "cpuCorePercent": 0,
+            "memoryBytes": 26378240
+          },
+          {
+            "second": 22,
+            "cpuCorePercent": 0,
+            "memoryBytes": 26378240
+          },
+          {
+            "second": 23,
+            "cpuCorePercent": 0,
+            "memoryBytes": 26378240
+          },
+          {
+            "second": 24,
+            "cpuCorePercent": 0,
+            "memoryBytes": 26378240
+          },
+          {
+            "second": 25,
+            "cpuCorePercent": 0,
+            "memoryBytes": 26378240
+          },
+          {
+            "second": 26,
+            "cpuCorePercent": 0,
+            "memoryBytes": 26378240
+          },
+          {
+            "second": 27,
+            "cpuCorePercent": 0,
+            "memoryBytes": 26378240
+          },
+          {
+            "second": 28,
+            "cpuCorePercent": 0,
+            "memoryBytes": 26378240
+          },
+          {
+            "second": 29,
+            "cpuCorePercent": 0,
+            "memoryBytes": 26378240
+          },
+          {
+            "second": 30,
+            "cpuCorePercent": 0,
+            "memoryBytes": 26378240
+          },
+          {
+            "second": 31,
+            "cpuCorePercent": 0,
+            "memoryBytes": 26378240
+          },
+          {
+            "second": 32,
+            "cpuCorePercent": 0,
+            "memoryBytes": 26378240
+          },
+          {
+            "second": 33,
+            "cpuCorePercent": 0,
+            "memoryBytes": 26378240
+          }
+        ]
+      },
+      {
+        "name": "secureinbox-dev-mongodb-1",
+        "cpuCorePercent": {
+          "median": 0.4232471813363294,
+          "p95": 48.97931888754573,
+          "min": 0.3558954789191095,
+          "max": 63.143016018101434
+        },
+        "memoryBytes": {
+          "median": 224624640,
+          "p95": 474988544,
+          "min": 224493568,
+          "max": 478347264
+        },
+        "ioDeltaBytes": {
+          "read": 0,
+          "write": 0
+        },
+        "samples": [
+          {
+            "second": 1,
+            "cpuCorePercent": 0.4272587060730039,
+            "memoryBytes": 224624640
+          },
+          {
+            "second": 2,
+            "cpuCorePercent": 0.40802102887362013,
+            "memoryBytes": 224624640
+          },
+          {
+            "second": 3,
+            "cpuCorePercent": 0.38812400010190384,
+            "memoryBytes": 224624640
+          },
+          {
+            "second": 4,
+            "cpuCorePercent": 0.41933494530498466,
+            "memoryBytes": 224624640
+          },
+          {
+            "second": 5,
+            "cpuCorePercent": 0.4558476693255286,
+            "memoryBytes": 224624640
+          },
+          {
+            "second": 6,
+            "cpuCorePercent": 0.422212821317142,
+            "memoryBytes": 224624640
+          },
+          {
+            "second": 7,
+            "cpuCorePercent": 0.39903908198341087,
+            "memoryBytes": 224624640
+          },
+          {
+            "second": 8,
+            "cpuCorePercent": 0.4174183332119371,
+            "memoryBytes": 224624640
+          },
+          {
+            "second": 9,
+            "cpuCorePercent": 1.1017327605703127,
+            "memoryBytes": 224624640
+          },
+          {
+            "second": 10,
+            "cpuCorePercent": 21.168245991353277,
+            "memoryBytes": 474988544
+          },
+          {
+            "second": 11,
+            "cpuCorePercent": 48.97931888754573,
+            "memoryBytes": 224624640
+          },
+          {
+            "second": 12,
+            "cpuCorePercent": 0.5309995777541358,
+            "memoryBytes": 224624640
+          },
+          {
+            "second": 13,
+            "cpuCorePercent": 0.3949834804466474,
+            "memoryBytes": 224624640
+          },
+          {
+            "second": 14,
+            "cpuCorePercent": 0.3771849492849111,
+            "memoryBytes": 224624640
+          },
+          {
+            "second": 15,
+            "cpuCorePercent": 0.38566093105930765,
+            "memoryBytes": 224624640
+          },
+          {
+            "second": 16,
+            "cpuCorePercent": 0.39552960907028306,
+            "memoryBytes": 224624640
+          },
+          {
+            "second": 17,
+            "cpuCorePercent": 0.5016816718723832,
+            "memoryBytes": 224624640
+          },
+          {
+            "second": 18,
+            "cpuCorePercent": 0.40438773678700746,
+            "memoryBytes": 224624640
+          },
+          {
+            "second": 19,
+            "cpuCorePercent": 1.0196168345749566,
+            "memoryBytes": 224624640
+          },
+          {
+            "second": 20,
+            "cpuCorePercent": 0.44298017479525104,
+            "memoryBytes": 224624640
+          },
+          {
+            "second": 21,
+            "cpuCorePercent": 63.143016018101434,
+            "memoryBytes": 224624640
+          },
+          {
+            "second": 22,
+            "cpuCorePercent": 0.6858355527184482,
+            "memoryBytes": 224624640
+          },
+          {
+            "second": 23,
+            "cpuCorePercent": 0.4043389630070549,
+            "memoryBytes": 224624640
+          },
+          {
+            "second": 24,
+            "cpuCorePercent": 0.4298797698595265,
+            "memoryBytes": 224493568
+          },
+          {
+            "second": 25,
+            "cpuCorePercent": 0.3733603778482858,
+            "memoryBytes": 224493568
+          },
+          {
+            "second": 26,
+            "cpuCorePercent": 0.37141694366177336,
+            "memoryBytes": 224493568
+          },
+          {
+            "second": 27,
+            "cpuCorePercent": 0.3894185555058437,
+            "memoryBytes": 224493568
+          },
+          {
+            "second": 28,
+            "cpuCorePercent": 0.9754422297098085,
+            "memoryBytes": 224493568
+          },
+          {
+            "second": 29,
+            "cpuCorePercent": 0.43525361249577066,
+            "memoryBytes": 224493568
+          },
+          {
+            "second": 30,
+            "cpuCorePercent": 0.4232471813363294,
+            "memoryBytes": 224493568
+          },
+          {
+            "second": 31,
+            "cpuCorePercent": 29.126078783211643,
+            "memoryBytes": 478347264
+          },
+          {
+            "second": 32,
+            "cpuCorePercent": 35.341858394939464,
+            "memoryBytes": 224493568
+          },
+          {
+            "second": 33,
+            "cpuCorePercent": 0.3558954789191095,
+            "memoryBytes": 224493568
+          }
+        ]
+      },
+      {
+        "name": "secureinbox-prometheus-1",
+        "cpuCorePercent": {
+          "median": 0.14911578700840278,
+          "p95": 1.665114808319745,
+          "min": 0.09451290480549542,
+          "max": 1.83296018883836
+        },
+        "memoryBytes": {
+          "median": 96616448,
+          "p95": 96616448,
+          "min": 96616448,
+          "max": 96616448
+        },
+        "ioDeltaBytes": {
+          "read": 0,
+          "write": 0
+        },
+        "samples": [
+          {
+            "second": 1,
+            "cpuCorePercent": 0.14911578700840278,
+            "memoryBytes": 96616448
+          },
+          {
+            "second": 2,
+            "cpuCorePercent": 0.12986111397711944,
+            "memoryBytes": 96616448
+          },
+          {
+            "second": 3,
+            "cpuCorePercent": 0.13426237577413583,
+            "memoryBytes": 96616448
+          },
+          {
+            "second": 4,
+            "cpuCorePercent": 0.15991755878963276,
+            "memoryBytes": 96616448
+          },
+          {
+            "second": 5,
+            "cpuCorePercent": 1.83296018883836,
+            "memoryBytes": 96616448
+          },
+          {
+            "second": 6,
+            "cpuCorePercent": 0.1319477259171648,
+            "memoryBytes": 96616448
+          },
+          {
+            "second": 7,
+            "cpuCorePercent": 0.12563449357798542,
+            "memoryBytes": 96616448
+          },
+          {
+            "second": 8,
+            "cpuCorePercent": 0.1682431104254417,
+            "memoryBytes": 96616448
+          },
+          {
+            "second": 9,
+            "cpuCorePercent": 0.21290726319855338,
+            "memoryBytes": 96616448
+          },
+          {
+            "second": 10,
+            "cpuCorePercent": 0.1803027997249398,
+            "memoryBytes": 96616448
+          },
+          {
+            "second": 11,
+            "cpuCorePercent": 0.676186746663163,
+            "memoryBytes": 96616448
+          },
+          {
+            "second": 12,
+            "cpuCorePercent": 0.3264179018705356,
+            "memoryBytes": 96616448
+          },
+          {
+            "second": 13,
+            "cpuCorePercent": 0.13053102143515816,
+            "memoryBytes": 96616448
+          },
+          {
+            "second": 14,
+            "cpuCorePercent": 0.12865377699035838,
+            "memoryBytes": 96616448
+          },
+          {
+            "second": 15,
+            "cpuCorePercent": 0.14484730261203174,
+            "memoryBytes": 96616448
+          },
+          {
+            "second": 16,
+            "cpuCorePercent": 0.1496948923889296,
+            "memoryBytes": 96616448
+          },
+          {
+            "second": 17,
+            "cpuCorePercent": 0.1499060741201177,
+            "memoryBytes": 96616448
+          },
+          {
+            "second": 18,
+            "cpuCorePercent": 0.1406132450973318,
+            "memoryBytes": 96616448
+          },
+          {
+            "second": 19,
+            "cpuCorePercent": 0.1507736580809129,
+            "memoryBytes": 96616448
+          },
+          {
+            "second": 20,
+            "cpuCorePercent": 1.665114808319745,
+            "memoryBytes": 96616448
+          },
+          {
+            "second": 21,
+            "cpuCorePercent": 0.22990389858519078,
+            "memoryBytes": 96616448
+          },
+          {
+            "second": 22,
+            "cpuCorePercent": 0.13476206484367712,
+            "memoryBytes": 96616448
+          },
+          {
+            "second": 23,
+            "cpuCorePercent": 0.12461136680444246,
+            "memoryBytes": 96616448
+          },
+          {
+            "second": 24,
+            "cpuCorePercent": 0.20227289403135026,
+            "memoryBytes": 96616448
+          },
+          {
+            "second": 25,
+            "cpuCorePercent": 0.12471952760832636,
+            "memoryBytes": 96616448
+          },
+          {
+            "second": 26,
+            "cpuCorePercent": 0.3095806103990721,
+            "memoryBytes": 96616448
+          },
+          {
+            "second": 27,
+            "cpuCorePercent": 0.13429257405693074,
+            "memoryBytes": 96616448
+          },
+          {
+            "second": 28,
+            "cpuCorePercent": 0.15973028636242237,
+            "memoryBytes": 96616448
+          },
+          {
+            "second": 29,
+            "cpuCorePercent": 0.13314930629740007,
+            "memoryBytes": 96616448
+          },
+          {
+            "second": 30,
+            "cpuCorePercent": 0.12366317268073715,
+            "memoryBytes": 96616448
+          },
+          {
+            "second": 31,
+            "cpuCorePercent": 0.13733729577263443,
+            "memoryBytes": 96616448
+          },
+          {
+            "second": 32,
+            "cpuCorePercent": 0.16935717467459285,
+            "memoryBytes": 96616448
+          },
+          {
+            "second": 33,
+            "cpuCorePercent": 0.09451290480549542,
+            "memoryBytes": 96616448
+          }
+        ]
+      },
+      {
+        "name": "secureinbox-backend-1",
+        "cpuCorePercent": {
+          "median": 0.2663495793414165,
+          "p95": 12.423960263081348,
+          "min": 0.14261767789551527,
+          "max": 13.518169780166785
+        },
+        "memoryBytes": {
+          "median": 184614912,
+          "p95": 184631296,
+          "min": 184614912,
+          "max": 243417088
+        },
+        "ioDeltaBytes": {
+          "read": 0,
+          "write": 0
+        },
+        "samples": [
+          {
+            "second": 1,
+            "cpuCorePercent": 0.2663495793414165,
+            "memoryBytes": 184614912
+          },
+          {
+            "second": 2,
+            "cpuCorePercent": 0.21497346342950627,
+            "memoryBytes": 184614912
+          },
+          {
+            "second": 3,
+            "cpuCorePercent": 0.21835092167131007,
+            "memoryBytes": 184614912
+          },
+          {
+            "second": 4,
+            "cpuCorePercent": 0.25612731205147543,
+            "memoryBytes": 184614912
+          },
+          {
+            "second": 5,
+            "cpuCorePercent": 0.34131257812609006,
+            "memoryBytes": 184614912
+          },
+          {
+            "second": 6,
+            "cpuCorePercent": 0.20608125216775894,
+            "memoryBytes": 184614912
+          },
+          {
+            "second": 7,
+            "cpuCorePercent": 0.2375090188117153,
+            "memoryBytes": 184614912
+          },
+          {
+            "second": 8,
+            "cpuCorePercent": 0.3320010668407265,
+            "memoryBytes": 184614912
+          },
+          {
+            "second": 9,
+            "cpuCorePercent": 0.3100368530605632,
+            "memoryBytes": 184614912
+          },
+          {
+            "second": 10,
+            "cpuCorePercent": 0.5156062383294411,
+            "memoryBytes": 184614912
+          },
+          {
+            "second": 11,
+            "cpuCorePercent": 0.9939358225557836,
+            "memoryBytes": 184614912
+          },
+          {
+            "second": 12,
+            "cpuCorePercent": 0.4992507240767584,
+            "memoryBytes": 184614912
+          },
+          {
+            "second": 13,
+            "cpuCorePercent": 0.19704300867522725,
+            "memoryBytes": 184614912
+          },
+          {
+            "second": 14,
+            "cpuCorePercent": 0.20105892590121122,
+            "memoryBytes": 184614912
+          },
+          {
+            "second": 15,
+            "cpuCorePercent": 0.24979176703893077,
+            "memoryBytes": 184614912
+          },
+          {
+            "second": 16,
+            "cpuCorePercent": 0.22209895093280896,
+            "memoryBytes": 184614912
+          },
+          {
+            "second": 17,
+            "cpuCorePercent": 0.26859418337024416,
+            "memoryBytes": 184614912
+          },
+          {
+            "second": 18,
+            "cpuCorePercent": 0.232959248615154,
+            "memoryBytes": 184614912
+          },
+          {
+            "second": 19,
+            "cpuCorePercent": 0.28459525143050624,
+            "memoryBytes": 184614912
+          },
+          {
+            "second": 20,
+            "cpuCorePercent": 0.4305145012586895,
+            "memoryBytes": 184614912
+          },
+          {
+            "second": 21,
+            "cpuCorePercent": 13.518169780166785,
+            "memoryBytes": 184631296
+          },
+          {
+            "second": 22,
+            "cpuCorePercent": 0.17988151723234186,
+            "memoryBytes": 184631296
+          },
+          {
+            "second": 23,
+            "cpuCorePercent": 0.17266150984423548,
+            "memoryBytes": 184631296
+          },
+          {
+            "second": 24,
+            "cpuCorePercent": 0.2579278619157159,
+            "memoryBytes": 184631296
+          },
+          {
+            "second": 25,
+            "cpuCorePercent": 0.44549815261694176,
+            "memoryBytes": 184631296
+          },
+          {
+            "second": 26,
+            "cpuCorePercent": 0.6326255836859904,
+            "memoryBytes": 184631296
+          },
+          {
+            "second": 27,
+            "cpuCorePercent": 0.43906792586987603,
+            "memoryBytes": 184631296
+          },
+          {
+            "second": 28,
+            "cpuCorePercent": 0.1924545424066913,
+            "memoryBytes": 184631296
+          },
+          {
+            "second": 29,
+            "cpuCorePercent": 9.318456694656245,
+            "memoryBytes": 243417088
+          },
+          {
+            "second": 30,
+            "cpuCorePercent": 12.423960263081348,
+            "memoryBytes": 184631296
+          },
+          {
+            "second": 31,
+            "cpuCorePercent": 0.22011867230951646,
+            "memoryBytes": 184631296
+          },
+          {
+            "second": 32,
+            "cpuCorePercent": 0.27853616648013474,
+            "memoryBytes": 184631296
+          },
+          {
+            "second": 33,
+            "cpuCorePercent": 0.14261767789551527,
+            "memoryBytes": 184631296
+          }
+        ]
+      },
+      {
+        "name": "secureinbox-frontend-1",
+        "cpuCorePercent": {
+          "median": 0,
+          "p95": 0,
+          "min": 0,
+          "max": 1.514045443657105
+        },
+        "memoryBytes": {
+          "median": 24936448,
+          "p95": 24936448,
+          "min": 24936448,
+          "max": 24936448
+        },
+        "ioDeltaBytes": {
+          "read": 0,
+          "write": 0
+        },
+        "samples": [
+          {
+            "second": 1,
+            "cpuCorePercent": 0,
+            "memoryBytes": 24936448
+          },
+          {
+            "second": 2,
+            "cpuCorePercent": 0,
+            "memoryBytes": 24936448
+          },
+          {
+            "second": 3,
+            "cpuCorePercent": 0,
+            "memoryBytes": 24936448
+          },
+          {
+            "second": 4,
+            "cpuCorePercent": 0,
+            "memoryBytes": 24936448
+          },
+          {
+            "second": 5,
+            "cpuCorePercent": 0,
+            "memoryBytes": 24936448
+          },
+          {
+            "second": 6,
+            "cpuCorePercent": 0,
+            "memoryBytes": 24936448
+          },
+          {
+            "second": 7,
+            "cpuCorePercent": 0,
+            "memoryBytes": 24936448
+          },
+          {
+            "second": 8,
+            "cpuCorePercent": 0,
+            "memoryBytes": 24936448
+          },
+          {
+            "second": 9,
+            "cpuCorePercent": 0,
+            "memoryBytes": 24936448
+          },
+          {
+            "second": 10,
+            "cpuCorePercent": 1.514045443657105,
+            "memoryBytes": 24936448
+          },
+          {
+            "second": 11,
+            "cpuCorePercent": 0,
+            "memoryBytes": 24936448
+          },
+          {
+            "second": 12,
+            "cpuCorePercent": 0,
+            "memoryBytes": 24936448
+          },
+          {
+            "second": 13,
+            "cpuCorePercent": 0,
+            "memoryBytes": 24936448
+          },
+          {
+            "second": 14,
+            "cpuCorePercent": 0,
+            "memoryBytes": 24936448
+          },
+          {
+            "second": 15,
+            "cpuCorePercent": 0,
+            "memoryBytes": 24936448
+          },
+          {
+            "second": 16,
+            "cpuCorePercent": 0,
+            "memoryBytes": 24936448
+          },
+          {
+            "second": 17,
+            "cpuCorePercent": 0,
+            "memoryBytes": 24936448
+          },
+          {
+            "second": 18,
+            "cpuCorePercent": 0,
+            "memoryBytes": 24936448
+          },
+          {
+            "second": 19,
+            "cpuCorePercent": 0,
+            "memoryBytes": 24936448
+          },
+          {
+            "second": 20,
+            "cpuCorePercent": 0,
+            "memoryBytes": 24936448
+          },
+          {
+            "second": 21,
+            "cpuCorePercent": 0,
+            "memoryBytes": 24936448
+          },
+          {
+            "second": 22,
+            "cpuCorePercent": 0,
+            "memoryBytes": 24936448
+          },
+          {
+            "second": 23,
+            "cpuCorePercent": 0,
+            "memoryBytes": 24936448
+          },
+          {
+            "second": 24,
+            "cpuCorePercent": 0,
+            "memoryBytes": 24936448
+          },
+          {
+            "second": 25,
+            "cpuCorePercent": 0,
+            "memoryBytes": 24936448
+          },
+          {
+            "second": 26,
+            "cpuCorePercent": 0,
+            "memoryBytes": 24936448
+          },
+          {
+            "second": 27,
+            "cpuCorePercent": 0,
+            "memoryBytes": 24936448
+          },
+          {
+            "second": 28,
+            "cpuCorePercent": 0,
+            "memoryBytes": 24936448
+          },
+          {
+            "second": 29,
+            "cpuCorePercent": 0,
+            "memoryBytes": 24936448
+          },
+          {
+            "second": 30,
+            "cpuCorePercent": 0,
+            "memoryBytes": 24936448
+          },
+          {
+            "second": 31,
+            "cpuCorePercent": 0,
+            "memoryBytes": 24936448
+          },
+          {
+            "second": 32,
+            "cpuCorePercent": 0,
+            "memoryBytes": 24936448
+          },
+          {
+            "second": 33,
+            "cpuCorePercent": 0,
+            "memoryBytes": 24936448
+          }
+        ]
+      },
+      {
+        "name": "secureinbox-cloudflared-1",
+        "cpuCorePercent": {
+          "median": 0.2577289645010214,
+          "p95": 0.5003005956994331,
+          "min": 0.14394948875286626,
+          "max": 0.7998167044469274
+        },
+        "memoryBytes": {
+          "median": 41779200,
+          "p95": 41795584,
+          "min": 41779200,
+          "max": 41795584
+        },
+        "ioDeltaBytes": {
+          "read": 0,
+          "write": 0
+        },
+        "samples": [
+          {
+            "second": 1,
+            "cpuCorePercent": 0.2707470958483667,
+            "memoryBytes": 41779200
+          },
+          {
+            "second": 2,
+            "cpuCorePercent": 0.2577289645010214,
+            "memoryBytes": 41779200
+          },
+          {
+            "second": 3,
+            "cpuCorePercent": 0.2172536808588914,
+            "memoryBytes": 41779200
+          },
+          {
+            "second": 4,
+            "cpuCorePercent": 0.17367605200220715,
+            "memoryBytes": 41779200
+          },
+          {
+            "second": 5,
+            "cpuCorePercent": 0.24940539441339876,
+            "memoryBytes": 41779200
+          },
+          {
+            "second": 6,
+            "cpuCorePercent": 0.1998122425653597,
+            "memoryBytes": 41779200
+          },
+          {
+            "second": 7,
+            "cpuCorePercent": 0.15873818553662922,
+            "memoryBytes": 41779200
+          },
+          {
+            "second": 8,
+            "cpuCorePercent": 0.2766841673821245,
+            "memoryBytes": 41779200
+          },
+          {
+            "second": 9,
+            "cpuCorePercent": 0.2981698908494963,
+            "memoryBytes": 41779200
+          },
+          {
+            "second": 10,
+            "cpuCorePercent": 0.2666688369412507,
+            "memoryBytes": 41779200
+          },
+          {
+            "second": 11,
+            "cpuCorePercent": 0.5003005956994331,
+            "memoryBytes": 41779200
+          },
+          {
+            "second": 12,
+            "cpuCorePercent": 0.38187918063820414,
+            "memoryBytes": 41779200
+          },
+          {
+            "second": 13,
+            "cpuCorePercent": 0.2727290631208232,
+            "memoryBytes": 41779200
+          },
+          {
+            "second": 14,
+            "cpuCorePercent": 0.2665825937172309,
+            "memoryBytes": 41779200
+          },
+          {
+            "second": 15,
+            "cpuCorePercent": 0.14394948875286626,
+            "memoryBytes": 41779200
+          },
+          {
+            "second": 16,
+            "cpuCorePercent": 0.35194755179249343,
+            "memoryBytes": 41779200
+          },
+          {
+            "second": 17,
+            "cpuCorePercent": 0.34988057752054086,
+            "memoryBytes": 41779200
+          },
+          {
+            "second": 18,
+            "cpuCorePercent": 0.22867104326821408,
+            "memoryBytes": 41779200
+          },
+          {
+            "second": 19,
+            "cpuCorePercent": 0.2210748677019735,
+            "memoryBytes": 41779200
+          },
+          {
+            "second": 20,
+            "cpuCorePercent": 0.19476368333523755,
+            "memoryBytes": 41779200
+          },
+          {
+            "second": 21,
+            "cpuCorePercent": 0.326212296691563,
+            "memoryBytes": 41779200
+          },
+          {
+            "second": 22,
+            "cpuCorePercent": 0.18395618143484244,
+            "memoryBytes": 41795584
+          },
+          {
+            "second": 23,
+            "cpuCorePercent": 0.16767705517205778,
+            "memoryBytes": 41795584
+          },
+          {
+            "second": 24,
+            "cpuCorePercent": 0.26650550929574357,
+            "memoryBytes": 41795584
+          },
+          {
+            "second": 25,
+            "cpuCorePercent": 0.23167899448522705,
+            "memoryBytes": 41795584
+          },
+          {
+            "second": 26,
+            "cpuCorePercent": 0.23607516263357076,
+            "memoryBytes": 41795584
+          },
+          {
+            "second": 27,
+            "cpuCorePercent": 0.26340087650958505,
+            "memoryBytes": 41795584
+          },
+          {
+            "second": 28,
+            "cpuCorePercent": 0.26618388757960204,
+            "memoryBytes": 41795584
+          },
+          {
+            "second": 29,
+            "cpuCorePercent": 0.2190231285611165,
+            "memoryBytes": 41795584
+          },
+          {
+            "second": 30,
+            "cpuCorePercent": 0.23964726125146077,
+            "memoryBytes": 41795584
+          },
+          {
+            "second": 31,
+            "cpuCorePercent": 0.33661101905057456,
+            "memoryBytes": 41795584
+          },
+          {
+            "second": 32,
+            "cpuCorePercent": 0.25568242870731106,
+            "memoryBytes": 41795584
+          },
+          {
+            "second": 33,
+            "cpuCorePercent": 0.7998167044469274,
+            "memoryBytes": 41779200
+          }
+        ]
+      },
+      {
+        "name": "secureinbox-grafana-1",
+        "cpuCorePercent": {
+          "median": 0.4079496747460503,
+          "p95": 2.6460436825705096,
+          "min": 0.22345764927085981,
+          "max": 6.420720381896402
+        },
+        "memoryBytes": {
+          "median": 318406656,
+          "p95": 318406656,
+          "min": 318406656,
+          "max": 318406656
+        },
+        "ioDeltaBytes": {
+          "read": 0,
+          "write": 0
+        },
+        "samples": [
+          {
+            "second": 1,
+            "cpuCorePercent": 0.619050391910219,
+            "memoryBytes": 318406656
+          },
+          {
+            "second": 2,
+            "cpuCorePercent": 2.06282834773478,
+            "memoryBytes": 318406656
+          },
+          {
+            "second": 3,
+            "cpuCorePercent": 0.30682843081815886,
+            "memoryBytes": 318406656
+          },
+          {
+            "second": 4,
+            "cpuCorePercent": 0.327113161090265,
+            "memoryBytes": 318406656
+          },
+          {
+            "second": 5,
+            "cpuCorePercent": 0.33373671482656236,
+            "memoryBytes": 318406656
+          },
+          {
+            "second": 6,
+            "cpuCorePercent": 0.41345610949156847,
+            "memoryBytes": 318406656
+          },
+          {
+            "second": 7,
+            "cpuCorePercent": 0.31408623394496354,
+            "memoryBytes": 318406656
+          },
+          {
+            "second": 8,
+            "cpuCorePercent": 0.4079496747460503,
+            "memoryBytes": 318406656
+          },
+          {
+            "second": 9,
+            "cpuCorePercent": 0.37824695518131757,
+            "memoryBytes": 318406656
+          },
+          {
+            "second": 10,
+            "cpuCorePercent": 0.37644435367986046,
+            "memoryBytes": 318406656
+          },
+          {
+            "second": 11,
+            "cpuCorePercent": 0.9823957809767154,
+            "memoryBytes": 318406656
+          },
+          {
+            "second": 12,
+            "cpuCorePercent": 0.7941182026054003,
+            "memoryBytes": 318406656
+          },
+          {
+            "second": 13,
+            "cpuCorePercent": 1.6846379496757538,
+            "memoryBytes": 318406656
+          },
+          {
+            "second": 14,
+            "cpuCorePercent": 0.4547761419194063,
+            "memoryBytes": 318406656
+          },
+          {
+            "second": 15,
+            "cpuCorePercent": 0.2948819741881307,
+            "memoryBytes": 318406656
+          },
+          {
+            "second": 16,
+            "cpuCorePercent": 0.3083654945147038,
+            "memoryBytes": 318406656
+          },
+          {
+            "second": 17,
+            "cpuCorePercent": 1.9768053154096692,
+            "memoryBytes": 318406656
+          },
+          {
+            "second": 18,
+            "cpuCorePercent": 0.3951132461529281,
+            "memoryBytes": 318406656
+          },
+          {
+            "second": 19,
+            "cpuCorePercent": 0.4319784965651552,
+            "memoryBytes": 318406656
+          },
+          {
+            "second": 20,
+            "cpuCorePercent": 0.35502238232127276,
+            "memoryBytes": 318406656
+          },
+          {
+            "second": 21,
+            "cpuCorePercent": 0.7658810706554361,
+            "memoryBytes": 318406656
+          },
+          {
+            "second": 22,
+            "cpuCorePercent": 0.4637166626553078,
+            "memoryBytes": 318406656
+          },
+          {
+            "second": 23,
+            "cpuCorePercent": 0.3220954609161229,
+            "memoryBytes": 318406656
+          },
+          {
+            "second": 24,
+            "cpuCorePercent": 0.5283232345582162,
+            "memoryBytes": 318406656
+          },
+          {
+            "second": 25,
+            "cpuCorePercent": 0.28585715727828404,
+            "memoryBytes": 318406656
+          },
+          {
+            "second": 26,
+            "cpuCorePercent": 0.5643064090328447,
+            "memoryBytes": 318406656
+          },
+          {
+            "second": 27,
+            "cpuCorePercent": 6.420720381896402,
+            "memoryBytes": 318406656
+          },
+          {
+            "second": 28,
+            "cpuCorePercent": 0.27725825471653454,
+            "memoryBytes": 318406656
+          },
+          {
+            "second": 29,
+            "cpuCorePercent": 0.3169651651034737,
+            "memoryBytes": 318406656
+          },
+          {
+            "second": 30,
+            "cpuCorePercent": 0.6524229642559536,
+            "memoryBytes": 318406656
+          },
+          {
+            "second": 31,
+            "cpuCorePercent": 0.3407999561765373,
+            "memoryBytes": 318406656
+          },
+          {
+            "second": 32,
+            "cpuCorePercent": 2.6460436825705096,
+            "memoryBytes": 318406656
+          },
+          {
+            "second": 33,
+            "cpuCorePercent": 0.22345764927085981,
+            "memoryBytes": 318406656
+          }
+        ]
+      }
+    ]
+  }
+}
