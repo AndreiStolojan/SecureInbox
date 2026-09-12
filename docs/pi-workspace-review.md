@@ -94,6 +94,10 @@ than a visual browser claim.
 
 ## TypeScript or Rust
 
+The [12 September Pi resource profile](pi-resource-profile-2026-09-12.md)
+adds host, API and bounded Ollama measurements with raw samples and an
+[HTML report](pi-resource-profile.html).
+
 Adopt TypeScript gradually for API contracts, configuration and detection result
 shapes if development continues. It catches field and nullability errors before
 runtime. It does not make these queries or the shipped JavaScript faster because
