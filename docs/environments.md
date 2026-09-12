@@ -37,7 +37,7 @@ watcher. Vite uses the root `PORT` to reach the backend. Open localhost:5173.
 Restart development processes after changing `.env`. When returning to the
 container app, change both URLs back to port 8080 before running `./provision`.
 
-From a laptop, `ssh -L 8080:127.0.0.1:8080 polo@<pi-address>` gives access to the
+From a laptop, `ssh -L 8080:127.0.0.1:8080 <user>@<pi-address>` gives access to the
 container app; forward 5173 instead for Vite. Neither endpoint is public.
 
 ## Atlas for development

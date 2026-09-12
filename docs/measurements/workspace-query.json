@@ -1,0 +1,218 @@
+{
+  "baselineRevision": "9567caf",
+  "implementationRevision": "5cec9dc",
+  "environment": {
+    "node": "v24.20.0",
+    "platform": "linux",
+    "arch": "arm64"
+  },
+  "database": {
+    "ownerEmailCount": 600,
+    "totalEmails": 600,
+    "writes": 0
+  },
+  "warmups": 4,
+  "queries": [
+    {
+      "query": {},
+      "before": {
+        "medianMs": 146.47295900000063,
+        "minMs": 144.9668069999998,
+        "maxMs": 148.3613690000002,
+        "samples": 16
+      },
+      "after": {
+        "medianMs": 9.81590899999992,
+        "minMs": 9.44901900000059,
+        "maxMs": 11.391171000000213,
+        "samples": 16
+      }
+    },
+    {
+      "query": {
+        "page": 2
+      },
+      "before": {
+        "medianMs": 145.97727300000042,
+        "minMs": 145.2490859999998,
+        "maxMs": 149.91133600000103,
+        "samples": 16
+      },
+      "after": {
+        "medianMs": 9.573908000000301,
+        "minMs": 9.32850000000144,
+        "maxMs": 10.149094000000332,
+        "samples": 16
+      }
+    },
+    {
+      "query": {
+        "riskBucket": "safe"
+      },
+      "before": {
+        "medianMs": 150.35772600000018,
+        "minMs": 147.40749900000083,
+        "maxMs": 251.64492900000005,
+        "samples": 16
+      },
+      "after": {
+        "medianMs": 144.24141800000143,
+        "minMs": 142.10491399999955,
+        "maxMs": 189.41263699999945,
+        "samples": 16
+      }
+    },
+    {
+      "query": {
+        "q": "a"
+      },
+      "before": {
+        "medianMs": 147.7529620000023,
+        "minMs": 146.6405339999983,
+        "maxMs": 152.14582300000257,
+        "samples": 16
+      },
+      "after": {
+        "medianMs": 10.478207000000111,
+        "minMs": 10.311816999997973,
+        "maxMs": 10.994152000002941,
+        "samples": 16
+      }
+    }
+  ],
+  "equivalenceCases": 17,
+  "detailEquivalenceCases": 3,
+  "ownershipIsolationCases": 2,
+  "explain": {
+    "before": [
+      [
+        {
+          "stage": "$cursor",
+          "nReturned": 600,
+          "totalDocsExamined": 600,
+          "totalKeysExamined": 600,
+          "executionTimeMillis": 150
+        },
+        {
+          "stage": "$lookup",
+          "nReturned": 600,
+          "totalDocsExamined": 600,
+          "totalKeysExamined": 600,
+          "indexesUsed": [
+            "emailId_1_createdAt_-1"
+          ]
+        },
+        {
+          "stage": "$addFields",
+          "nReturned": 600
+        },
+        {
+          "stage": "$addFields",
+          "nReturned": 600
+        },
+        {
+          "stage": "$sort",
+          "nReturned": 20
+        },
+        {
+          "stage": "$project",
+          "nReturned": 20
+        }
+      ],
+      [
+        {
+          "stage": "$cursor",
+          "nReturned": 600,
+          "totalDocsExamined": 600,
+          "totalKeysExamined": 600,
+          "executionTimeMillis": 146
+        },
+        {
+          "stage": "$lookup",
+          "nReturned": 600,
+          "totalDocsExamined": 600,
+          "totalKeysExamined": 600,
+          "indexesUsed": [
+            "emailId_1_createdAt_-1"
+          ]
+        },
+        {
+          "stage": "$addFields",
+          "nReturned": 600
+        },
+        {
+          "stage": "$addFields",
+          "nReturned": 600
+        },
+        {
+          "stage": "$group",
+          "nReturned": 1
+        },
+        {
+          "stage": "$project",
+          "nReturned": 1
+        }
+      ]
+    ],
+    "after": [
+      [
+        {
+          "stage": "$cursor",
+          "nReturned": 20,
+          "totalDocsExamined": 600,
+          "totalKeysExamined": 600,
+          "executionTimeMillis": 8
+        },
+        {
+          "stage": "$lookup",
+          "nReturned": 20,
+          "totalDocsExamined": 20,
+          "totalKeysExamined": 20,
+          "indexesUsed": [
+            "emailId_1_createdAt_-1"
+          ]
+        },
+        {
+          "stage": "$addFields",
+          "nReturned": 20
+        },
+        {
+          "stage": "$addFields",
+          "nReturned": 20
+        },
+        {
+          "stage": "$project",
+          "nReturned": 20
+        }
+      ],
+      [
+        {
+          "stage": "$cursor",
+          "nReturned": 1,
+          "totalDocsExamined": 600,
+          "totalKeysExamined": 600,
+          "executionTimeMillis": 1
+        },
+        {
+          "stage": "$project",
+          "nReturned": 1
+        }
+      ]
+    ]
+  },
+  "senderExists": {
+    "matchingOtherEmails": 99,
+    "before": {
+      "medianMs": 2.442152999999962,
+      "minMs": 2.2615049999985786,
+      "maxMs": 2.811654000000999,
+      "samples": 16
+    },
+    "after": {
+      "medianMs": 1.2987990000001446,
+      "minMs": 1.0116690000031667,
+      "maxMs": 1.5650400000013178,
+      "samples": 16
+    }
+  }
+}

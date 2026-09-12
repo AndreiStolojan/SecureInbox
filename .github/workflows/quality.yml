@@ -117,6 +117,27 @@ jobs:
           docker compose exec -T backend node -e "fetch('http://127.0.0.1:5500/metrics').then(r=>r.text()).then(t=>process.exit(t.includes('secureinbox_http_requests_total') ? 0 : 1))"
           login="$(curl --fail --silent --show-error -H 'Content-Type: application/json' --data '{"email":"demo@secureinbox.test","password":"'"$(awk -F= '/^DEMO_USER_PASSWORD=/{print $2}' .env)"'"}' http://127.0.0.1:8080/api/v1/auth/login)"
           token="$(node -e 'console.log(JSON.parse(process.argv[1]).data.token)' "$login")"
+          inbox="$(curl --fail --silent --show-error -H "Authorization: Bearer $token" 'http://127.0.0.1:8080/api/v1/emails?limit=1')"
+          email_id="$(node -e 'console.log(JSON.parse(process.argv[1]).data.items[0]._id)' "$inbox")"
+
+          # Exercise every authenticated GET used by the private pages against
+          # the synthetic account. Mutating routes have focused tests elsewhere.
+          for path in \
+            users/me mail-accounts emails emails/stats emails/trend \
+            emails/top-risky-senders "emails/$email_id" "emails/$email_id/raw" \
+            meta/status "scans/emails/$email_id/latest" reports/monthly-summary \
+            'sender-lists?withMatchCounts=1'; do
+            curl --fail --silent --show-error -H "Authorization: Bearer $token" \
+              "http://127.0.0.1:8080/api/v1/$path" > /dev/null
+          done
+
+          # nginx must serve the SPA shell for current private routes and the
+          # legacy message deep link translated by the React router.
+          for path in dashboard inbox sender-lists settings "inbox/$email_id"; do
+            page="$(curl --fail --silent --show-error "http://127.0.0.1:8080/$path")"
+            grep -q '<div id="root"></div>' <<< "$page"
+          done
+
           gmail_response="$(curl --silent -w '\n%{http_code}' -H "Authorization: Bearer $token" http://127.0.0.1:8080/api/v1/mail-accounts/google/start)"
           test "${gmail_response##*$'\n'}" = 503
           node -e 'if (JSON.parse(process.argv[1]).code !== "INTEGRATION_NOT_CONFIGURED") process.exit(1)' "${gmail_response%$'\n'*}"
